@@ -68,7 +68,7 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 05-01: Edge case handling and UX polish
+- [ ] 05-01: Dark theme, animations, and invalid word feedback
 
 ## Progress
 
