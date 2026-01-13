@@ -28,10 +28,11 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <h1>Wordle Helper</h1>
     </header>
     <main class="app-main">
-      ${createGuessGrid()}
-      <div class="suggestions-area">
-        <!-- Placeholder for Plan 02: suggestions display -->
+      <div class="controls">
+        <button class="new-game-btn">New Game</button>
       </div>
+      ${createGuessGrid()}
+      <div class="suggestions-area"></div>
     </main>
   </div>
 `;
@@ -73,3 +74,21 @@ guessGrid.onSubmit((row) => {
   // Advance to next row
   guessGrid.advanceToNextRow();
 });
+
+// Reset game function
+function resetGame(): void {
+  // Reset constraints to empty
+  currentConstraints = createEmptyConstraints();
+  filteredWords = WORD_LIST;
+
+  // Reset GuessGrid (clear all cells, colors, return to row 0)
+  guessGrid.reset();
+
+  // Reset suggestions to show full word list ranked
+  const rankedWords = rankWords(WORD_LIST, WORD_LIST);
+  suggestions.update(rankedWords, WORD_LIST.length);
+}
+
+// Set up New Game button
+const newGameBtn = document.querySelector<HTMLButtonElement>('.new-game-btn')!;
+newGameBtn.addEventListener('click', resetGame);

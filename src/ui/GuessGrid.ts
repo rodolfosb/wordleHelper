@@ -261,4 +261,25 @@ export class GuessGrid {
 
     return feedback as GuessFeedback;
   }
+
+  /**
+   * Reset the grid to initial state (clear all cells, colors, return to row 0)
+   */
+  public reset(): void {
+    // Reset position
+    this.currentRow = 0;
+    this.currentCol = 0;
+
+    // Clear all state arrays and update cells
+    for (let row = 0; row < 6; row++) {
+      for (let col = 0; col < 5; col++) {
+        this.letters[row][col] = '';
+        this.colors[row][col] = 'gray';
+        this.updateCell(row, col);
+      }
+    }
+
+    // Re-focus the grid
+    this.focusGrid();
+  }
 }
