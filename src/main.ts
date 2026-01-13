@@ -6,6 +6,7 @@ import { Suggestions } from './ui/Suggestions';
 import { rankWords } from './logic/ranking';
 import { createEmptyConstraints, addGuessToConstraints } from './logic/constraints';
 import { filterWords, filterByPrefix, isValidWord } from './logic/filter';
+import { isHardModeValid } from './logic/hardMode';
 
 // Create guess grid HTML structure
 function createGuessGrid(): string {
@@ -30,6 +31,11 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <main class="app-main">
       <div class="controls">
         <button class="new-game-btn">New Game</button>
+        <label class="hard-mode-toggle">
+          <input type="checkbox" id="hard-mode-checkbox">
+          <span class="toggle-slider"></span>
+          <span class="toggle-label">Hard Mode</span>
+        </label>
       </div>
       ${createGuessGrid()}
       <div class="suggestions-area"></div>
@@ -47,6 +53,10 @@ const suggestions = new Suggestions(suggestionsArea);
 
 // App state
 let filteredWords: string[] = WORD_LIST;
+let hardModeEnabled: boolean = false;
+
+// Get hard mode checkbox reference
+const hardModeCheckbox = document.querySelector<HTMLInputElement>('#hard-mode-checkbox')!;
 
 // Display initial suggestions (full word list ranked)
 const initialRankedWords = rankWords(WORD_LIST, WORD_LIST);
@@ -64,6 +74,11 @@ function updateSuggestions(): void {
 
   // Filter word list with new constraints
   filteredWords = filterWords(WORD_LIST, constraints);
+
+  // Apply hard mode filter if enabled
+  if (hardModeEnabled) {
+    filteredWords = filteredWords.filter((w) => isHardModeValid(w, constraints));
+  }
 
   // Apply prefix filter for partial words in current row (UAT-006)
   const partialWord = guessGrid.getCurrentPartialWord();
@@ -102,6 +117,8 @@ guessGrid.onSubmit((row: number) => {
 function resetGame(): void {
   // Reset app state
   filteredWords = WORD_LIST;
+  hardModeEnabled = false;
+  hardModeCheckbox.checked = false;
 
   // Reset GuessGrid (clear all cells, colors, return to row 0)
   guessGrid.reset();
@@ -114,6 +131,12 @@ function resetGame(): void {
 // Set up New Game button
 const newGameBtn = document.querySelector<HTMLButtonElement>('.new-game-btn')!;
 newGameBtn.addEventListener('click', resetGame);
+
+// Set up Hard Mode toggle
+hardModeCheckbox.addEventListener('change', () => {
+  hardModeEnabled = hardModeCheckbox.checked;
+  updateSuggestions();
+});
 
 // Auto-recover focus after clicking anywhere on the page (UAT-007)
 document.addEventListener('click', () => {
