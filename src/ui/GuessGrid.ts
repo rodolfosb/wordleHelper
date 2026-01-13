@@ -246,6 +246,30 @@ export class GuessGrid {
   }
 
   /**
+   * Shake a row to indicate invalid word
+   */
+  public shakeRow(row: number): void {
+    if (row < 0 || row >= 6) return;
+
+    const rowElement = this.gridElement.querySelector(
+      `.guess-row[data-row="${row}"]`
+    ) as HTMLElement | null;
+    if (!rowElement) return;
+
+    // Remove class first to allow re-triggering
+    rowElement.classList.remove('row-shake');
+    // Force reflow
+    void rowElement.offsetWidth;
+    // Add shake class
+    rowElement.classList.add('row-shake');
+
+    // Remove class after animation completes
+    setTimeout(() => {
+      rowElement.classList.remove('row-shake');
+    }, 300);
+  }
+
+  /**
    * Advance to the next row (called externally after processing guess)
    */
   public advanceToNextRow(): void {

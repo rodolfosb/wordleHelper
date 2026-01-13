@@ -5,7 +5,7 @@ import { GuessGrid } from './ui/GuessGrid';
 import { Suggestions } from './ui/Suggestions';
 import { rankWords } from './logic/ranking';
 import { createEmptyConstraints, addGuessToConstraints } from './logic/constraints';
-import { filterWords, filterByPrefix } from './logic/filter';
+import { filterWords, filterByPrefix, isValidWord } from './logic/filter';
 
 // Create guess grid HTML structure
 function createGuessGrid(): string {
@@ -83,9 +83,18 @@ guessGrid.onChange(() => {
   updateSuggestions();
 });
 
-// Set up submit callback - just advance to next row (filtering happens via onChange)
-guessGrid.onSubmit(() => {
-  // Advance to next row when Enter is pressed on a complete row
+// Set up submit callback - validate word before advancing
+guessGrid.onSubmit((row: number) => {
+  const word = guessGrid.getCurrentWord();
+
+  // Check if word is valid
+  if (!isValidWord(word)) {
+    // Shake row for invalid word, don't advance
+    guessGrid.shakeRow(row);
+    return;
+  }
+
+  // Advance to next row when Enter is pressed on a valid complete row
   guessGrid.advanceToNextRow();
 });
 

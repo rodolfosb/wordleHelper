@@ -192,6 +192,19 @@ button:focus-visible {
   animation: cell-pop 100ms ease;
 }
 
+/* Shake animation for invalid words */
+@keyframes row-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(5px); }
+}
+
+.row-shake {
+  animation: row-shake 300ms ease;
+}
+
 /* Cell color states - Wordle authentic colors */
 .cell-gray {
   background-color: #3a3a3c;

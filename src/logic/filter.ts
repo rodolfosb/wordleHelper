@@ -2,6 +2,14 @@
  * Word filtering based on Wordle constraints
  */
 import type { Constraints } from '../types';
+import { WORD_LIST } from '../data/words';
+
+/**
+ * Check if a word exists in the word list
+ */
+export function isValidWord(word: string): boolean {
+  return WORD_LIST.includes(word);
+}
 
 /**
  * Filters words by prefix (for partial word filtering during typing)
