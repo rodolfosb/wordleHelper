@@ -105,3 +105,11 @@ function resetGame(): void {
 // Set up New Game button
 const newGameBtn = document.querySelector<HTMLButtonElement>('.new-game-btn')!;
 newGameBtn.addEventListener('click', resetGame);
+
+// Auto-recover focus after clicking anywhere on the page (UAT-007)
+document.addEventListener('click', () => {
+  // Small delay to allow any other click handlers to process first
+  requestAnimationFrame(() => {
+    guessGrid.focusGrid();
+  });
+});
