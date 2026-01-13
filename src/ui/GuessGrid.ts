@@ -272,6 +272,17 @@ export class GuessGrid {
   }
 
   /**
+   * Get the partial word typed in the current row (0-4 letters)
+   * Returns empty string if row is complete (5 letters)
+   */
+  public getCurrentPartialWord(): string {
+    // If row is complete, return empty (not a partial word)
+    if (this.currentCol === 5) return '';
+    // Return letters typed so far in current row
+    return this.letters[this.currentRow].slice(0, this.currentCol).join('');
+  }
+
+  /**
    * Get guess feedback for a specific row
    */
   public getGuessFeedback(row: number): GuessFeedback | null {

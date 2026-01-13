@@ -5,7 +5,7 @@ import { GuessGrid } from './ui/GuessGrid';
 import { Suggestions } from './ui/Suggestions';
 import { rankWords } from './logic/ranking';
 import { createEmptyConstraints, addGuessToConstraints } from './logic/constraints';
-import { filterWords } from './logic/filter';
+import { filterWords, filterByPrefix } from './logic/filter';
 
 // Create guess grid HTML structure
 function createGuessGrid(): string {
@@ -64,6 +64,12 @@ function updateSuggestions(): void {
 
   // Filter word list with new constraints
   filteredWords = filterWords(WORD_LIST, constraints);
+
+  // Apply prefix filter for partial words in current row (UAT-006)
+  const partialWord = guessGrid.getCurrentPartialWord();
+  if (partialWord.length > 0) {
+    filteredWords = filterByPrefix(filteredWords, partialWord);
+  }
 
   // Rank the filtered words
   const rankedWords = rankWords(filteredWords, filteredWords);

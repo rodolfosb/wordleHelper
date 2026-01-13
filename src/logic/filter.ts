@@ -4,6 +4,15 @@
 import type { Constraints } from '../types';
 
 /**
+ * Filters words by prefix (for partial word filtering during typing)
+ * Returns words that start with the given prefix
+ */
+export function filterByPrefix(words: string[], prefix: string): string[] {
+  if (!prefix) return words;
+  return words.filter((w) => w.startsWith(prefix));
+}
+
+/**
  * Filters a word list against accumulated constraints
  * Returns words that satisfy all constraints
  *
