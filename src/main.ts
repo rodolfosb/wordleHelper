@@ -46,39 +46,46 @@ const suggestionsArea = document.querySelector<HTMLElement>('.suggestions-area')
 const suggestions = new Suggestions(suggestionsArea);
 
 // App state
-let currentConstraints: Constraints = createEmptyConstraints();
 let filteredWords: string[] = WORD_LIST;
 
 // Display initial suggestions (full word list ranked)
 const initialRankedWords = rankWords(WORD_LIST, WORD_LIST);
 suggestions.update(initialRankedWords, WORD_LIST.length);
 
-// Set up submit callback - process guess and update suggestions
-guessGrid.onSubmit((row) => {
-  // Get feedback from current row colors
-  const feedback = guessGrid.getGuessFeedback(row);
-  if (!feedback) return;
+// Helper function to update suggestions based on all complete rows
+function updateSuggestions(): void {
+  const allFeedback = guessGrid.getAllFeedback();
 
-  // Update constraints based on feedback
-  currentConstraints = addGuessToConstraints(currentConstraints, feedback);
+  // Rebuild constraints from all complete rows
+  let constraints: Constraints = createEmptyConstraints();
+  for (const feedback of allFeedback) {
+    constraints = addGuessToConstraints(constraints, feedback);
+  }
 
   // Filter word list with new constraints
-  filteredWords = filterWords(WORD_LIST, currentConstraints);
+  filteredWords = filterWords(WORD_LIST, constraints);
 
   // Rank the filtered words
   const rankedWords = rankWords(filteredWords, filteredWords);
 
   // Update suggestions display
   suggestions.update(rankedWords, filteredWords.length);
+}
 
-  // Advance to next row
+// Set up onChange callback - real-time filtering as user types/clicks
+guessGrid.onChange(() => {
+  updateSuggestions();
+});
+
+// Set up submit callback - just advance to next row (filtering happens via onChange)
+guessGrid.onSubmit(() => {
+  // Advance to next row when Enter is pressed on a complete row
   guessGrid.advanceToNextRow();
 });
 
 // Reset game function
 function resetGame(): void {
-  // Reset constraints to empty
-  currentConstraints = createEmptyConstraints();
+  // Reset app state
   filteredWords = WORD_LIST;
 
   // Reset GuessGrid (clear all cells, colors, return to row 0)

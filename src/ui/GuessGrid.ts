@@ -12,6 +12,7 @@ export class GuessGrid {
   private letters: string[][] = [];
   private colors: LetterStatus[][] = [];
   private onSubmitCallback?: (row: number) => void;
+  private onChangeCallback?: () => void;
 
   constructor(gridElement: HTMLElement) {
     this.gridElement = gridElement;
@@ -72,7 +73,7 @@ export class GuessGrid {
    * Handle cell click for color cycling
    */
   private handleCellClick(row: number, col: number): void {
-    if (row < 0 || row > this.currentRow) return; // Can only click current or past rows
+    if (row < 0 || row >= 6) return;
     if (col < 0 || col >= 5) return;
 
     // Only allow color change on cells that have letters
@@ -81,6 +82,9 @@ export class GuessGrid {
     // Cycle through colors: gray -> yellow -> green -> gray
     this.cycleColor(row, col);
     this.updateCell(row, col);
+
+    // Fire onChange callback for real-time filtering
+    this.fireOnChange();
   }
 
   /**
@@ -145,6 +149,9 @@ export class GuessGrid {
 
     // Advance position
     this.currentCol++;
+
+    // Fire onChange callback for real-time filtering
+    this.fireOnChange();
   }
 
   /**
@@ -161,6 +168,9 @@ export class GuessGrid {
     this.letters[this.currentRow][this.currentCol] = '';
     this.colors[this.currentRow][this.currentCol] = 'gray';
     this.updateCell(this.currentRow, this.currentCol);
+
+    // Fire onChange callback for real-time filtering
+    this.fireOnChange();
   }
 
   /**
@@ -199,6 +209,22 @@ export class GuessGrid {
    */
   public onSubmit(callback: (row: number) => void): void {
     this.onSubmitCallback = callback;
+  }
+
+  /**
+   * Set callback for grid changes (letter typed, deleted, or color changed)
+   */
+  public onChange(callback: () => void): void {
+    this.onChangeCallback = callback;
+  }
+
+  /**
+   * Fire the onChange callback if set
+   */
+  private fireOnChange(): void {
+    if (this.onChangeCallback) {
+      this.onChangeCallback();
+    }
   }
 
   /**
@@ -259,6 +285,24 @@ export class GuessGrid {
     }
 
     return feedback as GuessFeedback;
+  }
+
+  /**
+   * Get feedback for all complete rows (rows with 5 letters)
+   * Returns array of GuessFeedback for all rows from 0 through the highest row with letters
+   */
+  public getAllFeedback(): GuessFeedback[] {
+    const allFeedback: GuessFeedback[] = [];
+
+    // Check all rows that might have content
+    for (let row = 0; row < 6; row++) {
+      const feedback = this.getGuessFeedback(row);
+      if (feedback) {
+        allFeedback.push(feedback);
+      }
+    }
+
+    return allFeedback;
   }
 
   /**
