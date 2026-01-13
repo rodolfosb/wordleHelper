@@ -172,6 +172,10 @@ button:focus-visible {
   margin-bottom: 1.5rem;
 }
 
+.guess-grid:focus {
+  outline: none;
+}
+
 .guess-row {
   display: grid;
   grid-template-columns: repeat(5, 1fr);

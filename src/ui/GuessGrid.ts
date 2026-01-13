@@ -97,8 +97,11 @@ export class GuessGrid {
   /**
    * Focus the grid element
    */
-  private focusGrid(): void {
-    this.gridElement.focus();
+  public focusGrid(): void {
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      this.gridElement.focus();
+    });
   }
 
   /**
