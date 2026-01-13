@@ -15,7 +15,7 @@ None
 - Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
 
 - [x] **Phase 1: Foundation** - Project setup, word list, and core data structures ✓
-- [ ] **Phase 2: Core Logic** - Word filtering engine with constraint handling
+- [x] **Phase 2: Core Logic** - Word filtering engine with constraint handling
 - [ ] **Phase 3: Ranking System** - Letter frequency and information gain scoring
 - [ ] **Phase 4: User Interface** - Color-coded input and suggestions display
 - [ ] **Phase 5: Polish** - UX refinement, edge cases, and final testing
@@ -38,7 +38,7 @@ Plans:
 **Plans**: TBD
 
 Plans:
-- [ ] 02-01: Constraint modeling and word filtering
+- [x] 02-01: Constraint modeling and word filtering
 
 ### Phase 3: Ranking System
 **Goal**: Score and rank remaining words by letter frequency and strategic value for information gain
@@ -78,7 +78,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 1/1 | Complete | 2026-01-13 |
-| 2. Core Logic | 0/1 | Not started | - |
+| 2. Core Logic | 1/1 | Complete | 2026-01-13 |
 | 3. Ranking System | 0/2 | Not started | - |
 | 4. User Interface | 0/2 | Not started | - |
 | 5. Polish | 0/1 | Not started | - |
