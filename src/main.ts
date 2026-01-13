@@ -2,7 +2,7 @@ import './style.css';
 import { WORD_LIST } from './data/words';
 import { createEmptyConstraints, addGuessToConstraints } from './logic/constraints';
 import { filterWords } from './logic/filter';
-import { calculateLetterFrequencies } from './logic/frequency';
+import { calculateLetterFrequencies, rankWordsByFrequency } from './logic/frequency';
 import type { GuessFeedback } from './types';
 
 // Log word list loaded
@@ -15,6 +15,10 @@ console.log(
   'Top 5 most frequent letters:',
   sortedFrequencies.slice(0, 5).map(([letter, count]) => `${letter}: ${count}`)
 );
+
+// Verify Task 2: Word ranking by frequency
+const rankedWords = rankWordsByFrequency(WORD_LIST.slice(0, 100), WORD_LIST);
+console.log('Top 10 words by frequency (from first 100):', rankedWords.slice(0, 10));
 
 // Manual verification: Test constraint engine
 // Scenario: guess "CRANE" against target "APPLE"

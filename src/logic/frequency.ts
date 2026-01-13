@@ -62,3 +62,53 @@ export function calculatePositionalFrequencies(
 
   return positionalMaps;
 }
+
+/**
+ * Score a word based on letter frequencies
+ * Sums frequency scores for each UNIQUE letter in the word
+ * Using unique letters rewards diversity (e.g., "crane" > "geese")
+ *
+ * @param word - The word to score
+ * @param frequencies - Map of letter -> frequency count
+ * @returns Total score (sum of frequencies for unique letters)
+ */
+export function scoreWordByFrequency(
+  word: string,
+  frequencies: Map<string, number>
+): number {
+  const uniqueLetters = new Set(word);
+  let score = 0;
+
+  for (const letter of uniqueLetters) {
+    score += frequencies.get(letter) || 0;
+  }
+
+  return score;
+}
+
+/**
+ * Rank words by letter frequency score
+ * Calculates frequencies from baseWordList, scores each word, returns sorted by score
+ *
+ * @param words - Words to rank
+ * @param baseWordList - Word list to calculate frequencies from (typically WORD_LIST)
+ * @returns Words sorted by frequency score (descending)
+ */
+export function rankWordsByFrequency(
+  words: string[],
+  baseWordList: string[]
+): string[] {
+  const frequencies = calculateLetterFrequencies(baseWordList);
+
+  // Create array with scores for sorting
+  const wordsWithScores = words.map((word) => ({
+    word,
+    score: scoreWordByFrequency(word, frequencies),
+  }));
+
+  // Sort by score descending
+  wordsWithScores.sort((a, b) => b.score - a.score);
+
+  // Return just the words
+  return wordsWithScores.map((ws) => ws.word);
+}
