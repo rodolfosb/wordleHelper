@@ -2,10 +2,19 @@ import './style.css';
 import { WORD_LIST } from './data/words';
 import { createEmptyConstraints, addGuessToConstraints } from './logic/constraints';
 import { filterWords } from './logic/filter';
+import { calculateLetterFrequencies } from './logic/frequency';
 import type { GuessFeedback } from './types';
 
 // Log word list loaded
 console.log(`Wordle Helper loaded with ${WORD_LIST.length} words`);
+
+// Verify Task 1: Letter frequency calculation
+const frequencies = calculateLetterFrequencies(WORD_LIST);
+const sortedFrequencies = [...frequencies.entries()].sort((a, b) => b[1] - a[1]);
+console.log(
+  'Top 5 most frequent letters:',
+  sortedFrequencies.slice(0, 5).map(([letter, count]) => `${letter}: ${count}`)
+);
 
 // Manual verification: Test constraint engine
 // Scenario: guess "CRANE" against target "APPLE"
