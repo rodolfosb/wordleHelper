@@ -1,5 +1,6 @@
 import './style.css';
 import { WORD_LIST } from './data/words';
+import { GuessGrid } from './ui/GuessGrid';
 
 // Log word list loaded
 console.log(`Wordle Helper loaded with ${WORD_LIST.length} words`);
@@ -10,7 +11,7 @@ function createGuessGrid(): string {
   for (let row = 0; row < 6; row++) {
     gridHtml += `<div class="guess-row" data-row="${row}">`;
     for (let col = 0; col < 5; col++) {
-      gridHtml += `<div class="guess-cell cell-gray" data-row="${row}" data-col="${col}"></div>`;
+      gridHtml += `<div class="guess-cell" data-row="${row}" data-col="${col}"></div>`;
     }
     gridHtml += '</div>';
   }
@@ -32,3 +33,17 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     </main>
   </div>
 `;
+
+// Initialize GuessGrid
+const gridElement = document.querySelector<HTMLElement>('.guess-grid')!;
+const guessGrid = new GuessGrid(gridElement);
+
+// Set up submit callback (will be wired to constraint logic in Plan 02)
+guessGrid.onSubmit((row) => {
+  console.log(`Row ${row} submitted with word: ${guessGrid.getCurrentWord()}`);
+  // In Plan 02, this will trigger:
+  // 1. Get feedback from colors
+  // 2. Update constraints
+  // 3. Filter word list
+  // 4. Display suggestions
+});
