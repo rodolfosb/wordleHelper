@@ -6,9 +6,31 @@
 
 ## Open Issues
 
-[None - all issues resolved in 04-FIX]
+[None - all issues resolved]
 
 ## Resolved Issues
+
+### UAT-006: Word list should filter on every keystroke, not just complete words
+
+**Discovered:** 2026-01-13
+**Phase/Plan:** 04-FIX re-verification
+**Severity:** Major
+**Feature:** Real-time filtering
+**Description:** The word list only updates when a row has 5 letters. User expects filtering to happen on every keystroke, including partial words (e.g., typing "CRA" should immediately narrow the list to words starting with CRA).
+**Expected:** Word list filters as each letter is typed
+**Actual:** Word list only filters when row is complete (5 letters)
+**Resolved:** 2026-01-13 via 04-FIX2 Task 1 - Added filterByPrefix() and getCurrentPartialWord()
+
+### UAT-007: Grid should auto-recover focus after clicking elsewhere
+
+**Discovered:** 2026-01-13
+**Phase/Plan:** 04-FIX re-verification
+**Severity:** Minor
+**Feature:** Keyboard input
+**Description:** After clicking elsewhere on the page, user must click the grid to restore keyboard input. User expects the grid to automatically recover or maintain focus so clicking is never required.
+**Expected:** Grid maintains keyboard focus or auto-recovers it
+**Actual:** Must click grid to re-focus after clicking elsewhere on page
+**Resolved:** 2026-01-13 via 04-FIX2 Task 2 - Document-level click handler auto-refocuses grid
 
 ### UAT-001: Grid requires manual click before keyboard input works
 

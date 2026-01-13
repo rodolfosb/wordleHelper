@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-13)
 ## Current Position
 
 Phase: 4 of 5 (User Interface)
-Plan: FIX complete (UAT issues resolved)
+Plan: FIX2 complete (all UAT issues resolved)
 Status: Phase complete with fixes
-Last activity: 2026-01-13 — Completed 04-FIX (5 UAT issues resolved)
+Last activity: 2026-01-13 — Completed 04-FIX2 (7 total UAT issues resolved)
 
 Progress: ███████░░░ 86%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 7
+- Total plans completed: 8
 - Average duration: ~6.5 min
-- Total execution time: ~46 min
+- Total execution time: ~51 min
 
 **By Phase:**
 
@@ -30,10 +30,10 @@ Progress: ███████░░░ 86%
 | 1 | 1 | 9 min | 9 min |
 | 2 | 1 | 8 min | 8 min |
 | 3 | 2 | ~7 min | ~3.5 min |
-| 4 | 3 | ~22 min | ~7 min |
+| 4 | 4 | ~27 min | ~7 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (~3m), 03-02 (~4m), 04-01 (~6m), 04-02 (~8m), 04-FIX (~8m)
+- Last 5 plans: 03-02 (~4m), 04-01 (~6m), 04-02 (~8m), 04-FIX (~8m), 04-FIX2 (~5m)
 - Trend: parallel execution accelerating wall-clock time
 
 ## Accumulated Context
@@ -55,6 +55,8 @@ Recent decisions affecting current work:
 - Phase 4 FIX: Real-time filtering via onChange callback (not submit-based)
 - Phase 4 FIX: Rebuild constraints from all complete rows on each change
 - Phase 4 FIX: Cross-row backspace for free editing of any entered letters
+- Phase 4 FIX2: Prefix filtering for partial words (every keystroke)
+- Phase 4 FIX2: Document click handler auto-recovers grid focus
 
 ### Deferred Issues
 
@@ -71,5 +73,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-01-13
-Stopped at: Completed Phase 4 FIX (5 UAT issues resolved)
+Stopped at: Completed Phase 4 FIX2 (all 7 UAT issues resolved)
 Resume file: None
