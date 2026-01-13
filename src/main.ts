@@ -1,9 +1,8 @@
 import './style.css';
 import { WORD_LIST } from './data/words';
 import { GuessGrid } from './ui/GuessGrid';
-
-// Log word list loaded
-console.log(`Wordle Helper loaded with ${WORD_LIST.length} words`);
+import { Suggestions } from './ui/Suggestions';
+import { rankWords } from './logic/ranking';
 
 // Create guess grid HTML structure
 function createGuessGrid(): string {
@@ -38,10 +37,18 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 const gridElement = document.querySelector<HTMLElement>('.guess-grid')!;
 const guessGrid = new GuessGrid(gridElement);
 
+// Initialize Suggestions panel
+const suggestionsArea = document.querySelector<HTMLElement>('.suggestions-area')!;
+const suggestions = new Suggestions(suggestionsArea);
+
+// Display initial suggestions (full word list ranked)
+const initialRankedWords = rankWords(WORD_LIST, WORD_LIST);
+suggestions.update(initialRankedWords, WORD_LIST.length);
+
 // Set up submit callback (will be wired to constraint logic in Plan 02)
 guessGrid.onSubmit((row) => {
   console.log(`Row ${row} submitted with word: ${guessGrid.getCurrentWord()}`);
-  // In Plan 02, this will trigger:
+  // In Plan 02 Task 2, this will trigger:
   // 1. Get feedback from colors
   // 2. Update constraints
   // 3. Filter word list

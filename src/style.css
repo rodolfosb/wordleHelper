@@ -181,8 +181,158 @@ button:focus-visible {
   border-color: #3a3a3c;
 }
 
-/* Suggestions area placeholder */
+/* Suggestions Panel Styles */
 .suggestions-area {
   width: 100%;
-  min-height: 100px;
+}
+
+.suggestions-panel {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.suggestions-header {
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #3a3a3c;
+}
+
+.suggestions-count {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #818384;
+}
+
+.suggestions-message {
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  min-height: 1.5rem;
+}
+
+.suggestions-message.message-error {
+  color: #e74c3c;
+}
+
+.suggestions-message.message-success {
+  color: #6aaa64;
+}
+
+.suggestions-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.suggestion-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.25rem;
+  background-color: #2a2a2a;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+
+.suggestion-item:hover {
+  background-color: #3a3a3a;
+}
+
+.suggestion-item.top-suggestion {
+  background-color: #2d3a2d;
+}
+
+.suggestion-item.top-suggestion:hover {
+  background-color: #3d4a3d;
+}
+
+.suggestion-item.top-suggestion .suggestion-word {
+  font-weight: 700;
+  color: #6aaa64;
+}
+
+.suggestion-word {
+  font-family: monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.1rem;
+}
+
+.suggestion-score {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 80px;
+}
+
+.score-bar {
+  display: inline-block;
+  height: 6px;
+  background-color: #6aaa64;
+  border-radius: 3px;
+  min-width: 0;
+  max-width: 50px;
+}
+
+.score-text {
+  font-size: 0.8rem;
+  color: #818384;
+  min-width: 35px;
+  text-align: right;
+}
+
+/* Scrollbar styling for suggestions list */
+.suggestions-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.suggestions-list::-webkit-scrollbar-track {
+  background: #1a1a1a;
+  border-radius: 3px;
+}
+
+.suggestions-list::-webkit-scrollbar-thumb {
+  background: #4a4a4a;
+  border-radius: 3px;
+}
+
+.suggestions-list::-webkit-scrollbar-thumb:hover {
+  background: #5a5a5a;
+}
+
+@media (prefers-color-scheme: light) {
+  .suggestions-panel {
+    background-color: #f5f5f5;
+  }
+
+  .suggestion-item {
+    background-color: #ffffff;
+  }
+
+  .suggestion-item:hover {
+    background-color: #e8e8e8;
+  }
+
+  .suggestion-item.top-suggestion {
+    background-color: #e8f5e9;
+  }
+
+  .suggestion-item.top-suggestion:hover {
+    background-color: #d7ecd8;
+  }
+
+  .suggestions-list::-webkit-scrollbar-track {
+    background: #f5f5f5;
+  }
+
+  .suggestions-list::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+  }
 }
