@@ -155,11 +155,17 @@ export class GuessGrid {
   }
 
   /**
-   * Delete the last letter in the current row
+   * Delete the last letter, allowing backspace across rows
    */
   private deleteLetter(): void {
-    if (this.currentRow >= 6) return;
-    if (this.currentCol <= 0) return; // Nothing to delete
+    // If at start of current row and not row 0, move back to previous row
+    if (this.currentCol === 0 && this.currentRow > 0) {
+      this.currentRow--;
+      this.currentCol = 5; // Move to end of previous row
+    }
+
+    // If still nothing to delete (row 0, col 0), return
+    if (this.currentCol <= 0 && this.currentRow === 0) return;
 
     // Move back
     this.currentCol--;
