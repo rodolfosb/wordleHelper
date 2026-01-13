@@ -167,14 +167,10 @@ export class GuessGrid {
     if (this.currentRow >= 6) return;
     if (this.currentCol !== 5) return; // Row not full
 
-    console.log(`Submitting row ${this.currentRow}: ${this.letters[this.currentRow].join('')}`);
-
     // Call the callback if set
     if (this.onSubmitCallback) {
       this.onSubmitCallback(this.currentRow);
     }
-
-    // Note: We do NOT advance to next row here - that will be wired in Plan 02
   }
 
   /**
