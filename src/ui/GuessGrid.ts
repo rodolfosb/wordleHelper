@@ -145,7 +145,7 @@ export class GuessGrid {
 
     // Set the letter
     this.letters[this.currentRow][this.currentCol] = letter;
-    this.updateCell(this.currentRow, this.currentCol);
+    this.updateCell(this.currentRow, this.currentCol, true); // Animate letter input
 
     // Advance position
     this.currentCol++;
@@ -195,7 +195,7 @@ export class GuessGrid {
   /**
    * Update a cell's display
    */
-  private updateCell(row: number, col: number): void {
+  private updateCell(row: number, col: number, animate: boolean = false): void {
     const cell = this.cells[row][col];
     const letter = this.letters[row][col];
     const color = this.colors[row][col];
@@ -203,10 +203,22 @@ export class GuessGrid {
     // Update letter
     cell.textContent = letter;
 
-    // Update color classes
-    cell.classList.remove('cell-gray', 'cell-yellow', 'cell-green');
+    // Update color and filled classes
+    cell.classList.remove('cell-gray', 'cell-yellow', 'cell-green', 'cell-filled');
     if (letter) {
       cell.classList.add(`cell-${color}`);
+      // Add filled class for cells with letters but default gray color
+      if (color === 'gray') {
+        cell.classList.add('cell-filled');
+      }
+    }
+
+    // Trigger pop animation when letter is added
+    if (animate && letter) {
+      cell.classList.remove('cell-pop');
+      // Force reflow to restart animation
+      void cell.offsetWidth;
+      cell.classList.add('cell-pop');
     }
   }
 

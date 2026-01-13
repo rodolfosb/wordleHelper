@@ -173,6 +173,23 @@ button:focus-visible {
   text-transform: uppercase;
   user-select: none;
   box-sizing: border-box;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+/* Cell with letter but no color assigned yet */
+.cell-filled {
+  border-color: #565758;
+}
+
+/* Pop animation when letter is typed */
+@keyframes cell-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.cell-pop {
+  animation: cell-pop 100ms ease;
 }
 
 /* Cell color states - Wordle authentic colors */
@@ -250,6 +267,7 @@ button:focus-visible {
   padding: 0;
   max-height: 300px;
   overflow-y: auto;
+  transition: opacity 0.1s ease;
 }
 
 .suggestion-item {
