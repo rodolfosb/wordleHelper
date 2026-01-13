@@ -8,6 +8,7 @@ import {
   calculateExpectedRemaining,
   calculateEntropy,
 } from './logic/entropy';
+import { rankWords } from './logic/ranking';
 import type { GuessFeedback } from './types';
 
 // Log word list loaded
@@ -89,6 +90,50 @@ for (const g of testGuesses) {
     `"${g}": expectedRemaining=${expectedRemaining.toFixed(2)}, entropy=${entropy.toFixed(3)} bits`
   );
 }
+
+// Verify Task 3 (03-02): Combined ranking
+console.log('\n=== Combined Ranking Tests ===');
+
+// Test 1: Large word list (>500) - should use frequency only
+const startLarge = performance.now();
+const largeRanked = rankWords(WORD_LIST.slice(0, 100), WORD_LIST);
+const timeLarge = performance.now() - startLarge;
+console.log(
+  `Large list (${WORD_LIST.length} words): Top 5 by frequency only (${timeLarge.toFixed(1)}ms)`
+);
+largeRanked.slice(0, 5).forEach((w) => {
+  console.log(
+    `  ${w.word}: score=${w.score.toFixed(3)}, freq=${w.frequencyScore?.toFixed(3) ?? 'N/A'}`
+  );
+});
+
+// Test 2: Small filtered list (<=500) - should use entropy + frequency
+const smallList = testWords;
+const startSmall = performance.now();
+const smallRanked = rankWords(smallList, smallList);
+const timeSmall = performance.now() - startSmall;
+console.log(
+  `\nSmall list (${smallList.length} words): Top 5 by entropy+frequency (${timeSmall.toFixed(1)}ms)`
+);
+smallRanked.slice(0, 5).forEach((w) => {
+  console.log(
+    `  ${w.word}: score=${w.score.toFixed(3)}, entropy=${w.entropyScore?.toFixed(3)}, freq=${w.frequencyScore?.toFixed(3)}`
+  );
+});
+
+// Test 3: Force entropy on larger set (50 words from filtered list)
+const mediumList = WORD_LIST.filter((w) => w.includes('a') && w.includes('e')).slice(0, 50);
+const startMedium = performance.now();
+const mediumRanked = rankWords(mediumList, mediumList, { useEntropy: true });
+const timeMedium = performance.now() - startMedium;
+console.log(
+  `\nMedium list (${mediumList.length} words): Top 5 with forced entropy (${timeMedium.toFixed(1)}ms)`
+);
+mediumRanked.slice(0, 5).forEach((w) => {
+  console.log(
+    `  ${w.word}: score=${w.score.toFixed(3)}, entropy=${w.entropyScore?.toFixed(3)}, freq=${w.frequencyScore?.toFixed(3)}`
+  );
+});
 
 // Basic app setup
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `

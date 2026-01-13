@@ -43,3 +43,23 @@ export interface Constraints {
   // Letters known to not be in word at all (gray)
   excludedLetters: Set<string>;
 }
+
+/**
+ * Options for word ranking algorithm
+ */
+export interface RankingOptions {
+  useEntropy?: boolean;      // default: true when possibleTargets.length <= 500
+  useFrequency?: boolean;    // default: true
+  entropyWeight?: number;    // default: 0.7
+  frequencyWeight?: number;  // default: 0.3
+}
+
+/**
+ * A word with its ranking scores
+ */
+export interface RankedWord {
+  word: string;
+  score: number;
+  entropyScore?: number;
+  frequencyScore?: number;
+}
