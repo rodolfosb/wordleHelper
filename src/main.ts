@@ -3,6 +3,7 @@ import { WORD_LIST } from './data/words';
 import { createEmptyConstraints, addGuessToConstraints } from './logic/constraints';
 import { filterWords } from './logic/filter';
 import { calculateLetterFrequencies, rankWordsByFrequency } from './logic/frequency';
+import { simulateFeedback } from './logic/entropy';
 import type { GuessFeedback } from './types';
 
 // Log word list loaded
@@ -44,6 +45,14 @@ console.log('Constraints:', {
 });
 console.log(`Filtered from ${WORD_LIST.length} to ${filteredWords.length} words`);
 console.log('Sample filtered words:', filteredWords.slice(0, 10));
+
+// Verify Task 1 (03-02): Feedback pattern simulation
+console.log('\n=== Feedback Simulation Tests ===');
+console.log('simulateFeedback("crane", "crane"):', simulateFeedback('crane', 'crane'));
+console.log('simulateFeedback("crane", "apple"):', simulateFeedback('crane', 'apple'));
+console.log('simulateFeedback("speed", "creep"):', simulateFeedback('speed', 'creep'));
+console.log('simulateFeedback("speed", "eerie"):', simulateFeedback('speed', 'eerie'));
+console.log('simulateFeedback("geese", "eerie"):', simulateFeedback('geese', 'eerie'));
 
 // Basic app setup
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
