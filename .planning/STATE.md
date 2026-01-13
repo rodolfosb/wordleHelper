@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-13)
 
 **Core value:** Accurately filter and intelligently rank word suggestions so users can solve Wordle puzzles faster and more reliably.
-**Current focus:** v1.0 MVP Complete
+**Current focus:** v1.1 Features
 
 ## Current Position
 
-Phase: 5 of 5 (Complete)
-Plan: All plans complete
-Status: v1.0 Milestone shipped
-Last activity: 2026-01-13 — v1.0 milestone complete
+Phase: 6 of 10 (PWA Support)
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-01-13 — Milestone v1.1 created
 
-Progress: ██████████ 100%
+Progress: █████░░░░░ 50%
 
 ## Performance Metrics
 
@@ -51,8 +51,12 @@ None.
 
 None.
 
+### Roadmap Evolution
+
+- Milestone v1.1 created: PWA, hard mode, stats, history, UI (5 phases: 6-10)
+
 ## Session Continuity
 
 Last session: 2026-01-13
-Stopped at: v1.0 milestone archived
+Stopped at: Milestone v1.1 initialization
 Resume file: None

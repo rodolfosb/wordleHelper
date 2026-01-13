@@ -7,6 +7,7 @@ Build a web application that helps users solve Wordle puzzles by suggesting opti
 ## Milestones
 
 - ✅ **[v1.0 MVP](milestones/v1.0-ROADMAP.md)** — Phases 1-5 (shipped 2026-01-13)
+- 🚧 **v1.1 Features** — Phases 6-10 (in progress)
 
 ## Completed Milestones
 
@@ -23,10 +24,66 @@ See [v1.0 archive](milestones/v1.0-ROADMAP.md) for full details.
 
 </details>
 
+### 🚧 v1.1 Features (In Progress)
+
+**Milestone Goal:** Add PWA support, hard mode, session statistics, historical Wordle words, and UI enhancements.
+
+#### Phase 6: PWA Support
+
+**Goal**: Make the app installable and work offline with service worker and web manifest
+**Depends on**: v1.0 complete
+**Research**: Likely (Vite PWA plugin, service worker caching strategies)
+**Research topics**: vite-plugin-pwa setup, workbox caching, manifest.json configuration
+**Plans**: TBD
+
+Plans:
+- [ ] 06-01: TBD (run /gsd:plan-phase 6 to break down)
+
+#### Phase 7: Hard Mode
+
+**Goal**: Implement Wordle hard mode rules that filter suggestions to only valid hard-mode guesses
+**Depends on**: Phase 6
+**Research**: Unlikely (internal logic, well-defined rules)
+**Plans**: TBD
+
+Plans:
+- [ ] 07-01: TBD
+
+#### Phase 8: Session Stats
+
+**Goal**: Track and display game statistics (games played, win rate, guess distribution) with LocalStorage persistence
+**Depends on**: Phase 7
+**Research**: Unlikely (LocalStorage patterns, internal UI)
+**Plans**: TBD
+
+Plans:
+- [ ] 08-01: TBD
+
+#### Phase 9: Wordle History
+
+**Goal**: Integrate historical Wordle words from previous days, allowing users to practice with past puzzles
+**Depends on**: Phase 8
+**Research**: Likely (need to find reliable source for historical Wordle words)
+**Research topics**: NYT Wordle word list sources, historical puzzle APIs, word archive formats
+**Plans**: TBD
+
+Plans:
+- [ ] 09-01: TBD
+
+#### Phase 10: UI Enhancements
+
+**Goal**: Additional UI improvements and polish based on usage feedback
+**Depends on**: Phase 9
+**Research**: Unlikely (internal patterns)
+**Plans**: TBD
+
+Plans:
+- [ ] 10-01: TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -35,5 +92,10 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 3. Ranking System | v1.0 | 2/2 | Complete | 2026-01-13 |
 | 4. User Interface | v1.0 | 4/4 | Complete | 2026-01-13 |
 | 5. Polish | v1.0 | 1/1 | Complete | 2026-01-13 |
+| 6. PWA Support | v1.1 | 0/? | Not started | - |
+| 7. Hard Mode | v1.1 | 0/? | Not started | - |
+| 8. Session Stats | v1.1 | 0/? | Not started | - |
+| 9. Wordle History | v1.1 | 0/? | Not started | - |
+| 10. UI Enhancements | v1.1 | 0/? | Not started | - |
 
-**Overall:** 5/5 phases complete (100%)
+**Overall:** 5/10 phases complete (50%)
