@@ -37,15 +37,14 @@ See [v1.0 archive](milestones/v1.0-ROADMAP.md) for full details.
 Plans:
 - [x] 06-01: PWA with vite-plugin-pwa, service worker, manifest, icons
 
-#### Phase 7: Hard Mode
+#### Phase 7: Hard Mode — Complete
 
 **Goal**: Implement Wordle hard mode rules that filter suggestions to only valid hard-mode guesses
 **Depends on**: Phase 6
-**Research**: Unlikely (internal logic, well-defined rules)
-**Plans**: TBD
+**Completed**: 2026-01-13
 
 Plans:
-- [ ] 07-01: TBD
+- [x] 07-01: Hard mode filter function and toggle UI
 
 #### Phase 8: Session Stats
 
@@ -91,9 +90,9 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 4. User Interface | v1.0 | 4/4 | Complete | 2026-01-13 |
 | 5. Polish | v1.0 | 1/1 | Complete | 2026-01-13 |
 | 6. PWA Support | v1.1 | 1/1 | Complete | 2026-01-13 |
-| 7. Hard Mode | v1.1 | 0/? | Not started | - |
+| 7. Hard Mode | v1.1 | 1/1 | Complete | 2026-01-13 |
 | 8. Session Stats | v1.1 | 0/? | Not started | - |
 | 9. Wordle History | v1.1 | 0/? | Not started | - |
 | 10. UI Enhancements | v1.1 | 0/? | Not started | - |
 
-**Overall:** 6/10 phases complete (60%)
+**Overall:** 7/10 phases complete (70%)
