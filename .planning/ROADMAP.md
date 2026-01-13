@@ -28,16 +28,14 @@ See [v1.0 archive](milestones/v1.0-ROADMAP.md) for full details.
 
 **Milestone Goal:** Add PWA support, hard mode, session statistics, historical Wordle words, and UI enhancements.
 
-#### Phase 6: PWA Support
+#### Phase 6: PWA Support — Complete
 
 **Goal**: Make the app installable and work offline with service worker and web manifest
 **Depends on**: v1.0 complete
-**Research**: Likely (Vite PWA plugin, service worker caching strategies)
-**Research topics**: vite-plugin-pwa setup, workbox caching, manifest.json configuration
-**Plans**: TBD
+**Completed**: 2026-01-13
 
 Plans:
-- [ ] 06-01: TBD (run /gsd:plan-phase 6 to break down)
+- [x] 06-01: PWA with vite-plugin-pwa, service worker, manifest, icons
 
 #### Phase 7: Hard Mode
 
@@ -92,10 +90,10 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 3. Ranking System | v1.0 | 2/2 | Complete | 2026-01-13 |
 | 4. User Interface | v1.0 | 4/4 | Complete | 2026-01-13 |
 | 5. Polish | v1.0 | 1/1 | Complete | 2026-01-13 |
-| 6. PWA Support | v1.1 | 0/? | Not started | - |
+| 6. PWA Support | v1.1 | 1/1 | Complete | 2026-01-13 |
 | 7. Hard Mode | v1.1 | 0/? | Not started | - |
 | 8. Session Stats | v1.1 | 0/? | Not started | - |
 | 9. Wordle History | v1.1 | 0/? | Not started | - |
 | 10. UI Enhancements | v1.1 | 0/? | Not started | - |
 
-**Overall:** 5/10 phases complete (50%)
+**Overall:** 6/10 phases complete (60%)
