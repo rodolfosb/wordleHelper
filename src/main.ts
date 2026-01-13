@@ -1,8 +1,11 @@
 import './style.css';
+import type { Constraints } from './types';
 import { WORD_LIST } from './data/words';
 import { GuessGrid } from './ui/GuessGrid';
 import { Suggestions } from './ui/Suggestions';
 import { rankWords } from './logic/ranking';
+import { createEmptyConstraints, addGuessToConstraints } from './logic/constraints';
+import { filterWords } from './logic/filter';
 
 // Create guess grid HTML structure
 function createGuessGrid(): string {
@@ -41,16 +44,32 @@ const guessGrid = new GuessGrid(gridElement);
 const suggestionsArea = document.querySelector<HTMLElement>('.suggestions-area')!;
 const suggestions = new Suggestions(suggestionsArea);
 
+// App state
+let currentConstraints: Constraints = createEmptyConstraints();
+let filteredWords: string[] = WORD_LIST;
+
 // Display initial suggestions (full word list ranked)
 const initialRankedWords = rankWords(WORD_LIST, WORD_LIST);
 suggestions.update(initialRankedWords, WORD_LIST.length);
 
-// Set up submit callback (will be wired to constraint logic in Plan 02)
+// Set up submit callback - process guess and update suggestions
 guessGrid.onSubmit((row) => {
-  console.log(`Row ${row} submitted with word: ${guessGrid.getCurrentWord()}`);
-  // In Plan 02 Task 2, this will trigger:
-  // 1. Get feedback from colors
-  // 2. Update constraints
-  // 3. Filter word list
-  // 4. Display suggestions
+  // Get feedback from current row colors
+  const feedback = guessGrid.getGuessFeedback(row);
+  if (!feedback) return;
+
+  // Update constraints based on feedback
+  currentConstraints = addGuessToConstraints(currentConstraints, feedback);
+
+  // Filter word list with new constraints
+  filteredWords = filterWords(WORD_LIST, currentConstraints);
+
+  // Rank the filtered words
+  const rankedWords = rankWords(filteredWords, filteredWords);
+
+  // Update suggestions display
+  suggestions.update(rankedWords, filteredWords.length);
+
+  // Advance to next row
+  guessGrid.advanceToNextRow();
 });
