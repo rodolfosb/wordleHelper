@@ -158,18 +158,21 @@ button:focus-visible {
   background-color: #787c7e;
   border-color: #787c7e;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .cell-yellow {
   background-color: #c9b458;
   border-color: #c9b458;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .cell-green {
   background-color: #6aaa64;
   border-color: #6aaa64;
   color: #ffffff;
+  cursor: pointer;
 }
 
 /* Empty cell state */

@@ -17,6 +17,7 @@ export class GuessGrid {
     this.gridElement = gridElement;
     this.initializeGrid();
     this.attachKeyboardListeners();
+    this.attachClickListeners();
     this.focusGrid();
   }
 
@@ -51,6 +52,46 @@ export class GuessGrid {
     this.gridElement.addEventListener('keydown', (event) => {
       this.handleKeyDown(event as KeyboardEvent);
     });
+  }
+
+  /**
+   * Attach click event listeners to cells for color cycling
+   */
+  private attachClickListeners(): void {
+    this.gridElement.addEventListener('click', (event) => {
+      const target = event.target as HTMLElement;
+      if (target.classList.contains('guess-cell')) {
+        const row = parseInt(target.dataset.row || '-1', 10);
+        const col = parseInt(target.dataset.col || '-1', 10);
+        this.handleCellClick(row, col);
+      }
+    });
+  }
+
+  /**
+   * Handle cell click for color cycling
+   */
+  private handleCellClick(row: number, col: number): void {
+    if (row < 0 || row > this.currentRow) return; // Can only click current or past rows
+    if (col < 0 || col >= 5) return;
+
+    // Only allow color change on cells that have letters
+    if (!this.letters[row][col]) return;
+
+    // Cycle through colors: gray -> yellow -> green -> gray
+    this.cycleColor(row, col);
+    this.updateCell(row, col);
+  }
+
+  /**
+   * Cycle the color of a cell
+   */
+  private cycleColor(row: number, col: number): void {
+    const currentColor = this.colors[row][col];
+    const colorOrder: LetterStatus[] = ['gray', 'yellow', 'green'];
+    const currentIndex = colorOrder.indexOf(currentColor);
+    const nextIndex = (currentIndex + 1) % colorOrder.length;
+    this.colors[row][col] = colorOrder[nextIndex];
   }
 
   /**
