@@ -3,7 +3,11 @@ import { WORD_LIST } from './data/words';
 import { createEmptyConstraints, addGuessToConstraints } from './logic/constraints';
 import { filterWords } from './logic/filter';
 import { calculateLetterFrequencies, rankWordsByFrequency } from './logic/frequency';
-import { simulateFeedback } from './logic/entropy';
+import {
+  simulateFeedback,
+  calculateExpectedRemaining,
+  calculateEntropy,
+} from './logic/entropy';
 import type { GuessFeedback } from './types';
 
 // Log word list loaded
@@ -53,6 +57,38 @@ console.log('simulateFeedback("crane", "apple"):', simulateFeedback('crane', 'ap
 console.log('simulateFeedback("speed", "creep"):', simulateFeedback('speed', 'creep'));
 console.log('simulateFeedback("speed", "eerie"):', simulateFeedback('speed', 'eerie'));
 console.log('simulateFeedback("geese", "eerie"):', simulateFeedback('geese', 'eerie'));
+
+// Verify Task 2 (03-02): Information gain scoring
+console.log('\n=== Information Gain Tests ===');
+// Test with a small word list
+const testWords = [
+  'apple',
+  'ample',
+  'maple',
+  'grape',
+  'drape',
+  'shape',
+  'shade',
+  'blade',
+  'blaze',
+  'graze',
+  'craze',
+  'crane',
+  'crate',
+  'grate',
+  'slate',
+];
+console.log(`Testing with ${testWords.length} words`);
+
+// Compare entropy for different guesses
+const testGuesses = ['crane', 'slate', 'audio', 'apple'];
+for (const g of testGuesses) {
+  const expectedRemaining = calculateExpectedRemaining(g, testWords);
+  const entropy = calculateEntropy(g, testWords);
+  console.log(
+    `"${g}": expectedRemaining=${expectedRemaining.toFixed(2)}, entropy=${entropy.toFixed(3)} bits`
+  );
+}
 
 // Basic app setup
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
