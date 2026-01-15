@@ -3,6 +3,7 @@ import type { Constraints, SessionStats, HistoricalPuzzle } from './types';
 import { WORD_LIST } from './data/words';
 import { GuessGrid } from './ui/GuessGrid';
 import { Suggestions } from './ui/Suggestions';
+import { Keyboard } from './ui/Keyboard';
 import { StatsModal } from './ui/StatsModal';
 import { HistoryPicker } from './ui/HistoryPicker';
 import { rankWords } from './logic/ranking';
@@ -53,6 +54,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       ${createGuessGrid()}
       <div class="game-message"></div>
       <div class="suggestions-area"></div>
+      <div class="keyboard-area"></div>
     </main>
   </div>
 `;
@@ -64,6 +66,10 @@ const guessGrid = new GuessGrid(gridElement);
 // Initialize Suggestions panel
 const suggestionsArea = document.querySelector<HTMLElement>('.suggestions-area')!;
 const suggestions = new Suggestions(suggestionsArea);
+
+// Initialize Keyboard display
+const keyboardArea = document.querySelector<HTMLElement>('.keyboard-area')!;
+const keyboard = new Keyboard(keyboardArea);
 
 // App state
 let filteredWords: string[] = WORD_LIST;
@@ -168,6 +174,12 @@ guessGrid.onSubmit((row: number) => {
   // Clear any error message
   clearGameMessage();
 
+  // Update keyboard with feedback from this row
+  const feedback = guessGrid.getGuessFeedback(row);
+  if (feedback) {
+    keyboard.updateFromFeedback(feedback);
+  }
+
   // Check for win condition (all green)
   if (isRowAllGreen(row)) {
     gameEnded = true;
@@ -220,6 +232,9 @@ function resetGame(): void {
   // Reset GuessGrid (clear all cells, colors, return to row 0)
   guessGrid.reset();
 
+  // Reset keyboard to show all letters as unused
+  keyboard.reset();
+
   // Reset suggestions to show full word list ranked
   const rankedWords = rankWords(WORD_LIST, WORD_LIST);
   suggestions.update(rankedWords, WORD_LIST.length);
@@ -265,6 +280,7 @@ function startPracticeMode(puzzle: HistoricalPuzzle): void {
   gameEnded = false;
   clearGameMessage();
   guessGrid.reset();
+  keyboard.reset();
 
   // Reset suggestions to show full word list ranked
   const rankedWords = rankWords(WORD_LIST, WORD_LIST);
