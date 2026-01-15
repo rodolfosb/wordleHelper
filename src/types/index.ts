@@ -74,3 +74,12 @@ export interface SessionStats {
   maxStreak: number;
   guessDistribution: [number, number, number, number, number, number]; // 6 elements for guesses 1-6
 }
+
+/**
+ * A historical Wordle puzzle from the archive
+ */
+export interface HistoricalPuzzle {
+  game: number;      // Puzzle number (1 = first official)
+  date: string;      // "YYYY-MM-DD" format
+  answer: string;    // lowercase 5-letter word
+}
