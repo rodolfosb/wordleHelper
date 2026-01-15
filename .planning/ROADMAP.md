@@ -64,14 +64,14 @@ Plans:
 Plans:
 - [x] 09-01: History types, data module with NYT/WordleHints APIs, HistoryPicker UI, practice mode integration
 
-#### Phase 10: UI Enhancements
+#### Phase 10: UI Enhancements — In Progress
 
 **Goal**: Add keyboard hint display, click-to-insert suggestions, and light/dark mode toggle
 **Depends on**: Phase 9
 **Research**: No (internal patterns)
 
 Plans:
-- [ ] 10-01: Keyboard hint display + click-to-insert suggestions
+- [x] 10-01: Keyboard hint display + click-to-insert suggestions
 - [ ] 10-02: Light/dark mode toggle with persistence
 
 #### Phase 11: Game Mode
@@ -99,7 +99,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 7. Hard Mode | v1.1 | 1/1 | Complete | 2026-01-13 |
 | 8. Session Stats | v1.1 | 1/1 | Complete | 2026-01-15 |
 | 9. Wordle History | v1.1 | 1/1 | Complete | 2026-01-15 |
-| 10. UI Enhancements | v1.1 | 0/2 | Not started | - |
+| 10. UI Enhancements | v1.1 | 1/2 | In progress | - |
 | 11. Game Mode | v1.1 | 0/1 | Not started | - |
 
 **Overall:** 9/11 phases complete (82%)
