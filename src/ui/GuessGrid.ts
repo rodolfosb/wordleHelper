@@ -393,4 +393,45 @@ export class GuessGrid {
     // Re-focus the grid
     this.focusGrid();
   }
+
+  /**
+   * Clear the current row (remove all letters, reset colors)
+   */
+  public clearCurrentRow(): void {
+    if (this.inputLocked) return;
+
+    // Clear all letters and colors in current row
+    for (let col = 0; col < 5; col++) {
+      this.letters[this.currentRow][col] = '';
+      this.colors[this.currentRow][col] = 'gray';
+      this.updateCell(this.currentRow, col);
+    }
+
+    // Reset column position to start
+    this.currentCol = 0;
+  }
+
+  /**
+   * Fill the current row with a word (used for click-to-insert from suggestions)
+   * @param word - 5-letter lowercase word to fill
+   */
+  public fillCurrentRow(word: string): void {
+    if (this.inputLocked) return;
+    if (word.length !== 5) return;
+
+    // Clear current row first
+    this.clearCurrentRow();
+
+    // Fill in each letter with animation
+    for (let col = 0; col < 5; col++) {
+      this.letters[this.currentRow][col] = word[col].toLowerCase();
+      this.updateCell(this.currentRow, col, true); // Animate
+    }
+
+    // Set position to end of row
+    this.currentCol = 5;
+
+    // Fire onChange callback
+    this.fireOnChange();
+  }
 }

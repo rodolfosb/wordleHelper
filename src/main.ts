@@ -121,6 +121,21 @@ function isRowAllGreen(row: number): boolean {
 const initialRankedWords = rankWords(WORD_LIST, WORD_LIST);
 suggestions.update(initialRankedWords, WORD_LIST.length);
 
+// Handle click on suggestion word - fill it into current row
+function handleSuggestionClick(word: string): void {
+  // Don't allow if game has ended
+  if (gameEnded) return;
+
+  // Fill the word into the current row
+  guessGrid.fillCurrentRow(word);
+
+  // Focus the grid for continued keyboard input
+  guessGrid.focusGrid();
+}
+
+// Set up suggestion click callback
+suggestions.onWordClick(handleSuggestionClick);
+
 // Helper function to update suggestions based on all complete rows
 function updateSuggestions(): void {
   const allFeedback = guessGrid.getAllFeedback();

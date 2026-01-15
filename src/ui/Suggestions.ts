@@ -3,6 +3,7 @@ import type { RankedWord } from '../types';
 /**
  * Suggestions panel displays ranked word suggestions to help solve Wordle.
  * Shows remaining word count and a scrollable list of top suggestions.
+ * Supports clicking a suggestion to auto-fill it in the grid.
  */
 export class Suggestions {
   private containerElement: HTMLElement;
@@ -11,10 +12,18 @@ export class Suggestions {
   private messageElement: HTMLElement | null = null;
   private toggleElement: HTMLElement | null = null;
   private isCollapsed: boolean = true;
+  private wordClickCallback?: (word: string) => void;
 
   constructor(containerElement: HTMLElement) {
     this.containerElement = containerElement;
     this.render();
+  }
+
+  /**
+   * Set callback for when a suggestion word is clicked
+   */
+  public onWordClick(callback: (word: string) => void): void {
+    this.wordClickCallback = callback;
   }
 
   /**
@@ -44,6 +53,35 @@ export class Suggestions {
 
     // Set up toggle click handler
     this.toggleElement?.addEventListener('click', () => this.toggleCollapse());
+
+    // Set up click handler for suggestions list (event delegation)
+    this.listElement?.addEventListener('click', (event) => {
+      this.handleListClick(event);
+    });
+  }
+
+  /**
+   * Handle click events on the suggestions list using event delegation
+   */
+  private handleListClick(event: Event): void {
+    const target = event.target as HTMLElement;
+
+    // Find the suggestion-item parent (could click on word, score, or item itself)
+    const item = target.closest('.suggestion-item');
+    if (!item) return;
+
+    // Find the word element within the item
+    const wordElement = item.querySelector('.suggestion-word');
+    if (!wordElement) return;
+
+    // Extract the word (displayed in uppercase, convert to lowercase)
+    const word = wordElement.textContent?.toLowerCase().trim();
+    if (!word) return;
+
+    // Call the callback if set
+    if (this.wordClickCallback) {
+      this.wordClickCallback(word);
+    }
   }
 
   /**

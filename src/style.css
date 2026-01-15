@@ -354,10 +354,15 @@ button:focus-visible {
   background-color: #2a2a2a;
   border-radius: 4px;
   transition: background-color 0.15s ease;
+  cursor: pointer;
 }
 
 .suggestion-item:hover {
   background-color: #3a3a3a;
+}
+
+.suggestion-item:active {
+  background-color: #454545;
 }
 
 .suggestion-item.top-suggestion {
@@ -366,6 +371,10 @@ button:focus-visible {
 
 .suggestion-item.top-suggestion:hover {
   background-color: #3d4a3d;
+}
+
+.suggestion-item.top-suggestion:active {
+  background-color: #4d5a4d;
 }
 
 .suggestion-item.top-suggestion .suggestion-word {
