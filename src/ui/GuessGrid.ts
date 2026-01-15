@@ -13,6 +13,7 @@ export class GuessGrid {
   private colors: LetterStatus[][] = [];
   private onSubmitCallback?: (row: number) => void;
   private onChangeCallback?: () => void;
+  private inputLocked: boolean = false;
 
   constructor(gridElement: HTMLElement) {
     this.gridElement = gridElement;
@@ -73,6 +74,7 @@ export class GuessGrid {
    * Handle cell click for color cycling
    */
   private handleCellClick(row: number, col: number): void {
+    if (this.inputLocked) return; // Input is locked
     if (row < 0 || row >= 6) return;
     if (col < 0 || col >= 5) return;
 
@@ -140,6 +142,7 @@ export class GuessGrid {
    * Input a letter at the current position
    */
   private inputLetter(letter: string): void {
+    if (this.inputLocked) return; // Input is locked
     if (this.currentRow >= 6) return; // No more rows
     if (this.currentCol >= 5) return; // Row is full
 
@@ -158,6 +161,8 @@ export class GuessGrid {
    * Delete the last letter, allowing backspace across rows
    */
   private deleteLetter(): void {
+    if (this.inputLocked) return; // Input is locked
+
     // If at start of current row and not row 0, move back to previous row
     if (this.currentCol === 0 && this.currentRow > 0) {
       this.currentRow--;
@@ -280,6 +285,13 @@ export class GuessGrid {
   }
 
   /**
+   * Lock input to prevent further typing (used when game ends)
+   */
+  public lockInput(): void {
+    this.inputLocked = true;
+  }
+
+  /**
    * Get the current row index
    */
   public getCurrentRow(): number {
@@ -365,6 +377,9 @@ export class GuessGrid {
     // Reset position
     this.currentRow = 0;
     this.currentCol = 0;
+
+    // Unlock input
+    this.inputLocked = false;
 
     // Clear all state arrays and update cells
     for (let row = 0; row < 6; row++) {

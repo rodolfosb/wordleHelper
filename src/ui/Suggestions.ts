@@ -9,6 +9,8 @@ export class Suggestions {
   private countElement: HTMLElement | null = null;
   private listElement: HTMLElement | null = null;
   private messageElement: HTMLElement | null = null;
+  private toggleElement: HTMLElement | null = null;
+  private isCollapsed: boolean = true;
 
   constructor(containerElement: HTMLElement) {
     this.containerElement = containerElement;
@@ -23,15 +25,62 @@ export class Suggestions {
       <div class="suggestions-panel">
         <div class="suggestions-header">
           <span class="suggestions-count">0 words remaining</span>
+          <button class="suggestions-toggle" aria-expanded="false">
+            <span class="toggle-icon">▶</span>
+            <span class="toggle-text">Show</span>
+          </button>
         </div>
-        <div class="suggestions-message"></div>
-        <ul class="suggestions-list"></ul>
+        <div class="suggestions-body collapsed">
+          <div class="suggestions-message"></div>
+          <ul class="suggestions-list"></ul>
+        </div>
       </div>
     `;
 
     this.countElement = this.containerElement.querySelector('.suggestions-count');
     this.listElement = this.containerElement.querySelector('.suggestions-list');
     this.messageElement = this.containerElement.querySelector('.suggestions-message');
+    this.toggleElement = this.containerElement.querySelector('.suggestions-toggle');
+
+    // Set up toggle click handler
+    this.toggleElement?.addEventListener('click', () => this.toggleCollapse());
+  }
+
+  /**
+   * Toggle the collapsed state of the suggestions list
+   */
+  private toggleCollapse(): void {
+    this.isCollapsed = !this.isCollapsed;
+    this.updateCollapseState();
+  }
+
+  /**
+   * Update the DOM to reflect the collapsed state
+   */
+  private updateCollapseState(): void {
+    const body = this.containerElement.querySelector('.suggestions-body');
+    const toggleIcon = this.containerElement.querySelector('.toggle-icon');
+    const toggleText = this.containerElement.querySelector('.toggle-text');
+
+    if (body) {
+      if (this.isCollapsed) {
+        body.classList.add('collapsed');
+      } else {
+        body.classList.remove('collapsed');
+      }
+    }
+
+    if (toggleIcon) {
+      toggleIcon.textContent = this.isCollapsed ? '▶' : '▼';
+    }
+
+    if (toggleText) {
+      toggleText.textContent = this.isCollapsed ? 'Show' : 'Hide';
+    }
+
+    if (this.toggleElement) {
+      this.toggleElement.setAttribute('aria-expanded', (!this.isCollapsed).toString());
+    }
   }
 
   /**

@@ -29,9 +29,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     </header>
     <main class="app-main">
       <div class="controls">
-        <button class="new-game-btn">New Game</button>
+        <button class="reset-game-btn">Reset Game</button>
       </div>
       ${createGuessGrid()}
+      <div class="game-message"></div>
       <div class="suggestions-area"></div>
     </main>
   </div>
@@ -47,6 +48,32 @@ const suggestions = new Suggestions(suggestionsArea);
 
 // App state
 let filteredWords: string[] = WORD_LIST;
+let gameEnded: boolean = false;
+
+// Get game message element reference
+const gameMessageElement = document.querySelector<HTMLElement>('.game-message')!;
+
+// Helper function to show game messages
+function showGameMessage(message: string, type: 'error' | 'success' | 'info' | ''): void {
+  gameMessageElement.textContent = message;
+  gameMessageElement.className = 'game-message';
+  if (type) {
+    gameMessageElement.classList.add(`message-${type}`);
+  }
+}
+
+// Helper function to clear game message
+function clearGameMessage(): void {
+  gameMessageElement.textContent = '';
+  gameMessageElement.className = 'game-message';
+}
+
+// Helper function to check if row is all green (win condition)
+function isRowAllGreen(row: number): boolean {
+  const feedback = guessGrid.getGuessFeedback(row);
+  if (!feedback) return false;
+  return feedback.every((f) => f.status === 'green');
+}
 
 // Display initial suggestions (full word list ranked)
 const initialRankedWords = rankWords(WORD_LIST, WORD_LIST);
@@ -80,17 +107,44 @@ function updateSuggestions(): void {
 
 // Set up onChange callback - real-time filtering as user types/clicks
 guessGrid.onChange(() => {
+  // Clear temporary messages when user types
+  if (!gameEnded) {
+    clearGameMessage();
+  }
   updateSuggestions();
 });
 
 // Set up submit callback - validate word before advancing
 guessGrid.onSubmit((row: number) => {
+  // Don't allow submission if game has ended
+  if (gameEnded) return;
+
   const word = guessGrid.getCurrentWord();
 
   // Check if word is valid
   if (!isValidWord(word)) {
-    // Shake row for invalid word, don't advance
+    // Shake row and show message for invalid word, don't advance
     guessGrid.shakeRow(row);
+    showGameMessage('Invalid word', 'error');
+    return;
+  }
+
+  // Clear any error message
+  clearGameMessage();
+
+  // Check for win condition (all green)
+  if (isRowAllGreen(row)) {
+    gameEnded = true;
+    guessGrid.lockInput();
+    showGameMessage('Congratulations! You found the word!', 'success');
+    return;
+  }
+
+  // Check if this was the last row (game over without win)
+  if (row === 5) {
+    gameEnded = true;
+    guessGrid.lockInput();
+    showGameMessage('Game over! No more guesses remaining.', 'info');
     return;
   }
 
@@ -102,6 +156,10 @@ guessGrid.onSubmit((row: number) => {
 function resetGame(): void {
   // Reset app state
   filteredWords = WORD_LIST;
+  gameEnded = false;
+
+  // Clear any game messages
+  clearGameMessage();
 
   // Reset GuessGrid (clear all cells, colors, return to row 0)
   guessGrid.reset();
@@ -111,9 +169,9 @@ function resetGame(): void {
   suggestions.update(rankedWords, WORD_LIST.length);
 }
 
-// Set up New Game button
-const newGameBtn = document.querySelector<HTMLButtonElement>('.new-game-btn')!;
-newGameBtn.addEventListener('click', resetGame);
+// Set up Reset Game button
+const resetGameBtn = document.querySelector<HTMLButtonElement>('.reset-game-btn')!;
+resetGameBtn.addEventListener('click', resetGame);
 
 // Auto-recover focus after clicking anywhere on the page (UAT-007)
 document.addEventListener('click', () => {

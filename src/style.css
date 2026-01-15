@@ -120,7 +120,7 @@ button:focus-visible {
   justify-content: center;
 }
 
-.new-game-btn {
+.reset-game-btn {
   background-color: #538d4e;
   color: #ffffff;
   border: none;
@@ -134,12 +134,33 @@ button:focus-visible {
   transition: background-color 0.2s ease;
 }
 
-.new-game-btn:hover {
+.reset-game-btn:hover {
   background-color: #6aaa64;
 }
 
-.new-game-btn:active {
+.reset-game-btn:active {
   background-color: #4a7c42;
+}
+
+/* Game Message Styles */
+.game-message {
+  min-height: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.game-message.message-error {
+  color: #e74c3c;
+}
+
+.game-message.message-success {
+  color: #538d4e;
+}
+
+.game-message.message-info {
+  color: #b59f3b;
 }
 
 /* Guess Grid Styles */
@@ -147,7 +168,7 @@ button:focus-visible {
   display: grid;
   grid-template-rows: repeat(6, 1fr);
   gap: 5px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .guess-grid:focus {
@@ -246,15 +267,57 @@ button:focus-visible {
 }
 
 .suggestions-header {
-  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid #3a3a3c;
 }
 
 .suggestions-count {
   font-size: 1rem;
   font-weight: 600;
   color: #818384;
+}
+
+.suggestions-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: 1px solid #3a3a3c;
+  color: #818384;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.suggestions-toggle:hover {
+  background-color: #2a2a2a;
+  border-color: #565758;
+  color: #ffffff;
+}
+
+.suggestions-toggle .toggle-icon {
+  font-size: 0.7rem;
+}
+
+.suggestions-body {
+  border-top: 1px solid #3a3a3c;
+  padding-top: 0.75rem;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+  max-height: 400px;
+  opacity: 1;
+}
+
+.suggestions-body.collapsed {
+  max-height: 0;
+  opacity: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
 .suggestions-message {
