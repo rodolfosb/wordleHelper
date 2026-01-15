@@ -748,3 +748,66 @@ button:focus-visible {
   color: #538d4e;
 }
 
+/* Header Buttons Container */
+.header-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Practice Button in Header */
+.practice-btn {
+  background: transparent;
+  border: none;
+  color: #818384;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.practice-btn:hover {
+  color: #ffffff;
+}
+
+/* Practice Mode Indicator */
+.practice-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #2d3a2d;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.practice-indicator.hidden {
+  display: none;
+}
+
+.practice-indicator-text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #6aaa64;
+}
+
+.exit-practice-btn {
+  background-color: #3a3a3c;
+  color: #ffffff;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.exit-practice-btn:hover {
+  background-color: #4a4a4c;
+}
+

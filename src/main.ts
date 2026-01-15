@@ -1,9 +1,10 @@
 import './style.css';
-import type { Constraints, SessionStats } from './types';
+import type { Constraints, SessionStats, HistoricalPuzzle } from './types';
 import { WORD_LIST } from './data/words';
 import { GuessGrid } from './ui/GuessGrid';
 import { Suggestions } from './ui/Suggestions';
 import { StatsModal } from './ui/StatsModal';
+import { HistoryPicker } from './ui/HistoryPicker';
 import { rankWords } from './logic/ranking';
 import { createEmptyConstraints, addGuessToConstraints } from './logic/constraints';
 import { filterWords, filterByPrefix, isValidWord } from './logic/filter';
@@ -25,15 +26,26 @@ function createGuessGrid(): string {
 
 // Render the app
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div class="app-container">
+  <div class="app-container" id="app-container">
     <header class="app-header">
       <h1>Wordle Helper</h1>
-      <button class="stats-btn" aria-label="View statistics" title="Statistics">
-        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
-          <path d="M16,11V3H8v6H2v12h20V11H16z M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/>
-        </svg>
-      </button>
+      <div class="header-buttons">
+        <button class="practice-btn" aria-label="Practice with past puzzles" title="Practice">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM9 10H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm-8 4H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/>
+          </svg>
+        </button>
+        <button class="stats-btn" aria-label="View statistics" title="Statistics">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+            <path d="M16,11V3H8v6H2v12h20V11H16z M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/>
+          </svg>
+        </button>
+      </div>
     </header>
+    <div class="practice-indicator hidden">
+      <span class="practice-indicator-text"></span>
+      <button class="exit-practice-btn">Exit Practice</button>
+    </div>
     <main class="app-main">
       <div class="controls">
         <button class="reset-game-btn">Reset Game</button>
@@ -58,9 +70,21 @@ let filteredWords: string[] = WORD_LIST;
 let gameEnded: boolean = false;
 let currentStats: SessionStats = loadStats();
 
+// Practice mode state
+let practiceMode: boolean = false;
+let currentPuzzle: HistoricalPuzzle | null = null;
+
 // Initialize StatsModal
 const appContainer = document.querySelector<HTMLElement>('.app-container')!;
 const statsModal = new StatsModal(appContainer);
+
+// Initialize HistoryPicker
+const historyPicker = new HistoryPicker('app-container', startPracticeMode);
+
+// Practice mode indicator elements
+const practiceIndicator = document.querySelector<HTMLElement>('.practice-indicator')!;
+const practiceIndicatorText = document.querySelector<HTMLElement>('.practice-indicator-text')!;
+const exitPracticeBtn = document.querySelector<HTMLButtonElement>('.exit-practice-btn')!;
 
 // Get game message element reference
 const gameMessageElement = document.querySelector<HTMLElement>('.game-message')!;
@@ -148,10 +172,17 @@ guessGrid.onSubmit((row: number) => {
   if (isRowAllGreen(row)) {
     gameEnded = true;
     guessGrid.lockInput();
-    showGameMessage('Congratulations! You found the word!', 'success');
-    // Record win stats (row + 1 = number of guesses)
-    currentStats = recordGame(currentStats, true, row + 1);
-    saveStats(currentStats);
+
+    if (practiceMode && currentPuzzle) {
+      // In practice mode, show the answer
+      showGameMessage(`Correct! The answer was: ${currentPuzzle.answer.toUpperCase()}`, 'success');
+      // Do NOT update stats for practice games
+    } else {
+      showGameMessage('Congratulations! You found the word!', 'success');
+      // Record win stats (row + 1 = number of guesses)
+      currentStats = recordGame(currentStats, true, row + 1);
+      saveStats(currentStats);
+    }
     return;
   }
 
@@ -159,10 +190,17 @@ guessGrid.onSubmit((row: number) => {
   if (row === 5) {
     gameEnded = true;
     guessGrid.lockInput();
-    showGameMessage('Game over! No more guesses remaining.', 'info');
-    // Record loss stats
-    currentStats = recordGame(currentStats, false, 6);
-    saveStats(currentStats);
+
+    if (practiceMode && currentPuzzle) {
+      // In practice mode, show the answer
+      showGameMessage(`Game over! The answer was: ${currentPuzzle.answer.toUpperCase()}`, 'info');
+      // Do NOT update stats for practice games
+    } else {
+      showGameMessage('Game over! No more guesses remaining.', 'info');
+      // Record loss stats
+      currentStats = recordGame(currentStats, false, 6);
+      saveStats(currentStats);
+    }
     return;
   }
 
@@ -193,9 +231,14 @@ resetGameBtn.addEventListener('click', resetGame);
 
 // Auto-recover focus after clicking anywhere on the page (UAT-007)
 document.addEventListener('click', (e) => {
-  // Don't auto-focus if clicking on stats button or modal
+  // Don't auto-focus if clicking on buttons or modals
   const target = e.target as HTMLElement;
-  if (target.closest('.stats-btn') || target.closest('.stats-modal-overlay')) {
+  if (
+    target.closest('.stats-btn') ||
+    target.closest('.stats-modal-overlay') ||
+    target.closest('.practice-btn') ||
+    target.closest('.history-picker-overlay')
+  ) {
     return;
   }
   // Small delay to allow any other click handlers to process first
@@ -210,3 +253,48 @@ statsBtn.addEventListener('click', () => {
   statsModal.render(currentStats);
   statsModal.show();
 });
+
+// Practice mode functions
+function startPracticeMode(puzzle: HistoricalPuzzle): void {
+  // Set practice mode state
+  practiceMode = true;
+  currentPuzzle = puzzle;
+
+  // Reset game state
+  filteredWords = WORD_LIST;
+  gameEnded = false;
+  clearGameMessage();
+  guessGrid.reset();
+
+  // Reset suggestions to show full word list ranked
+  const rankedWords = rankWords(WORD_LIST, WORD_LIST);
+  suggestions.update(rankedWords, WORD_LIST.length);
+
+  // Show practice indicator
+  practiceIndicatorText.textContent = `Practice: Wordle #${puzzle.game} (${puzzle.date})`;
+  practiceIndicator.classList.remove('hidden');
+
+  // Hide the history picker
+  historyPicker.hide();
+}
+
+function exitPracticeMode(): void {
+  // Clear practice mode state
+  practiceMode = false;
+  currentPuzzle = null;
+
+  // Hide practice indicator
+  practiceIndicator.classList.add('hidden');
+
+  // Reset game for normal play
+  resetGame();
+}
+
+// Set up Practice button click handler
+const practiceBtn = document.querySelector<HTMLButtonElement>('.practice-btn')!;
+practiceBtn.addEventListener('click', () => {
+  historyPicker.show();
+});
+
+// Set up Exit Practice button click handler
+exitPracticeBtn.addEventListener('click', exitPracticeMode);
