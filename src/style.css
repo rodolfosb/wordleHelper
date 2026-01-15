@@ -818,6 +818,41 @@ button:focus-visible {
   gap: 0.5rem;
 }
 
+/* Theme Toggle Button */
+.theme-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-btn:hover {
+  color: var(--text-primary);
+}
+
+/* Show sun icon in dark mode, moon icon in light mode */
+.theme-icon-sun {
+  display: block;
+}
+
+.theme-icon-moon {
+  display: none;
+}
+
+[data-theme="light"] .theme-icon-sun {
+  display: none;
+}
+
+[data-theme="light"] .theme-icon-moon {
+  display: block;
+}
+
 /* Practice Button in Header */
 .practice-btn {
   background: transparent;
