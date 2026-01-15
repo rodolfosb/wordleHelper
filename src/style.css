@@ -266,6 +266,17 @@ button:focus-visible {
   animation: cell-pop 100ms ease;
 }
 
+/* Flip animation for revealing colors in game mode */
+@keyframes cell-flip {
+  0% { transform: rotateX(0deg); }
+  50% { transform: rotateX(90deg); }
+  100% { transform: rotateX(0deg); }
+}
+
+.cell-flip {
+  animation: cell-flip 500ms ease;
+}
+
 /* Shake animation for invalid words */
 @keyframes row-shake {
   0%, 100% { transform: translateX(0); }

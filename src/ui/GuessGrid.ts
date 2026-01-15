@@ -14,6 +14,7 @@ export class GuessGrid {
   private onSubmitCallback?: (row: number) => void;
   private onChangeCallback?: () => void;
   private inputLocked: boolean = false;
+  private gameMode: boolean = false;
 
   constructor(gridElement: HTMLElement) {
     this.gridElement = gridElement;
@@ -75,6 +76,7 @@ export class GuessGrid {
    */
   private handleCellClick(row: number, col: number): void {
     if (this.inputLocked) return; // Input is locked
+    if (this.gameMode) return; // No manual color cycling in game mode
     if (row < 0 || row >= 6) return;
     if (col < 0 || col >= 5) return;
 
@@ -289,6 +291,40 @@ export class GuessGrid {
    */
   public lockInput(): void {
     this.inputLocked = true;
+  }
+
+  /**
+   * Enable or disable game mode
+   * In game mode, clicking cells does not cycle colors
+   */
+  public setGameMode(enabled: boolean): void {
+    this.gameMode = enabled;
+  }
+
+  /**
+   * Set colors for a completed row (used in game mode)
+   * @param row - Row index
+   * @param colors - Array of 5 LetterStatus values
+   */
+  public setRowColors(row: number, colors: LetterStatus[]): void {
+    if (row < 0 || row >= 6) return;
+    if (colors.length !== 5) return;
+
+    // Apply colors with staggered flip animation
+    for (let col = 0; col < 5; col++) {
+      const delay = col * 100; // 100ms stagger per cell
+      setTimeout(() => {
+        this.colors[row][col] = colors[col];
+        // Add flip animation class
+        const cell = this.cells[row][col];
+        cell.classList.add('cell-flip');
+        this.updateCell(row, col);
+        // Remove animation class after it completes
+        setTimeout(() => {
+          cell.classList.remove('cell-flip');
+        }, 500);
+      }, delay);
+    }
   }
 
   /**
