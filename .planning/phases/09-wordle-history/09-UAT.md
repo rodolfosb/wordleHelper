@@ -1,5 +1,5 @@
 ---
-status: complete
+status: diagnosed
 phase: 09-wordle-history
 source: [09-01-SUMMARY.md]
 started: 2026-01-15T12:00:00Z
@@ -25,6 +25,8 @@ expected: Selecting a past date and clicking Load starts a new game with that da
 result: issue
 reported: "when I pick a date and select load it shows an error message 'Puzzle not found for this date'"
 severity: major
+root_cause: CORS blocks browser requests to NYT API (nytimes.com/svc/wordle) and WordleHints API. Both fetch calls fail silently, returning null. Need a CORS-friendly API or embedded word list.
+debug_session: inline diagnosis
 
 ### 4. Practice Mode Indicator
 expected: When in practice mode, a banner shows indicating "Practice Mode" with an Exit button.
@@ -57,4 +59,4 @@ skipped: 4
 ## Issues for /gsd:plan-fix
 
 - UAT-001: Puzzle not found error when loading historical date (major) - Test 3
-  root_cause:
+  root_cause: CORS blocks browser requests to NYT API and WordleHints API. Both APIs reject cross-origin requests, causing getPuzzleByDate to return null. Fix requires either a CORS proxy, a different API with proper CORS headers, or embedding historical answers in the bundle.
