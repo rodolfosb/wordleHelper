@@ -83,3 +83,12 @@ export interface HistoricalPuzzle {
   date: string;      // "YYYY-MM-DD" format
   answer: string;    // lowercase 5-letter word
 }
+
+/**
+ * Result from getTodaysPuzzle() indicating if this is today's actual puzzle
+ * or a fallback to the most recent available puzzle
+ */
+export interface TodaysPuzzleResult {
+  puzzle: HistoricalPuzzle;
+  isFallback: boolean;  // true if today's date wasn't found, using most recent instead
+}

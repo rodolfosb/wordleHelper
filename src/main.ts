@@ -133,17 +133,23 @@ function isRowAllGreen(row: number): boolean {
 
 // Initialize game with today's puzzle
 function initializeGame(): void {
-  currentPuzzle = getTodaysPuzzle();
-  if (currentPuzzle) {
+  const result = getTodaysPuzzle();
+  if (result) {
+    currentPuzzle = result.puzzle;
     guessGrid.setGameMode(true);
-    // Update header to show "Wordle #XXX"
+    // Update header to show puzzle info
     const header = document.querySelector('.app-header h1');
     if (header) {
-      header.textContent = `Wordle #${currentPuzzle.game}`;
+      if (result.isFallback) {
+        // Data doesn't extend to today - show that this is the latest available
+        header.textContent = `Wordle #${currentPuzzle.game} (${currentPuzzle.date})`;
+      } else {
+        header.textContent = `Wordle #${currentPuzzle.game}`;
+      }
     }
   } else {
-    // No puzzle for today (data doesn't extend to current date)
-    console.warn('No puzzle available for today');
+    // No puzzle data available at all
+    console.warn('No puzzle data available');
   }
 }
 
@@ -346,6 +352,14 @@ document.addEventListener('click', (e) => {
   ) {
     return;
   }
+
+  // Don't steal focus from date inputs - their native calendar picker
+  // renders outside the DOM and clicks on it shouldn't trigger focus grab
+  const activeElement = document.activeElement;
+  if (activeElement && activeElement.getAttribute('type') === 'date') {
+    return;
+  }
+
   // Small delay to allow any other click handlers to process first
   requestAnimationFrame(() => {
     guessGrid.focusGrid();

@@ -1,4 +1,4 @@
-import type { HistoricalPuzzle } from '../types';
+import type { HistoricalPuzzle, TodaysPuzzleResult } from '../types';
 import { findByDate, getFirstDate, getLastDate, WORDLE_ANSWERS } from './wordleAnswers';
 
 /**
@@ -56,11 +56,11 @@ export function getMinDate(): string {
  * Get today's puzzle from embedded data
  *
  * Synchronous lookup since data is embedded in bundle.
- * Returns null if today's date is not in the data.
+ * If today's date is not in the data, returns the most recent puzzle with isFallback=true.
  *
- * @returns HistoricalPuzzle or null if not found
+ * @returns TodaysPuzzleResult with puzzle and fallback indicator, or null if no data
  */
-export function getTodaysPuzzle(): HistoricalPuzzle | null {
+export function getTodaysPuzzle(): TodaysPuzzleResult | null {
   const today = new Date();
   const dateStr = today.toISOString().split('T')[0]; // YYYY-MM-DD
 
@@ -70,17 +70,23 @@ export function getTodaysPuzzle(): HistoricalPuzzle | null {
     const lastEntry = WORDLE_ANSWERS[WORDLE_ANSWERS.length - 1];
     if (lastEntry) {
       return {
-        game: lastEntry.game,
-        date: lastEntry.date,
-        answer: lastEntry.answer,
+        puzzle: {
+          game: lastEntry.game,
+          date: lastEntry.date,
+          answer: lastEntry.answer,
+        },
+        isFallback: true,
       };
     }
     return null;
   }
 
   return {
-    game: entry.game,
-    date: entry.date,
-    answer: entry.answer,
+    puzzle: {
+      game: entry.game,
+      date: entry.date,
+      answer: entry.answer,
+    },
+    isFallback: false,
   };
 }
