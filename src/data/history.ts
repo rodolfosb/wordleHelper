@@ -1,17 +1,19 @@
 import type { HistoricalPuzzle, TodaysPuzzleResult } from '../types';
-import { findByDate, getFirstDate, getLastDate, WORDLE_ANSWERS } from './wordleAnswers';
+import { findByDate, findClosestByDate, getFirstDate, getLastDate, WORDLE_ANSWERS } from './wordleAnswers';
 
 /**
  * Get puzzle by date from embedded data
  *
  * Uses local lookup from embedded WORDLE_ANSWERS array.
  * No external API calls - eliminates CORS issues.
+ * If exact date not found, returns the closest earlier puzzle.
  *
  * @param date - Date string in "YYYY-MM-DD" format
  * @returns Promise resolving to puzzle data or null if not found
  */
 export async function getPuzzleByDate(date: string): Promise<HistoricalPuzzle | null> {
-  const entry = findByDate(date);
+  // Use findClosestByDate to handle sparse data - returns closest earlier puzzle if exact match not found
+  const entry = findClosestByDate(date);
 
   if (!entry) {
     return null;

@@ -742,8 +742,33 @@ export function getLastDate(): string {
 }
 
 /**
- * Find a puzzle by date
+ * Find a puzzle by exact date match
  */
 export function findByDate(date: string): WordleAnswer | undefined {
   return WORDLE_ANSWERS.find((entry) => entry.date === date);
+}
+
+/**
+ * Find a puzzle by date, returning the closest earlier puzzle if exact match not found.
+ * This handles the sparse data issue where not all dates have entries.
+ */
+export function findClosestByDate(date: string): WordleAnswer | undefined {
+  // First try exact match
+  const exact = findByDate(date);
+  if (exact) {
+    return exact;
+  }
+
+  // Find the closest earlier date
+  // Since WORDLE_ANSWERS is sorted chronologically, find the last entry <= date
+  let closest: WordleAnswer | undefined;
+  for (const entry of WORDLE_ANSWERS) {
+    if (entry.date <= date) {
+      closest = entry;
+    } else {
+      // Passed the target date, stop searching
+      break;
+    }
+  }
+  return closest;
 }
