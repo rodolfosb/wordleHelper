@@ -63,3 +63,14 @@ export interface RankedWord {
   entropyScore?: number;
   frequencyScore?: number;
 }
+
+/**
+ * Session statistics for tracking user performance
+ */
+export interface SessionStats {
+  gamesPlayed: number;
+  gamesWon: number;
+  currentStreak: number;
+  maxStreak: number;
+  guessDistribution: [number, number, number, number, number, number]; // 6 elements for guesses 1-6
+}
