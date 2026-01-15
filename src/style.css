@@ -422,3 +422,189 @@ button:focus-visible {
   background: #5a5a5a;
 }
 
+/* Stats Modal Styles */
+.stats-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.stats-modal-overlay.visible {
+  opacity: 1;
+}
+
+.stats-modal-overlay.hidden {
+  display: none;
+}
+
+.stats-modal {
+  background-color: #1a1a1b;
+  border-radius: 8px;
+  padding: 1.5rem;
+  width: 90%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: scale(0.9);
+  transition: transform 0.2s ease;
+}
+
+.stats-modal-overlay.visible .stats-modal {
+  transform: scale(1);
+}
+
+.stats-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #3a3a3c;
+}
+
+.stats-modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+
+.stats-modal-close {
+  background: transparent;
+  border: none;
+  color: #818384;
+  font-size: 1.75rem;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.stats-modal-close:hover {
+  color: #ffffff;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: #818384;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.02rem;
+}
+
+/* Guess Distribution */
+.guess-distribution-section {
+  margin-top: 1rem;
+}
+
+.distribution-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  margin: 0 0 0.75rem 0;
+}
+
+.distribution-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.distribution-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.distribution-label {
+  width: 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.distribution-bar-container {
+  flex: 1;
+  height: 1.5rem;
+}
+
+.distribution-bar {
+  height: 100%;
+  min-width: 8%;
+  background-color: #3a3a3c;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.5rem;
+  transition: width 0.3s ease, background-color 0.2s ease;
+}
+
+.distribution-bar.has-wins {
+  background-color: #538d4e;
+}
+
+.distribution-count {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Stats Button in Header */
+.stats-btn {
+  background: transparent;
+  border: none;
+  color: #818384;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  margin-left: 1rem;
+  transition: color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stats-btn:hover {
+  color: #ffffff;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
