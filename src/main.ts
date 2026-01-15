@@ -32,7 +32,10 @@ function createGuessGrid(): string {
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div class="app-container" id="app-container">
     <header class="app-header">
-      <h1>Wordle Helper</h1>
+      <div class="header-title-area">
+        <h1>Wordle Helper</h1>
+        <div class="header-subtitle"></div>
+      </div>
       <div class="header-buttons">
         <button class="theme-btn" aria-label="Toggle theme" title="Toggle theme">
           <svg class="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
@@ -131,25 +134,31 @@ function isRowAllGreen(row: number): boolean {
   return feedback.every((f) => f.status === 'green');
 }
 
+// Get subtitle element reference
+const headerSubtitle = document.querySelector<HTMLElement>('.header-subtitle')!;
+
+// Helper function to update the subtitle with puzzle info
+function updateSubtitle(puzzle: HistoricalPuzzle, isFallback: boolean): void {
+  if (isFallback) {
+    // Data doesn't extend to today - show that this is the latest available
+    headerSubtitle.textContent = `Wordle #${puzzle.game} (${puzzle.date})`;
+  } else {
+    headerSubtitle.textContent = `Wordle #${puzzle.game} - ${puzzle.date}`;
+  }
+}
+
 // Initialize game with today's puzzle
 function initializeGame(): void {
   const result = getTodaysPuzzle();
   if (result) {
     currentPuzzle = result.puzzle;
     guessGrid.setGameMode(true);
-    // Update header to show puzzle info
-    const header = document.querySelector('.app-header h1');
-    if (header) {
-      if (result.isFallback) {
-        // Data doesn't extend to today - show that this is the latest available
-        header.textContent = `Wordle #${currentPuzzle.game} (${currentPuzzle.date})`;
-      } else {
-        header.textContent = `Wordle #${currentPuzzle.game}`;
-      }
-    }
+    // Update subtitle to show puzzle info
+    updateSubtitle(currentPuzzle, result.isFallback);
   } else {
     // No puzzle data available at all
     console.warn('No puzzle data available');
+    headerSubtitle.textContent = 'No puzzle data available';
   }
 }
 
@@ -373,10 +382,20 @@ statsBtn.addEventListener('click', () => {
   statsModal.show();
 });
 
+// Helper to check if a date string is today
+function isToday(dateStr: string): boolean {
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+  return dateStr === todayStr;
+}
+
 // Practice mode functions
 function startPracticeMode(puzzle: HistoricalPuzzle): void {
-  // Set practice mode state
-  practiceMode = true;
+  // Check if this is today's puzzle
+  const isTodaysPuzzle = isToday(puzzle.date);
+
+  // Set practice mode state - only true if it's a past puzzle
+  practiceMode = !isTodaysPuzzle;
   currentPuzzle = puzzle;
 
   // Reset game state
@@ -393,9 +412,17 @@ function startPracticeMode(puzzle: HistoricalPuzzle): void {
   const rankedWords = rankWords(WORD_LIST, WORD_LIST);
   suggestions.update(rankedWords, WORD_LIST.length);
 
-  // Show practice indicator
-  practiceIndicatorText.textContent = `Practice: Wordle #${puzzle.game} (${puzzle.date})`;
-  practiceIndicator.classList.remove('hidden');
+  // Update the subtitle with puzzle info
+  updateSubtitle(puzzle, false);
+
+  // Only show practice indicator if it's a past puzzle (not today)
+  if (practiceMode) {
+    practiceIndicatorText.textContent = `Practice: Wordle #${puzzle.game} (${puzzle.date})`;
+    practiceIndicator.classList.remove('hidden');
+  } else {
+    // It's today's puzzle - hide practice indicator
+    practiceIndicator.classList.add('hidden');
+  }
 
   // Hide the history picker
   historyPicker.hide();
