@@ -46,15 +46,14 @@ Plans:
 Plans:
 - [x] 07-01: Hard mode filter function and toggle UI
 
-#### Phase 8: Session Stats
+#### Phase 8: Session Stats — Complete
 
 **Goal**: Track and display game statistics (games played, win rate, guess distribution) with LocalStorage persistence
 **Depends on**: Phase 7
-**Research**: Unlikely (LocalStorage patterns, internal UI)
-**Plans**: TBD
+**Completed**: 2026-01-15
 
 Plans:
-- [ ] 08-01: TBD
+- [x] 08-01: Stats types, LocalStorage persistence, modal UI, game flow integration
 
 #### Phase 9: Wordle History
 
@@ -91,8 +90,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 5. Polish | v1.0 | 1/1 | Complete | 2026-01-13 |
 | 6. PWA Support | v1.1 | 1/1 | Complete | 2026-01-13 |
 | 7. Hard Mode | v1.1 | 1/1 | Complete | 2026-01-13 |
-| 8. Session Stats | v1.1 | 0/? | Not started | - |
+| 8. Session Stats | v1.1 | 1/1 | Complete | 2026-01-15 |
 | 9. Wordle History | v1.1 | 0/? | Not started | - |
 | 10. UI Enhancements | v1.1 | 0/? | Not started | - |
 
-**Overall:** 7/10 phases complete (70%)
+**Overall:** 8/10 phases complete (80%)
