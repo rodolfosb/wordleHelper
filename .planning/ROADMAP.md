@@ -55,16 +55,14 @@ Plans:
 Plans:
 - [x] 08-01: Stats types, LocalStorage persistence, modal UI, game flow integration
 
-#### Phase 9: Wordle History
+#### Phase 9: Wordle History — Complete
 
 **Goal**: Integrate historical Wordle words from previous days, allowing users to practice with past puzzles
 **Depends on**: Phase 8
-**Research**: Likely (need to find reliable source for historical Wordle words)
-**Research topics**: NYT Wordle word list sources, historical puzzle APIs, word archive formats
-**Plans**: TBD
+**Completed**: 2026-01-15
 
 Plans:
-- [ ] 09-01: TBD
+- [x] 09-01: History types, data module with NYT/WordleHints APIs, HistoryPicker UI, practice mode integration
 
 #### Phase 10: UI Enhancements
 
@@ -91,7 +89,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 6. PWA Support | v1.1 | 1/1 | Complete | 2026-01-13 |
 | 7. Hard Mode | v1.1 | 1/1 | Complete | 2026-01-13 |
 | 8. Session Stats | v1.1 | 1/1 | Complete | 2026-01-15 |
-| 9. Wordle History | v1.1 | 0/? | Not started | - |
+| 9. Wordle History | v1.1 | 1/1 | Complete | 2026-01-15 |
 | 10. UI Enhancements | v1.1 | 0/? | Not started | - |
 
-**Overall:** 8/10 phases complete (80%)
+**Overall:** 9/10 phases complete (90%)
