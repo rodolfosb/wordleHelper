@@ -11,6 +11,8 @@ import { createEmptyConstraints, addGuessToConstraints } from './logic/constrain
 import { filterWords, filterByPrefix, isValidWord } from './logic/filter';
 import { loadStats, saveStats, recordGame } from './logic/stats';
 import { getInitialTheme, setTheme, toggleTheme } from './utils/theme';
+import { calculateLetterStatuses } from './logic/gameLogic';
+import { getTodaysPuzzle } from './data/history';
 
 // Create guess grid HTML structure
 function createGuessGrid(): string {
@@ -89,6 +91,9 @@ let currentStats: SessionStats = loadStats();
 let practiceMode: boolean = false;
 let currentPuzzle: HistoricalPuzzle | null = null;
 
+// Game mode is always enabled - app functions as a playable Wordle game
+const gameMode: boolean = true;
+
 // Initialize StatsModal
 const appContainer = document.querySelector<HTMLElement>('.app-container')!;
 const statsModal = new StatsModal(appContainer);
@@ -125,6 +130,25 @@ function isRowAllGreen(row: number): boolean {
   if (!feedback) return false;
   return feedback.every((f) => f.status === 'green');
 }
+
+// Initialize game with today's puzzle
+function initializeGame(): void {
+  currentPuzzle = getTodaysPuzzle();
+  if (currentPuzzle) {
+    guessGrid.setGameMode(true);
+    // Update header to show "Wordle #XXX"
+    const header = document.querySelector('.app-header h1');
+    if (header) {
+      header.textContent = `Wordle #${currentPuzzle.game}`;
+    }
+  } else {
+    // No puzzle for today (data doesn't extend to current date)
+    console.warn('No puzzle available for today');
+  }
+}
+
+// Initialize game on app start
+initializeGame();
 
 // Display initial suggestions (full word list ranked)
 const initialRankedWords = rankWords(WORD_LIST, WORD_LIST);
@@ -191,57 +215,93 @@ guessGrid.onSubmit((row: number) => {
   if (!isValidWord(word)) {
     // Shake row and show message for invalid word, don't advance
     guessGrid.shakeRow(row);
-    showGameMessage('Invalid word', 'error');
+    showGameMessage('Not in word list', 'error');
     return;
   }
 
   // Clear any error message
   clearGameMessage();
 
-  // Update keyboard with feedback from this row
-  const feedback = guessGrid.getGuessFeedback(row);
-  if (feedback) {
-    keyboard.updateFromFeedback(feedback);
-  }
+  // In game mode, calculate and set colors automatically
+  if (gameMode && currentPuzzle) {
+    const colors = calculateLetterStatuses(word, currentPuzzle.answer);
+    guessGrid.setRowColors(row, colors);
 
-  // Check for win condition (all green)
-  if (isRowAllGreen(row)) {
-    gameEnded = true;
-    guessGrid.lockInput();
+    // Wait for flip animation to complete before checking win/loss
+    // Animation takes 500ms per cell + 400ms stagger = ~900ms total
+    setTimeout(() => {
+      // Update keyboard with feedback from this row
+      const feedback = guessGrid.getGuessFeedback(row);
+      if (feedback) {
+        keyboard.updateFromFeedback(feedback);
+      }
 
-    if (practiceMode && currentPuzzle) {
-      // In practice mode, show the answer
-      showGameMessage(`Correct! The answer was: ${currentPuzzle.answer.toUpperCase()}`, 'success');
-      // Do NOT update stats for practice games
-    } else {
+      // Update suggestions based on revealed feedback
+      updateSuggestions();
+
+      // Check for win condition (all green)
+      const isWin = colors.every((c) => c === 'green');
+      if (isWin) {
+        gameEnded = true;
+        guessGrid.lockInput();
+
+        if (practiceMode) {
+          // In practice mode, show the answer
+          showGameMessage(`Correct! The answer was: ${currentPuzzle!.answer.toUpperCase()}`, 'success');
+          // Do NOT update stats for practice games
+        } else {
+          showGameMessage('Congratulations! You solved it!', 'success');
+          // Record win stats (row + 1 = number of guesses)
+          currentStats = recordGame(currentStats, true, row + 1);
+          saveStats(currentStats);
+        }
+        return;
+      }
+
+      // Check if this was the last row (game over without win)
+      if (row === 5) {
+        gameEnded = true;
+        guessGrid.lockInput();
+
+        if (practiceMode) {
+          // In practice mode, show the answer
+          showGameMessage(`Game over! The answer was: ${currentPuzzle!.answer.toUpperCase()}`, 'info');
+          // Do NOT update stats for practice games
+        } else {
+          showGameMessage(`Game over! The answer was: ${currentPuzzle!.answer.toUpperCase()}`, 'info');
+          // Record loss stats
+          currentStats = recordGame(currentStats, false, 6);
+          saveStats(currentStats);
+        }
+        return;
+      }
+
+      // Advance to next row after animation completes
+      guessGrid.advanceToNextRow();
+    }, 600); // Wait for animation to complete (5 cells * 100ms stagger + some buffer)
+  } else {
+    // Fallback for when no puzzle is loaded (shouldn't happen normally)
+    const feedback = guessGrid.getGuessFeedback(row);
+    if (feedback) {
+      keyboard.updateFromFeedback(feedback);
+    }
+
+    if (isRowAllGreen(row)) {
+      gameEnded = true;
+      guessGrid.lockInput();
       showGameMessage('Congratulations! You found the word!', 'success');
-      // Record win stats (row + 1 = number of guesses)
-      currentStats = recordGame(currentStats, true, row + 1);
-      saveStats(currentStats);
+      return;
     }
-    return;
-  }
 
-  // Check if this was the last row (game over without win)
-  if (row === 5) {
-    gameEnded = true;
-    guessGrid.lockInput();
-
-    if (practiceMode && currentPuzzle) {
-      // In practice mode, show the answer
-      showGameMessage(`Game over! The answer was: ${currentPuzzle.answer.toUpperCase()}`, 'info');
-      // Do NOT update stats for practice games
-    } else {
+    if (row === 5) {
+      gameEnded = true;
+      guessGrid.lockInput();
       showGameMessage('Game over! No more guesses remaining.', 'info');
-      // Record loss stats
-      currentStats = recordGame(currentStats, false, 6);
-      saveStats(currentStats);
+      return;
     }
-    return;
-  }
 
-  // Advance to next row when Enter is pressed on a valid complete row
-  guessGrid.advanceToNextRow();
+    guessGrid.advanceToNextRow();
+  }
 });
 
 // Reset game function
@@ -258,6 +318,11 @@ function resetGame(): void {
 
   // Reset keyboard to show all letters as unused
   keyboard.reset();
+
+  // Reload today's puzzle for fresh game (if not in practice mode)
+  if (!practiceMode) {
+    initializeGame();
+  }
 
   // Reset suggestions to show full word list ranked
   const rankedWords = rankWords(WORD_LIST, WORD_LIST);
@@ -306,6 +371,9 @@ function startPracticeMode(puzzle: HistoricalPuzzle): void {
   clearGameMessage();
   guessGrid.reset();
   keyboard.reset();
+
+  // Enable game mode for auto-color reveal
+  guessGrid.setGameMode(true);
 
   // Reset suggestions to show full word list ranked
   const rankedWords = rankWords(WORD_LIST, WORD_LIST);
