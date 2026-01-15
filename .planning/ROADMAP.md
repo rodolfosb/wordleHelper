@@ -66,18 +66,27 @@ Plans:
 
 #### Phase 10: UI Enhancements
 
-**Goal**: Additional UI improvements and polish based on usage feedback
+**Goal**: Add keyboard hint display, click-to-insert suggestions, and light/dark mode toggle
 **Depends on**: Phase 9
-**Research**: Unlikely (internal patterns)
-**Plans**: TBD
+**Research**: No (internal patterns)
 
 Plans:
-- [ ] 10-01: TBD
+- [ ] 10-01: Keyboard hint display + click-to-insert suggestions
+- [ ] 10-02: Light/dark mode toggle with persistence
+
+#### Phase 11: Game Mode
+
+**Goal**: Convert app from helper tool to playable Wordle game with auto-revealing colors
+**Depends on**: Phase 10
+**Research**: No (internal patterns)
+
+Plans:
+- [ ] 11-01: Game logic, GuessGrid updates, daily puzzle loading, practice mode integration
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -90,6 +99,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 7. Hard Mode | v1.1 | 1/1 | Complete | 2026-01-13 |
 | 8. Session Stats | v1.1 | 1/1 | Complete | 2026-01-15 |
 | 9. Wordle History | v1.1 | 1/1 | Complete | 2026-01-15 |
-| 10. UI Enhancements | v1.1 | 0/? | Not started | - |
+| 10. UI Enhancements | v1.1 | 0/2 | Not started | - |
+| 11. Game Mode | v1.1 | 0/1 | Not started | - |
 
-**Overall:** 9/10 phases complete (90%)
+**Overall:** 9/11 phases complete (82%)
