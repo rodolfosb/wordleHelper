@@ -1,11 +1,13 @@
 import './style.css';
-import type { Constraints } from './types';
+import type { Constraints, SessionStats } from './types';
 import { WORD_LIST } from './data/words';
 import { GuessGrid } from './ui/GuessGrid';
 import { Suggestions } from './ui/Suggestions';
+import { StatsModal } from './ui/StatsModal';
 import { rankWords } from './logic/ranking';
 import { createEmptyConstraints, addGuessToConstraints } from './logic/constraints';
 import { filterWords, filterByPrefix, isValidWord } from './logic/filter';
+import { loadStats, saveStats, recordGame } from './logic/stats';
 
 // Create guess grid HTML structure
 function createGuessGrid(): string {
@@ -26,6 +28,11 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div class="app-container">
     <header class="app-header">
       <h1>Wordle Helper</h1>
+      <button class="stats-btn" aria-label="View statistics" title="Statistics">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+          <path d="M16,11V3H8v6H2v12h20V11H16z M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/>
+        </svg>
+      </button>
     </header>
     <main class="app-main">
       <div class="controls">
@@ -49,6 +56,11 @@ const suggestions = new Suggestions(suggestionsArea);
 // App state
 let filteredWords: string[] = WORD_LIST;
 let gameEnded: boolean = false;
+let currentStats: SessionStats = loadStats();
+
+// Initialize StatsModal
+const appContainer = document.querySelector<HTMLElement>('.app-container')!;
+const statsModal = new StatsModal(appContainer);
 
 // Get game message element reference
 const gameMessageElement = document.querySelector<HTMLElement>('.game-message')!;
@@ -137,6 +149,9 @@ guessGrid.onSubmit((row: number) => {
     gameEnded = true;
     guessGrid.lockInput();
     showGameMessage('Congratulations! You found the word!', 'success');
+    // Record win stats (row + 1 = number of guesses)
+    currentStats = recordGame(currentStats, true, row + 1);
+    saveStats(currentStats);
     return;
   }
 
@@ -145,6 +160,9 @@ guessGrid.onSubmit((row: number) => {
     gameEnded = true;
     guessGrid.lockInput();
     showGameMessage('Game over! No more guesses remaining.', 'info');
+    // Record loss stats
+    currentStats = recordGame(currentStats, false, 6);
+    saveStats(currentStats);
     return;
   }
 
@@ -174,9 +192,21 @@ const resetGameBtn = document.querySelector<HTMLButtonElement>('.reset-game-btn'
 resetGameBtn.addEventListener('click', resetGame);
 
 // Auto-recover focus after clicking anywhere on the page (UAT-007)
-document.addEventListener('click', () => {
+document.addEventListener('click', (e) => {
+  // Don't auto-focus if clicking on stats button or modal
+  const target = e.target as HTMLElement;
+  if (target.closest('.stats-btn') || target.closest('.stats-modal-overlay')) {
+    return;
+  }
   // Small delay to allow any other click handlers to process first
   requestAnimationFrame(() => {
     guessGrid.focusGrid();
   });
+});
+
+// Set up Stats button click handler
+const statsBtn = document.querySelector<HTMLButtonElement>('.stats-btn')!;
+statsBtn.addEventListener('click', () => {
+  statsModal.render(currentStats);
+  statsModal.show();
 });
