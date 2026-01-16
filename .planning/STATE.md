@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-16)
 
 **Core value:** A complete Wordle experience that works anywhere—play daily puzzles, practice past games, track your stats, and get intelligent word suggestions when stuck.
-**Current focus:** v1.1 milestone complete — planning next milestone
+**Current focus:** v1.2 Complete Experience — transform into full-featured, multilingual Wordle with multiple game modes
 
 ## Current Position
 
-Phase: 11 of 11 (all phases complete)
-Plan: All plans complete
-Status: Ready to plan next milestone
-Last activity: 2026-01-16 — v1.1 milestone complete
+Phase: 12 of 18 (Header Layout)
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-01-16 — Milestone v1.2 created
 
-Progress: ██████████ 100%
+Progress: ██████░░░░ 61%
 
 ## Performance Metrics
 
@@ -29,6 +29,7 @@ Progress: ██████████ 100%
 |-----------|--------|-------|----------|
 | v1.0 MVP | 1-5 | 9 | 2026-01-13 |
 | v1.1 Features | 6-11 | 8 | 2026-01-13 → 2026-01-16 |
+| v1.2 Complete Experience | 12-18 | TBD | 2026-01-16 → |
 
 ## Accumulated Context
 
@@ -49,16 +50,21 @@ None.
 
 ### Blockers/Concerns
 
-None.
+**From milestone context:**
+- Word lists need Portuguese words for i18n support
+- Variable word length (4-10) requires word lists for each length
+- NYT word auto-sync mechanism needs to handle daily updates reliably
+- Daily word loading not working optimally — needs complete overhaul
+- Hard mode functionality needs to be re-established
 
 ### Roadmap Evolution
 
 - v1.0 MVP shipped 2026-01-13 (Phases 1-5)
 - v1.1 Features shipped 2026-01-16 (Phases 6-11)
-- Future milestones: TBD (multiplayer, achievements, mobile app are potential options)
+- Milestone v1.2 created: Complete Experience, 7 phases (Phase 12-18)
 
 ## Session Continuity
 
 Last session: 2026-01-16
-Stopped at: v1.1 milestone archived, project feature-complete
+Stopped at: Milestone v1.2 initialization
 Resume file: None
