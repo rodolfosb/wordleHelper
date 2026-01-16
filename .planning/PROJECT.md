@@ -2,11 +2,11 @@
 
 ## What This Is
 
-A web application that helps users solve the daily Wordle puzzle by suggesting words based on their guesses and the color-coded feedback from the game. Users input their guesses and mark each letter as green (correct position), yellow (wrong position), or gray (not in word), and the app suggests the best words to try next using information theory and letter frequency analysis.
+A fully playable web-based Wordle game with intelligent word suggestions. Play daily puzzles or practice with 1,671 historical puzzles from June 2021. The app auto-reveals letter colors using Wordle's exact algorithm, tracks session statistics, and works offline as an installable PWA.
 
 ## Core Value
 
-Accurately filter and intelligently rank word suggestions so users can solve Wordle puzzles faster and more reliably.
+A complete Wordle experience that works anywhere—play daily puzzles, practice past games, track your stats, and get intelligent word suggestions when stuck.
 
 ## Requirements
 
@@ -20,23 +20,32 @@ Accurately filter and intelligently rank word suggestions so users can solve Wor
 - ✓ Authentic Wordle dark theme with animations — v1.0
 - ✓ Invalid word feedback with shake animation — v1.0
 - ✓ Real-time filtering on every keystroke — v1.0
+- ✓ PWA support with service worker for offline use — v1.1
+- ✓ Hard mode filtering for valid hard-mode guesses only — v1.1
+- ✓ Session statistics with persistence (games, wins, streaks, distribution) — v1.1
+- ✓ Historical Wordle puzzles with practice mode (1,671 puzzles) — v1.1
+- ✓ Keyboard hint display with color-coded letter states — v1.1
+- ✓ Click-to-insert suggestions for faster word entry — v1.1
+- ✓ Light/dark mode toggle with system preference detection — v1.1
+- ✓ Full game mode with auto-revealing colors and flip animations — v1.1
 
 ### Active
 
-(None — v1.0 MVP complete)
+(None — v1.1 Features complete)
 
 ### Out of Scope
 
-- Mobile app — web only for v1, responsive design is sufficient
-- Account/history — no user login, saved games, or progress tracking
-- Offline mode — requires word list embedded (already done, could add PWA later)
+- Mobile native app — PWA provides app-like experience on mobile
+- User accounts — no login, stats stored locally
+- Multiplayer — single-player experience only
 
 ## Context
 
-Shipped v1.0 with 3,990 lines TypeScript/HTML/CSS.
-Tech stack: Vite, TypeScript, vanilla DOM (no framework).
-Initial testing confirms app helps solve actual Wordle puzzles effectively.
-2,399 word list exceeds official 2,309 Wordle solutions.
+Shipped v1.1 with ~18,800 lines TypeScript/HTML/CSS.
+Tech stack: Vite, TypeScript, vanilla DOM (no framework), vite-plugin-pwa.
+App is now a playable Wordle game, not just a helper tool.
+1,671 historical puzzles embedded for comprehensive practice mode.
+Installable as PWA on mobile and desktop.
 
 ## Constraints
 
@@ -53,6 +62,11 @@ Initial testing confirms app helps solve actual Wordle puzzles effectively.
 | Event delegation for click handling | Single listener more efficient | ✓ Good - cleaner code, better performance |
 | Real-time filtering on keystroke | Better UX than submit-based | ✓ Good - feels responsive and modern |
 | Wordle's exact color palette | Authentic look and feel | ✓ Good - familiar to users |
+| Embed historical Wordle answers | Avoid CORS issues with NYT/WordleHints APIs | ✓ Good - reliable, no network dependency |
+| CSS custom properties for theming | Runtime theme switching without reload | ✓ Good - smooth transitions |
+| Two-pass color algorithm | Match Wordle's exact behavior for duplicates | ✓ Good - accurate game logic |
+| Display-only keyboard (not clickable) | Avoid scope creep, show hints only | ✓ Good - focused feature |
+| Stats persist across sessions | Reset Game doesn't clear cumulative stats | ✓ Good - meaningful long-term tracking |
 
 ---
-*Last updated: 2026-01-13 after v1.0 milestone*
+*Last updated: 2026-01-16 after v1.1 milestone*

@@ -2,55 +2,42 @@
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-01-13)
+See: .planning/PROJECT.md (updated 2026-01-16)
 
-**Core value:** Accurately filter and intelligently rank word suggestions so users can solve Wordle puzzles faster and more reliably.
-**Current focus:** v1.1 Features
+**Core value:** A complete Wordle experience that works anywhere—play daily puzzles, practice past games, track your stats, and get intelligent word suggestions when stuck.
+**Current focus:** v1.1 milestone complete — planning next milestone
 
 ## Current Position
 
-Phase: 11 of 11 (Game Mode)
-Plan: 1 of ? in current phase
-Status: Plan 01 complete
-Last activity: 2026-01-16 — Completed 11-01-PLAN.md
+Phase: 11 of 11 (all phases complete)
+Plan: All plans complete
+Status: Ready to plan next milestone
+Last activity: 2026-01-16 — v1.1 milestone complete
 
-Progress: ██████████ 98%
+Progress: ██████████ 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 17 (including 09-FIX)
+- Total plans completed: 17 (v1.0: 9, v1.1: 8)
 - Average duration: ~10 min
 - Total execution time: ~169 min
 
-**By Phase:**
+**By Milestone:**
 
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| 1 | 1 | 9 min | 9 min |
-| 2 | 1 | 8 min | 8 min |
-| 3 | 2 | ~7 min | ~3.5 min |
-| 4 | 4 | ~27 min | ~7 min |
-| 5 | 1 | 30 min | 30 min |
-| 6 | 1 | 6 min | 6 min |
-| 7 | 1 | 6 min | 6 min |
-| 8 | 1 | 3 min | 3 min |
-| 9 | 2 | 20 min | 10 min |
-| 10 | 2 | 8 min | 4 min |
-| 11 | 1 | 45 min | 45 min |
+| Milestone | Phases | Plans | Timeline |
+|-----------|--------|-------|----------|
+| v1.0 MVP | 1-5 | 9 | 2026-01-13 |
+| v1.1 Features | 6-11 | 8 | 2026-01-13 → 2026-01-16 |
 
 ## Accumulated Context
 
 ### Decisions
 
 All key decisions logged in PROJECT.md Key Decisions table with outcomes marked.
-
-Recent decisions:
-- Embed historical Wordle answers in bundle to avoid CORS issues with NYT/WordleHints APIs
-- Use CSS custom properties for theming with data-theme attribute for switching
-- Implement Wordle's exact two-pass color algorithm (greens first, then yellows)
-- Disable manual color cycling in game mode
-- Show fallback puzzle with date when today's answer unavailable
+See milestone archives for historical decisions:
+- milestones/v1.0-ROADMAP.md
+- milestones/v1.1-ROADMAP.md
 
 ### Deferred Issues
 
@@ -66,11 +53,12 @@ None.
 
 ### Roadmap Evolution
 
-- Milestone v1.1 created: PWA, hard mode, stats, history, UI (5 phases: 6-10)
-- 09-FIX plan added to resolve UAT-001 (CORS blocking)
+- v1.0 MVP shipped 2026-01-13 (Phases 1-5)
+- v1.1 Features shipped 2026-01-16 (Phases 6-11)
+- Future milestones: TBD (multiplayer, achievements, mobile app are potential options)
 
 ## Session Continuity
 
 Last session: 2026-01-16
-Stopped at: Completed 11-01-PLAN.md (Game Mode plan 01 complete)
+Stopped at: v1.1 milestone archived, project feature-complete
 Resume file: None

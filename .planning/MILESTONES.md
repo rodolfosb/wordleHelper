@@ -1,5 +1,34 @@
 # Project Milestones: Wordle Helper
 
+## v1.1 Features (Shipped: 2026-01-16)
+
+**Delivered:** A playable Wordle game with PWA support, hard mode, session statistics, historical puzzle practice, keyboard hints, light/dark mode, and auto-revealing letter colors.
+
+**Phases completed:** 6-11 (8 plans total)
+
+**Key accomplishments:**
+
+- PWA support with vite-plugin-pwa, service worker, and installable web manifest for offline use
+- Hard mode filtering that shows only valid hard-mode guesses
+- Session statistics with LocalStorage persistence, modal UI, win streaks, and guess distribution histogram
+- Historical Wordle puzzles with practice mode (1,671 puzzles from June 2021 - January 2026)
+- UI enhancements: QWERTY keyboard with color-coded letter status hints, click-to-insert suggestions
+- Light/dark mode toggle with system preference detection and localStorage persistence
+- Full game mode transforming app from helper tool to playable Wordle with auto-revealing colors and flip animations
+
+**Stats:**
+
+- 51 files modified
+- ~14,800 lines added
+- 6 phases, 8 plans
+- 3 days from v1.0 to ship (2026-01-13 → 2026-01-16)
+
+**Git range:** `47f4433` → `2689545`
+
+**What's next:** Project feature-complete for v1.1. Future milestones could add multiplayer, achievements, or mobile app.
+
+---
+
 ## v1.0 MVP (Shipped: 2026-01-13)
 
 **Delivered:** A complete Wordle puzzle-solving assistant with color-coded input, constraint-based filtering, and intelligent word ranking using information theory.
