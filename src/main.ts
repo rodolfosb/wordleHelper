@@ -31,13 +31,9 @@ function createGuessGrid(): string {
 // Render the app
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div class="app-container" id="app-container">
-    <header class="app-header">
-      <div class="header-left"></div>
-      <div class="header-center">
-        <h1>Wordle</h1>
-        <div class="header-subtitle"></div>
-      </div>
-      <div class="header-right">
+    <nav class="app-header">
+      <h1 class="header-title">Wordle Helper</h1>
+      <div class="header-nav">
         <button class="help-btn" aria-label="How to play" title="How to play">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
             <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/>
@@ -72,12 +68,13 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
           </svg>
         </button>
       </div>
-    </header>
+    </nav>
     <div class="practice-indicator hidden">
       <span class="practice-indicator-text"></span>
       <button class="exit-practice-btn">Exit Practice</button>
     </div>
     <main class="app-main">
+      <div class="puzzle-info"></div>
       ${createGuessGrid()}
       <div class="game-message"></div>
       <div class="keyboard-area"></div>
@@ -150,16 +147,28 @@ function isRowAllGreen(row: number): boolean {
   return feedback.every((f) => f.status === 'green');
 }
 
-// Get subtitle element reference
-const headerSubtitle = document.querySelector<HTMLElement>('.header-subtitle')!;
+// Get puzzle info element reference (above the puzzle grid)
+const puzzleInfo = document.querySelector<HTMLElement>('.puzzle-info')!;
 
-// Helper function to update the subtitle with puzzle info
-function updateSubtitle(puzzle: HistoricalPuzzle, isFallback: boolean): void {
-  if (isFallback) {
-    // Data doesn't extend to today - show that this is the latest available
-    headerSubtitle.textContent = `Wordle #${puzzle.game} (${puzzle.date})`;
+// Helper function to format date for display (e.g., "Jan 16, 2026")
+function formatDateForDisplay(dateStr: string): string {
+  const date = new Date(dateStr + 'T00:00:00');
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+// Helper function to update the puzzle info displayed above the grid
+function updatePuzzleInfo(puzzle: HistoricalPuzzle | null, isNYTMode: boolean): void {
+  if (!puzzle) {
+    puzzleInfo.textContent = 'Open Mode';
+    return;
+  }
+
+  if (isNYTMode) {
+    // NYT mode: show Wordle #XXXX (formatted date)
+    const formattedDate = formatDateForDisplay(puzzle.date);
+    puzzleInfo.textContent = `Wordle #${puzzle.game} (${formattedDate})`;
   } else {
-    headerSubtitle.textContent = `Wordle #${puzzle.game} - ${puzzle.date}`;
+    puzzleInfo.textContent = 'Open Mode';
   }
 }
 
@@ -169,12 +178,12 @@ function initializeGame(): void {
   if (result) {
     currentPuzzle = result.puzzle;
     guessGrid.setGameMode(true);
-    // Update subtitle to show puzzle info
-    updateSubtitle(currentPuzzle, result.isFallback);
+    // Update puzzle info to show NYT mode with puzzle number and date
+    updatePuzzleInfo(currentPuzzle, true);
   } else {
-    // No puzzle data available at all
+    // No puzzle data available at all - fallback to Open mode
     console.warn('No puzzle data available');
-    headerSubtitle.textContent = 'No puzzle data available';
+    updatePuzzleInfo(null, false);
   }
 }
 
@@ -431,8 +440,8 @@ function startPracticeMode(puzzle: HistoricalPuzzle): void {
   const rankedWords = rankWords(WORD_LIST, WORD_LIST);
   suggestions.update(rankedWords, WORD_LIST.length);
 
-  // Update the subtitle with puzzle info
-  updateSubtitle(puzzle, false);
+  // Update the puzzle info above the grid
+  updatePuzzleInfo(puzzle, true);
 
   // Only show practice indicator if it's a past puzzle (not today)
   if (practiceMode) {
