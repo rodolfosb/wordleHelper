@@ -942,7 +942,28 @@ button:focus-visible {
   text-transform: uppercase;
   border-radius: 4px;
   user-select: none;
-  transition: background-color 0.15s ease;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+/* Hover and active states for clickable keys */
+.key:hover {
+  filter: brightness(1.15);
+}
+
+.key:active {
+  transform: scale(0.95);
+  filter: brightness(0.9);
+}
+
+/* Action keys (Enter, Backspace) - wider */
+.key-action {
+  width: auto;
+  min-width: 60px;
+  padding: 0 0.75rem;
+  font-size: 0.7rem;
+  background-color: var(--key-unused);
+  color: var(--text-primary);
 }
 
 /* Key status colors matching Wordle palette */
@@ -969,9 +990,15 @@ button:focus-visible {
 /* Responsive keyboard - smaller keys on mobile */
 @media (max-width: 480px) {
   .key {
-    width: 32px;
-    height: 44px;
-    font-size: 0.75rem;
+    width: 28px;
+    height: 48px;
+    font-size: 0.7rem;
+  }
+
+  .key-action {
+    min-width: 48px;
+    padding: 0 0.5rem;
+    font-size: 0.6rem;
   }
 
   .keyboard-row {

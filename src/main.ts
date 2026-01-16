@@ -98,6 +98,11 @@ const suggestions = new Suggestions(suggestionsArea);
 const keyboardArea = document.querySelector<HTMLElement>('.keyboard-area')!;
 const keyboard = new Keyboard(keyboardArea);
 
+// Set up keyboard click handler - forward key presses to the guess grid
+keyboard.onKeyPress((key: string) => {
+  guessGrid.handleKeyPress(key);
+});
+
 // App state
 let filteredWords: string[] = WORD_LIST;
 let gameEnded: boolean = false;
@@ -375,7 +380,7 @@ resetGameBtn.addEventListener('click', resetGame);
 
 // Auto-recover focus after clicking anywhere on the page (UAT-007)
 document.addEventListener('click', (e) => {
-  // Don't auto-focus if clicking on buttons or modals
+  // Don't auto-focus if clicking on buttons, modals, or keyboard
   const target = e.target as HTMLElement;
   if (
     target.closest('.stats-btn') ||
@@ -385,7 +390,8 @@ document.addEventListener('click', (e) => {
     target.closest('.theme-btn') ||
     target.closest('.help-btn') ||
     target.closest('.settings-btn') ||
-    target.closest('.language-btn')
+    target.closest('.language-btn') ||
+    target.closest('.keyboard')
   ) {
     return;
   }

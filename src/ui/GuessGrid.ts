@@ -470,4 +470,18 @@ export class GuessGrid {
     // Fire onChange callback
     this.fireOnChange();
   }
+
+  /**
+   * Handle a key press from the on-screen keyboard
+   * @param key - The key pressed ('a'-'z', 'Enter', or 'Backspace')
+   */
+  public handleKeyPress(key: string): void {
+    if (key === 'Enter') {
+      this.submitRow();
+    } else if (key === 'Backspace') {
+      this.deleteLetter();
+    } else if (/^[a-z]$/i.test(key)) {
+      this.inputLetter(key.toLowerCase());
+    }
+  }
 }
