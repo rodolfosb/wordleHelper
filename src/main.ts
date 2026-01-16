@@ -78,13 +78,13 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <button class="exit-practice-btn">Exit Practice</button>
     </div>
     <main class="app-main">
+      ${createGuessGrid()}
+      <div class="game-message"></div>
+      <div class="keyboard-area"></div>
       <div class="controls">
         <button class="reset-game-btn">Reset Game</button>
       </div>
-      ${createGuessGrid()}
-      <div class="game-message"></div>
       <div class="suggestions-area"></div>
-      <div class="keyboard-area"></div>
     </main>
   </div>
 `;

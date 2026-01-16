@@ -200,33 +200,36 @@ button:focus-visible {
   width: 100%;
 }
 
-/* Controls area */
+/* Controls area - Below keyboard */
 .controls {
+  margin-top: 0.75rem;
   margin-bottom: 1rem;
   display: flex;
   justify-content: center;
 }
 
 .reset-game-btn {
-  background-color: var(--color-correct);
-  color: var(--text-primary);
-  border: none;
-  padding: 0.6rem 1.2rem;
-  font-size: 0.9rem;
-  font-weight: 600;
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.05rem;
+  letter-spacing: 0.03rem;
   cursor: pointer;
   border-radius: 4px;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 .reset-game-btn:hover {
-  background-color: var(--color-correct-hover, #6aaa64);
+  background-color: var(--color-absent);
+  color: var(--text-primary);
+  border-color: var(--color-absent);
 }
 
 .reset-game-btn:active {
-  background-color: var(--color-correct-active, #4a7c42);
+  background-color: var(--border-color);
 }
 
 /* Game Message Styles */
@@ -354,12 +357,13 @@ button:focus-visible {
 /* Suggestions Panel Styles */
 .suggestions-area {
   width: 100%;
+  opacity: 0.85;
 }
 
 .suggestions-panel {
   background-color: var(--bg-secondary);
   border-radius: 8px;
-  padding: 1rem;
+  padding: 0.75rem;
   width: 100%;
   box-sizing: border-box;
 }
@@ -368,11 +372,11 @@ button:focus-visible {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.4rem;
 }
 
 .suggestions-count {
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-secondary);
 }
