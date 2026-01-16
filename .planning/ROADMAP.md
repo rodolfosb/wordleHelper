@@ -7,7 +7,7 @@ Build a web application that helps users solve Wordle puzzles by suggesting opti
 ## Milestones
 
 - ✅ **[v1.0 MVP](milestones/v1.0-ROADMAP.md)** — Phases 1-5 (shipped 2026-01-13)
-- 🚧 **v1.1 Features** — Phases 6-10 (in progress)
+- ✅ **v1.1 Features** — Phases 6-11 (shipped 2026-01-16)
 
 ## Completed Milestones
 
@@ -24,9 +24,10 @@ See [v1.0 archive](milestones/v1.0-ROADMAP.md) for full details.
 
 </details>
 
-### 🚧 v1.1 Features (In Progress)
+### ✅ v1.1 Features (Complete)
 
-**Milestone Goal:** Add PWA support, hard mode, session statistics, historical Wordle words, and UI enhancements.
+**Milestone Goal:** Add PWA support, hard mode, session statistics, historical Wordle words, UI enhancements, and game mode.
+**Shipped:** 2026-01-16
 
 #### Phase 6: PWA Support — Complete
 
@@ -75,14 +76,15 @@ Plans:
 - [x] 10-01: Keyboard hint display + click-to-insert suggestions
 - [x] 10-02: Light/dark mode toggle with persistence
 
-#### Phase 11: Game Mode
+#### Phase 11: Game Mode — Complete
 
 **Goal**: Convert app from helper tool to playable Wordle game with auto-revealing colors
 **Depends on**: Phase 10
 **Research**: No (internal patterns)
+**Completed**: 2026-01-16
 
 Plans:
-- [ ] 11-01: Game logic, GuessGrid updates, daily puzzle loading, practice mode integration
+- [x] 11-01: Game logic, GuessGrid updates, daily puzzle loading, practice mode integration
 
 ## Progress
 
@@ -101,6 +103,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 →
 | 8. Session Stats | v1.1 | 1/1 | Complete | 2026-01-15 |
 | 9. Wordle History | v1.1 | 1/1 | Complete | 2026-01-15 |
 | 10. UI Enhancements | v1.1 | 2/2 | Complete | 2026-01-15 |
-| 11. Game Mode | v1.1 | 0/1 | Not started | - |
+| 11. Game Mode | v1.1 | 1/1 | Complete | 2026-01-16 |
 
-**Overall:** 10/11 phases complete (91%)
+**Overall:** 11/11 phases complete (100%)
