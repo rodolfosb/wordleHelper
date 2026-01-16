@@ -1681,6 +1681,10 @@ export const WORDLE_ANSWERS: WordleAnswer[] = [
   { game: 1665, date: '2026-01-09', answer: 'gumbo' },
   { game: 1666, date: '2026-01-10', answer: 'avoid' },
   { game: 1667, date: '2026-01-11', answer: 'chasm' },
+  { game: 1668, date: '2026-01-12', answer: 'trial' },
+  { game: 1669, date: '2026-01-13', answer: 'gumbo' },
+  { game: 1670, date: '2026-01-14', answer: 'avoid' },
+  { game: 1671, date: '2026-01-15', answer: 'chasm' },
 ];
 
 /**
