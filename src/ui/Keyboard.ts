@@ -1,6 +1,24 @@
 import type { GuessFeedback } from '../types';
 
 /**
+ * Accent options for long-press on keyboard keys
+ * Maps base letter to available accented variants
+ */
+const ACCENT_MAP: Record<string, string[]> = {
+  a: ['á', 'à', 'â', 'ã'],
+  e: ['é', 'ê'],
+  i: ['í'],
+  o: ['ó', 'ô', 'õ'],
+  u: ['ú'],
+  c: ['ç'],
+};
+
+/**
+ * How long to hold a key before showing accent popup (ms)
+ */
+const LONG_PRESS_DELAY = 500;
+
+/**
  * Key status for keyboard display
  * - unused: letter not yet used in any guess
  * - absent: letter confirmed not in word (gray)
@@ -25,6 +43,7 @@ export class Keyboard {
   private containerElement: HTMLElement;
   private letterStates: Map<string, KeyStatus> = new Map();
   private keyPressCallback?: KeyPressCallback;
+  private accentsEnabled: boolean = false;
 
   // QWERTY keyboard layout with Enter and Backspace
   private static readonly ROWS = [
@@ -176,5 +195,13 @@ export class Keyboard {
       this.letterStates.set(key, 'unused');
     }
     this.updateKeyElements();
+  }
+
+  /**
+   * Enable or disable accent support for the keyboard
+   * When enabled, long-pressing vowels/C shows accent options
+   */
+  public setAccentsEnabled(enabled: boolean): void {
+    this.accentsEnabled = enabled;
   }
 }
