@@ -91,6 +91,7 @@ export interface HistoricalPuzzle {
 export interface TodaysPuzzleResult {
   puzzle: HistoricalPuzzle;
   isFallback: boolean;  // true if today's date wasn't found, using most recent instead
+  dataStale?: boolean;  // true if puzzle data is outdated and needs updating
 }
 
 /**

@@ -1174,3 +1174,16 @@ button:focus-visible {
   display: none;
 }
 
+/* Stale Data Warning Styles */
+.puzzle-info.stale-data-warning {
+  color: var(--color-present);
+  background-color: rgba(181, 159, 59, 0.15);
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  border: 1px solid var(--color-present);
+}
+
+.stale-warning-icon {
+  margin-right: 0.35rem;
+}
+

@@ -1,5 +1,5 @@
 import type { HistoricalPuzzle, TodaysPuzzleResult } from '../types';
-import { getFirstDate, WORDLE_ANSWERS } from './wordleAnswers';
+import { getFirstDate, isDataStale, WORDLE_ANSWERS } from './wordleAnswers';
 
 // Wordle #0 was June 19, 2021
 const WORDLE_EPOCH = new Date('2021-06-19T00:00:00');
@@ -102,6 +102,7 @@ export function getTodaysPuzzle(): TodaysPuzzleResult | null {
           answer: lastEntry.answer,
         },
         isFallback: true,
+        dataStale: true,
       };
     }
     return null;
@@ -114,5 +115,6 @@ export function getTodaysPuzzle(): TodaysPuzzleResult | null {
       answer: entry.answer,
     },
     isFallback: false,
+    dataStale: isDataStale(),
   };
 }

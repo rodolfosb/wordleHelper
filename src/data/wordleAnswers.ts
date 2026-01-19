@@ -44,3 +44,33 @@ export function findByDate(date: string): WordleAnswer | undefined {
 export function findByGame(game: number): WordleAnswer | undefined {
   return WORDLE_ANSWERS.find((entry) => entry.game === game);
 }
+
+/**
+ * Calculate the number of days since the last entry in the data
+ * @returns Number of days since the last puzzle in the data
+ */
+export function getDataAge(): number {
+  const lastDate = getLastDate();
+  const lastDateObj = new Date(lastDate + 'T00:00:00');
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const diffTime = today.getTime() - lastDateObj.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  return Math.max(0, diffDays);
+}
+
+/**
+ * Check if the puzzle data is stale (more than 1 day old)
+ * @returns true if the data is more than 1 day behind today
+ */
+export function isDataStale(): boolean {
+  return getDataAge() > 1;
+}
+
+/**
+ * Get the count of missing puzzles since the last entry
+ * @returns Number of puzzles missing from today back to last entry
+ */
+export function getMissingPuzzleCount(): number {
+  return getDataAge();
+}

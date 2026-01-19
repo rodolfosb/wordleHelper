@@ -194,18 +194,27 @@ function formatDateForDisplay(dateStr: string): string {
 }
 
 // Helper function to update the puzzle info displayed above the grid
-function updatePuzzleInfo(puzzle: HistoricalPuzzle | null, isNYTMode: boolean): void {
+function updatePuzzleInfo(puzzle: HistoricalPuzzle | null, isNYTMode: boolean, isFallback: boolean = false): void {
   if (!puzzle) {
     puzzleInfo.textContent = 'Open Mode';
+    puzzleInfo.classList.remove('stale-data-warning');
     return;
   }
 
   if (isNYTMode) {
     // NYT mode: show Wordle #XXXX (formatted date)
     const formattedDate = formatDateForDisplay(puzzle.date);
-    puzzleInfo.textContent = `Wordle #${puzzle.game} (${formattedDate})`;
+    if (isFallback) {
+      // Show warning for outdated data
+      puzzleInfo.innerHTML = `<span class="stale-warning-icon">&#9888;</span> Wordle #${puzzle.game} (${formattedDate}) - puzzle data out of date`;
+      puzzleInfo.classList.add('stale-data-warning');
+    } else {
+      puzzleInfo.textContent = `Wordle #${puzzle.game} (${formattedDate})`;
+      puzzleInfo.classList.remove('stale-data-warning');
+    }
   } else {
     puzzleInfo.textContent = 'Open Mode';
+    puzzleInfo.classList.remove('stale-data-warning');
   }
 }
 
@@ -216,7 +225,8 @@ function initializeGame(): void {
     currentPuzzle = result.puzzle;
     guessGrid.setGameMode(true);
     // Update puzzle info to show NYT mode with puzzle number and date
-    updatePuzzleInfo(currentPuzzle, true);
+    // Show warning if using fallback (stale) data
+    updatePuzzleInfo(currentPuzzle, true, result.isFallback);
   } else {
     // No puzzle data available at all - fallback to Open mode
     console.warn('No puzzle data available');
