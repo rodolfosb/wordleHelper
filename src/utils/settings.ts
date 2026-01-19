@@ -12,6 +12,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   hardMode: false,
   nytMode: true,  // Default to NYT mode
   wordLength: 5,  // Default word length for Open Mode
+  wordLanguage: 'en',  // Default language for Open Mode
 };
 
 /**

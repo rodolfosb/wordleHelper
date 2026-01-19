@@ -24,6 +24,7 @@ export class SettingsModal {
       hardMode: false,
       nytMode: true,
       wordLength: 5,
+      wordLanguage: 'en',
     };
     this.createModal();
   }

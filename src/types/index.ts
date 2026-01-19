@@ -104,4 +104,6 @@ export interface AppSettings {
   hardMode: boolean;
   nytMode: boolean;  // true: follow NYT daily puzzle, false: open mode
   wordLength: number;  // 4-10, only applies when nytMode is false
+  /** Language for word lists in Open Mode */
+  wordLanguage: 'en' | 'pt';
 }
