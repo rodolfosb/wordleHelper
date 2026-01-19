@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-16)
 ## Current Position
 
 Phase: 12 of 18 (Header Layout)
-Plan: Not started
-Status: Ready to plan
-Last activity: 2026-01-16 — Milestone v1.2 created
+Plan: 01 complete
+Status: Ready for next plan
+Last activity: 2026-01-19 — Phase 12 Plan 01 complete
 
-Progress: ██████░░░░ 61%
+Progress: ██████░░░░ 64%
 
 ## Performance Metrics
 
@@ -39,6 +39,11 @@ All key decisions logged in PROJECT.md Key Decisions table with outcomes marked.
 See milestone archives for historical decisions:
 - milestones/v1.0-ROADMAP.md
 - milestones/v1.1-ROADMAP.md
+
+**Phase 12-01:**
+- Header position at top of page with left-aligned title, right-aligned icons
+- Puzzle info (mode + puzzle number) placed above grid instead of in header
+- On-screen keyboard made clickable for mobile users
 
 ### Deferred Issues
 
@@ -65,6 +70,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-01-16
-Stopped at: Milestone v1.2 initialization
+Last session: 2026-01-19
+Stopped at: Phase 12 Plan 01 complete
 Resume file: None
