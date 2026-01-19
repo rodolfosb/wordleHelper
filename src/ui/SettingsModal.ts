@@ -111,6 +111,16 @@ export class SettingsModal {
             <option value="10">10</option>
           </select>
         </div>
+        <div class="settings-item">
+          <div class="settings-label">
+            <span class="settings-name">Word Language</span>
+            <span class="settings-description" id="word-language-description">Language for Open Mode words</span>
+          </div>
+          <select id="setting-word-language" class="settings-select">
+            <option value="en">English</option>
+            <option value="pt">Portugues</option>
+          </select>
+        </div>
       </div>
     `;
 
@@ -179,17 +189,28 @@ export class SettingsModal {
       this.currentSettings.wordLength = parseInt(wordLengthSelect.value, 10);
       this.notifySettingsChange();
     });
+
+    const wordLanguageSelect = this.modalElement.querySelector('#setting-word-language') as HTMLSelectElement;
+
+    wordLanguageSelect?.addEventListener('change', () => {
+      this.currentSettings.wordLanguage = wordLanguageSelect.value as 'en' | 'pt';
+      this.updateWordLengthSelectorState();
+      this.notifySettingsChange();
+    });
   }
 
   /**
-   * Update the word length selector's enabled/disabled state based on NYT mode
+   * Update the word length and language selectors' enabled/disabled state based on NYT mode
    */
   private updateWordLengthSelectorState(): void {
     if (!this.modalElement) return;
 
     const wordLengthSelect = this.modalElement.querySelector('#setting-word-length') as HTMLSelectElement;
     const wordLengthDescription = this.modalElement.querySelector('#word-length-description') as HTMLSpanElement;
+    const wordLanguageSelect = this.modalElement.querySelector('#setting-word-language') as HTMLSelectElement;
+    const wordLanguageDescription = this.modalElement.querySelector('#word-language-description') as HTMLSpanElement;
 
+    // Word length: enabled unless NYT Mode is on
     if (wordLengthSelect) {
       wordLengthSelect.disabled = this.currentSettings.nytMode;
     }
@@ -199,6 +220,19 @@ export class SettingsModal {
         wordLengthDescription.textContent = 'NYT Mode uses 5 letters';
       } else {
         wordLengthDescription.textContent = 'Number of letters for Open Mode games';
+      }
+    }
+
+    // Word language: disabled if NYT Mode (always English)
+    if (wordLanguageSelect) {
+      wordLanguageSelect.disabled = this.currentSettings.nytMode;
+    }
+
+    if (wordLanguageDescription) {
+      if (this.currentSettings.nytMode) {
+        wordLanguageDescription.textContent = 'NYT Mode uses English words';
+      } else {
+        wordLanguageDescription.textContent = 'Language for Open Mode words';
       }
     }
   }
@@ -254,7 +288,12 @@ export class SettingsModal {
       wordLengthSelect.value = String(settings.wordLength);
     }
 
-    // Update word length selector enabled state
+    const wordLanguageSelect = this.modalElement.querySelector('#setting-word-language') as HTMLSelectElement;
+    if (wordLanguageSelect) {
+      wordLanguageSelect.value = settings.wordLanguage;
+    }
+
+    // Update word length and language selector enabled state
     this.updateWordLengthSelectorState();
   }
 
