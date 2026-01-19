@@ -77,6 +77,16 @@ export class SettingsModal {
         </div>
         <div class="settings-item">
           <div class="settings-label">
+            <span class="settings-name">Show Hints</span>
+            <span class="settings-description">Display hints panel for progressive clues</span>
+          </div>
+          <label class="settings-toggle">
+            <input type="checkbox" id="setting-show-hints" />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="settings-item">
+          <div class="settings-label">
             <span class="settings-name">NYT Mode</span>
             <span class="settings-description">Follow official NYT daily puzzle</span>
           </div>
@@ -133,6 +143,7 @@ export class SettingsModal {
     const darkThemeToggle = this.modalElement.querySelector('#setting-dark-theme') as HTMLInputElement;
     const hardModeToggle = this.modalElement.querySelector('#setting-hard-mode') as HTMLInputElement;
     const showSuggestionsToggle = this.modalElement.querySelector('#setting-show-suggestions') as HTMLInputElement;
+    const showHintsToggle = this.modalElement.querySelector('#setting-show-hints') as HTMLInputElement;
     const nytModeToggle = this.modalElement.querySelector('#setting-nyt-mode') as HTMLInputElement;
     const wordLengthSelect = this.modalElement.querySelector('#setting-word-length') as HTMLSelectElement;
 
@@ -148,6 +159,11 @@ export class SettingsModal {
 
     showSuggestionsToggle?.addEventListener('change', () => {
       this.currentSettings.showSuggestions = showSuggestionsToggle.checked;
+      this.notifySettingsChange();
+    });
+
+    showHintsToggle?.addEventListener('change', () => {
+      this.currentSettings.showHints = showHintsToggle.checked;
       this.notifySettingsChange();
     });
 
@@ -207,6 +223,7 @@ export class SettingsModal {
     const darkThemeToggle = this.modalElement.querySelector('#setting-dark-theme') as HTMLInputElement;
     const hardModeToggle = this.modalElement.querySelector('#setting-hard-mode') as HTMLInputElement;
     const showSuggestionsToggle = this.modalElement.querySelector('#setting-show-suggestions') as HTMLInputElement;
+    const showHintsToggle = this.modalElement.querySelector('#setting-show-hints') as HTMLInputElement;
     const nytModeToggle = this.modalElement.querySelector('#setting-nyt-mode') as HTMLInputElement;
     const wordLengthSelect = this.modalElement.querySelector('#setting-word-length') as HTMLSelectElement;
 
@@ -222,6 +239,10 @@ export class SettingsModal {
 
     if (showSuggestionsToggle) {
       showSuggestionsToggle.checked = settings.showSuggestions;
+    }
+
+    if (showHintsToggle) {
+      showHintsToggle.checked = settings.showHints;
     }
 
     if (nytModeToggle) {
