@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-01-16)
 ## Current Position
 
 Phase: 18 of 18 (Internationalization)
-Plan: 03 complete
-Status: Keyboard accent support implemented (long-press popup)
-Last activity: 2026-01-19 — Phase 18 Plan 03 complete
+Plan: 04 complete
+Status: Phase 18 complete - Full internationalization with Portuguese support
+Last activity: 2026-01-19 — Phase 18 Plan 04 complete (Milestone v1.2 COMPLETE)
 
-Progress: █████████░ 98%
+Progress: ██████████ 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 22 (v1.0: 9, v1.1: 8, v1.2: 5)
+- Total plans completed: 23 (v1.0: 9, v1.1: 8, v1.2: 6)
 - Average duration: ~10 min
-- Total execution time: ~214 min
+- Total execution time: ~229 min
 
 **By Milestone:**
 
@@ -29,7 +29,7 @@ Progress: █████████░ 98%
 |-----------|--------|-------|----------|
 | v1.0 MVP | 1-5 | 9 | 2026-01-13 |
 | v1.1 Features | 6-11 | 8 | 2026-01-13 → 2026-01-16 |
-| v1.2 Complete Experience | 12-18 | TBD | 2026-01-16 → |
+| v1.2 Complete Experience | 12-18 | 6 | 2026-01-16 → 2026-01-19 |
 
 ## Accumulated Context
 
@@ -85,6 +85,13 @@ See milestone archives for historical decisions:
 - PWA cache limit increased to 3MB for multilingual word lists
 - Generation script kept in scripts/generate-pt-words.cjs for future updates
 
+**Phase 18-04:**
+- Language selector in Settings with 'en'/'pt' dropdown
+- Language selector disabled when NYT Mode is on (English only)
+- Switching language resets game and exits practice mode
+- Physical keyboard accepts accented characters when Portuguese selected
+- Accent popup positioned above key to avoid finger occlusion
+
 ### Deferred Issues
 
 None.
@@ -110,5 +117,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-19
-Stopped at: Phase 18 Plan 03 complete, ready for Plan 04 (Language toggle UI)
+Stopped at: Phase 18 Plan 04 complete - Milestone v1.2 COMPLETE
 Resume file: None
