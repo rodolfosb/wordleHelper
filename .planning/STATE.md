@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-01-16)
 
 ## Current Position
 
-Phase: 12 of 18 (Header Layout)
+Phase: 13 of 18 (Settings Menu)
 Plan: 01 complete
 Status: Ready for next plan
-Last activity: 2026-01-19 — Phase 12 Plan 01 complete
+Last activity: 2026-01-19 — Phase 13 Plan 01 complete
 
-Progress: ██████░░░░ 64%
+Progress: ███████░░░ 69%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 17 (v1.0: 9, v1.1: 8)
+- Total plans completed: 18 (v1.0: 9, v1.1: 8, v1.2: 1)
 - Average duration: ~10 min
-- Total execution time: ~169 min
+- Total execution time: ~184 min
 
 **By Milestone:**
 
@@ -45,13 +45,18 @@ See milestone archives for historical decisions:
 - Puzzle info (mode + puzzle number) placed above grid instead of in header
 - On-screen keyboard made clickable for mobile users
 
+**Phase 13-01:**
+- Settings stored in single localStorage key 'wordle-helper-settings'
+- Theme toggle moved from header into settings modal
+- CSS-only toggle switches (40x24px pill-shaped)
+
 ### Deferred Issues
 
 None.
 
 ### Pending Todos
 
-None.
+- Refine hard mode functionality (from Phase 13 settings modal implementation)
 
 ### Blockers/Concerns
 
@@ -71,5 +76,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-19
-Stopped at: Phase 12 Plan 01 complete
+Stopped at: Phase 13 Plan 01 complete
 Resume file: None
