@@ -2,13 +2,25 @@
  * Word filtering based on Wordle constraints
  */
 import type { Constraints } from '../types';
-import { WORD_LIST } from '../data/words';
+import { WORD_SET, getWordSetForLength } from '../data/words';
 
 /**
  * Check if a word exists in the word list
+ * @param word - The word to check
+ * @param wordLength - Optional word length to use specific word set (defaults to word's length)
  */
-export function isValidWord(word: string): boolean {
-  return WORD_LIST.includes(word);
+export function isValidWord(word: string, wordLength?: number): boolean {
+  const length = wordLength ?? word.length;
+  const wordSet = getWordSetForLength(length);
+  return wordSet.has(word);
+}
+
+/**
+ * Check if a word exists in the default 5-letter word list
+ * Kept for backwards compatibility
+ */
+export function isValidWord5(word: string): boolean {
+  return WORD_SET.has(word);
 }
 
 /**

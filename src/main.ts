@@ -1,6 +1,6 @@
 import './style.css';
 import type { Constraints, SessionStats, HistoricalPuzzle, AppSettings } from './types';
-import { WORD_LIST } from './data/words';
+import { WORD_LIST, getWordListForLength } from './data/words';
 import { GuessGrid } from './ui/GuessGrid';
 import { Suggestions } from './ui/Suggestions';
 import { Keyboard } from './ui/Keyboard';
@@ -16,12 +16,12 @@ import { loadSettings, saveSettings } from './utils/settings';
 import { calculateLetterStatuses } from './logic/gameLogic';
 import { getTodaysPuzzle } from './data/history';
 
-// Create guess grid HTML structure
-function createGuessGrid(): string {
-  let gridHtml = '<div class="guess-grid">';
+// Create guess grid HTML structure (initial structure, GuessGrid handles dynamic rebuild)
+function createGuessGrid(wordLength: number = 5): string {
+  let gridHtml = `<div class="guess-grid" style="--word-length: ${wordLength}">`;
   for (let row = 0; row < 6; row++) {
     gridHtml += `<div class="guess-row" data-row="${row}">`;
-    for (let col = 0; col < 5; col++) {
+    for (let col = 0; col < wordLength; col++) {
       gridHtml += `<div class="guess-cell" data-row="${row}" data-col="${col}"></div>`;
     }
     gridHtml += '</div>';
@@ -106,6 +106,10 @@ let currentStats: SessionStats = loadStats();
 let practiceMode: boolean = false;
 let currentPuzzle: HistoricalPuzzle | null = null;
 
+// Open Mode state
+let openModeTarget: string | null = null;  // Random word for Open Mode
+let currentWordLength: number = 5;         // Current word length in use
+
 // Game mode is always enabled - app functions as a playable Wordle game
 const gameMode: boolean = true;
 
@@ -117,8 +121,15 @@ let hardModeEnabled: boolean = appSettings.hardMode;
 const appContainer = document.querySelector<HTMLElement>('.app-container')!;
 const statsModal = new StatsModal(appContainer);
 
-// Track previous nytMode to detect changes
+// Track previous nytMode and wordLength to detect changes
 let previousNytMode: boolean = true;
+let previousWordLength: number = 5;
+
+// Helper function to select a random word from the word list
+function selectRandomWord(wordList: string[]): string {
+  const randomIndex = Math.floor(Math.random() * wordList.length);
+  return wordList[randomIndex];
+}
 
 // Helper function to apply settings to the app
 function applySettings(settings: AppSettings, isInitial: boolean = false): void {
@@ -152,6 +163,19 @@ function applySettings(settings: AppSettings, isInitial: boolean = false): void 
     resetGame();
   }
   previousNytMode = settings.nytMode;
+
+  // Apply word length change in Open Mode (but not on initial load)
+  if (!isInitial && !settings.nytMode && settings.wordLength !== previousWordLength) {
+    previousWordLength = settings.wordLength;
+    // Exit practice mode if active
+    if (practiceMode) {
+      practiceMode = false;
+      practiceIndicator.classList.add('hidden');
+    }
+    // Reset and reinitialize with new word length
+    resetGame();
+  }
+  previousWordLength = settings.wordLength;
 }
 
 // Settings change handler
@@ -211,14 +235,15 @@ function formatDateForDisplay(dateStr: string): string {
 }
 
 // Helper function to update the puzzle info displayed above the grid
-function updatePuzzleInfo(puzzle: HistoricalPuzzle | null, isNYTMode: boolean, isFallback: boolean = false): void {
-  if (!puzzle) {
-    puzzleInfo.textContent = 'Open Mode';
+function updatePuzzleInfo(puzzle: HistoricalPuzzle | null, isNYTMode: boolean, isFallback: boolean = false, wordLength: number = 5): void {
+  if (!puzzle && !isNYTMode) {
+    // Open Mode: show word length
+    puzzleInfo.textContent = `Open Mode (${wordLength} letters)`;
     puzzleInfo.classList.remove('stale-data-warning');
     return;
   }
 
-  if (isNYTMode) {
+  if (isNYTMode && puzzle) {
     // NYT mode: show Wordle #XXXX (formatted date)
     const formattedDate = formatDateForDisplay(puzzle.date);
     if (isFallback) {
@@ -230,6 +255,7 @@ function updatePuzzleInfo(puzzle: HistoricalPuzzle | null, isNYTMode: boolean, i
       puzzleInfo.classList.remove('stale-data-warning');
     }
   } else {
+    // Fallback (shouldn't happen)
     puzzleInfo.textContent = 'Open Mode';
     puzzleInfo.classList.remove('stale-data-warning');
   }
@@ -238,14 +264,30 @@ function updatePuzzleInfo(puzzle: HistoricalPuzzle | null, isNYTMode: boolean, i
 // Initialize game with today's puzzle or open mode based on settings
 function initializeGame(): void {
   if (!appSettings.nytMode) {
-    // Open mode: no specific puzzle, clear current puzzle
+    // Open mode: select random word based on word length setting
     currentPuzzle = null;
-    guessGrid.setGameMode(false);
-    updatePuzzleInfo(null, false);
+    currentWordLength = appSettings.wordLength;
+
+    // Get word list for current length and select random target
+    const wordList = getWordListForLength(currentWordLength);
+    openModeTarget = selectRandomWord(wordList);
+
+    // Update grid for new word length
+    guessGrid.setWordLength(currentWordLength);
+    guessGrid.setGameMode(true);  // Enable game mode for auto-color reveal
+
+    // Update puzzle info to show Open Mode with word length
+    updatePuzzleInfo(null, false, false, currentWordLength);
     return;
   }
 
-  // NYT mode: load today's puzzle
+  // NYT mode: load today's puzzle (always 5 letters)
+  currentWordLength = 5;
+  openModeTarget = null;
+
+  // Ensure grid is set to 5 letters for NYT mode
+  guessGrid.setWordLength(5);
+
   const result = getTodaysPuzzle();
   if (result) {
     currentPuzzle = result.puzzle;
@@ -265,9 +307,11 @@ function initializeGame(): void {
 // Initialize game on app start
 initializeGame();
 
-// Display initial suggestions (full word list ranked)
-const initialRankedWords = rankWords(WORD_LIST, WORD_LIST);
-suggestions.update(initialRankedWords, WORD_LIST.length);
+// Display initial suggestions (full word list ranked for current word length)
+const initialWordList = getWordListForLength(currentWordLength);
+filteredWords = initialWordList;
+const initialRankedWords = rankWords(initialWordList, initialWordList);
+suggestions.update(initialRankedWords, initialWordList.length);
 
 // Handle click on suggestion word - fill it into current row
 function handleSuggestionClick(word: string): void {
@@ -288,6 +332,9 @@ suggestions.onWordClick(handleSuggestionClick);
 function updateSuggestions(): void {
   const allFeedback = guessGrid.getAllFeedback();
 
+  // Get the appropriate word list for current word length
+  const wordList = getWordListForLength(currentWordLength);
+
   // Rebuild constraints from all complete rows
   let constraints: Constraints = createEmptyConstraints();
   for (const feedback of allFeedback) {
@@ -295,7 +342,7 @@ function updateSuggestions(): void {
   }
 
   // Filter word list with new constraints
-  filteredWords = filterWords(WORD_LIST, constraints);
+  filteredWords = filterWords(wordList, constraints);
 
   // Hard mode: suggestions already filtered by constraints (which use revealed hints)
   // The filterWords function already applies green/yellow constraints, so hard mode
@@ -332,8 +379,8 @@ guessGrid.onSubmit((row: number) => {
 
   const word = guessGrid.getCurrentWord();
 
-  // Check if word is valid
-  if (!isValidWord(word)) {
+  // Check if word is valid using the current word length's word list
+  if (!isValidWord(word, currentWordLength)) {
     // Shake row and show message for invalid word, don't advance
     guessGrid.shakeRow(row);
     showGameMessage('Not in word list', 'error');
@@ -343,13 +390,17 @@ guessGrid.onSubmit((row: number) => {
   // Clear any error message
   clearGameMessage();
 
+  // Determine the target answer (NYT puzzle or Open Mode random word)
+  const targetAnswer = currentPuzzle?.answer ?? openModeTarget;
+
   // In game mode, calculate and set colors automatically
-  if (gameMode && currentPuzzle) {
-    const colors = calculateLetterStatuses(word, currentPuzzle.answer);
+  if (gameMode && targetAnswer) {
+    const colors = calculateLetterStatuses(word, targetAnswer);
     guessGrid.setRowColors(row, colors);
 
     // Wait for flip animation to complete before checking win/loss
-    // Animation takes 500ms per cell + 400ms stagger = ~900ms total
+    // Animation delay scales with word length
+    const animationDelay = currentWordLength * 100 + 100;
     setTimeout(() => {
       // Update keyboard with feedback from this row
       const feedback = guessGrid.getGuessFeedback(row);
@@ -368,8 +419,11 @@ guessGrid.onSubmit((row: number) => {
 
         if (practiceMode) {
           // In practice mode, show the answer
-          showGameMessage(`Correct! The answer was: ${currentPuzzle!.answer.toUpperCase()}`, 'success');
+          showGameMessage(`Correct! The answer was: ${targetAnswer.toUpperCase()}`, 'success');
           // Do NOT update stats for practice games
+        } else if (!appSettings.nytMode) {
+          // Open Mode: show success but don't track stats
+          showGameMessage(`Correct! The answer was: ${targetAnswer.toUpperCase()}`, 'success');
         } else {
           showGameMessage('Congratulations! You solved it!', 'success');
           // Record win stats (row + 1 = number of guesses)
@@ -386,10 +440,13 @@ guessGrid.onSubmit((row: number) => {
 
         if (practiceMode) {
           // In practice mode, show the answer
-          showGameMessage(`Game over! The answer was: ${currentPuzzle!.answer.toUpperCase()}`, 'info');
+          showGameMessage(`Game over! The answer was: ${targetAnswer.toUpperCase()}`, 'info');
           // Do NOT update stats for practice games
+        } else if (!appSettings.nytMode) {
+          // Open Mode: show answer but don't track stats
+          showGameMessage(`Game over! The answer was: ${targetAnswer.toUpperCase()}`, 'info');
         } else {
-          showGameMessage(`Game over! The answer was: ${currentPuzzle!.answer.toUpperCase()}`, 'info');
+          showGameMessage(`Game over! The answer was: ${targetAnswer.toUpperCase()}`, 'info');
           // Record loss stats
           currentStats = recordGame(currentStats, false, 6);
           saveStats(currentStats);
@@ -399,7 +456,7 @@ guessGrid.onSubmit((row: number) => {
 
       // Advance to next row after animation completes
       guessGrid.advanceToNextRow();
-    }, 600); // Wait for animation to complete (5 cells * 100ms stagger + some buffer)
+    }, animationDelay); // Wait for animation to complete (wordLength cells * 100ms stagger + some buffer)
   } else {
     // Fallback for when no puzzle is loaded (shouldn't happen normally)
     const feedback = guessGrid.getGuessFeedback(row);
@@ -428,7 +485,6 @@ guessGrid.onSubmit((row: number) => {
 // Reset game function
 function resetGame(): void {
   // Reset app state
-  filteredWords = WORD_LIST;
   gameEnded = false;
 
   // Clear any game messages
@@ -445,9 +501,11 @@ function resetGame(): void {
     initializeGame();
   }
 
-  // Reset suggestions to show full word list ranked
-  const rankedWords = rankWords(WORD_LIST, WORD_LIST);
-  suggestions.update(rankedWords, WORD_LIST.length);
+  // Reset suggestions to show full word list ranked for current word length
+  const wordList = getWordListForLength(currentWordLength);
+  filteredWords = wordList;
+  const rankedWords = rankWords(wordList, wordList);
+  suggestions.update(rankedWords, wordList.length);
 }
 
 // Set up Reset Game button
@@ -507,20 +565,26 @@ function startPracticeMode(puzzle: HistoricalPuzzle): void {
   // Set practice mode state - only true if it's a past puzzle
   practiceMode = !isTodaysPuzzle;
   currentPuzzle = puzzle;
+  openModeTarget = null;  // Clear any open mode target
 
-  // Reset game state
-  filteredWords = WORD_LIST;
+  // Practice/NYT puzzles are always 5 letters
+  currentWordLength = 5;
+
+  // Reset game state with 5-letter word list
+  const wordList = getWordListForLength(5);
+  filteredWords = wordList;
   gameEnded = false;
   clearGameMessage();
+  guessGrid.setWordLength(5);  // Ensure grid is 5 letters
   guessGrid.reset();
   keyboard.reset();
 
   // Enable game mode for auto-color reveal
   guessGrid.setGameMode(true);
 
-  // Reset suggestions to show full word list ranked
-  const rankedWords = rankWords(WORD_LIST, WORD_LIST);
-  suggestions.update(rankedWords, WORD_LIST.length);
+  // Reset suggestions to show full 5-letter word list ranked
+  const rankedWords = rankWords(wordList, wordList);
+  suggestions.update(rankedWords, wordList.length);
 
   // Update the puzzle info above the grid
   updatePuzzleInfo(puzzle, true);
