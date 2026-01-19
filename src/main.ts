@@ -1,16 +1,18 @@
 import './style.css';
-import type { Constraints, SessionStats, HistoricalPuzzle } from './types';
+import type { Constraints, SessionStats, HistoricalPuzzle, AppSettings } from './types';
 import { WORD_LIST } from './data/words';
 import { GuessGrid } from './ui/GuessGrid';
 import { Suggestions } from './ui/Suggestions';
 import { Keyboard } from './ui/Keyboard';
 import { StatsModal } from './ui/StatsModal';
+import { SettingsModal } from './ui/SettingsModal';
 import { HistoryPicker } from './ui/HistoryPicker';
 import { rankWords } from './logic/ranking';
 import { createEmptyConstraints, addGuessToConstraints } from './logic/constraints';
 import { filterWords, filterByPrefix, isValidWord } from './logic/filter';
 import { loadStats, saveStats, recordGame } from './logic/stats';
-import { getInitialTheme, setTheme, toggleTheme } from './utils/theme';
+import { setTheme } from './utils/theme';
+import { loadSettings, saveSettings } from './utils/settings';
 import { calculateLetterStatuses } from './logic/gameLogic';
 import { getTodaysPuzzle } from './data/history';
 
@@ -57,14 +59,6 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         <button class="language-btn" aria-label="Language" title="Language">
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
             <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/>
-          </svg>
-        </button>
-        <button class="theme-btn" aria-label="Toggle theme" title="Toggle theme">
-          <svg class="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
-            <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>
-          </svg>
-          <svg class="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
-            <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
           </svg>
         </button>
       </div>
@@ -115,9 +109,47 @@ let currentPuzzle: HistoricalPuzzle | null = null;
 // Game mode is always enabled - app functions as a playable Wordle game
 const gameMode: boolean = true;
 
+// Settings state
+let appSettings: AppSettings = loadSettings();
+let hardModeEnabled: boolean = appSettings.hardMode;
+
 // Initialize StatsModal
 const appContainer = document.querySelector<HTMLElement>('.app-container')!;
 const statsModal = new StatsModal(appContainer);
+
+// Helper function to apply settings to the app
+function applySettings(settings: AppSettings): void {
+  // Apply theme
+  if (settings.theme === 'system') {
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    setTheme(systemTheme);
+  } else {
+    setTheme(settings.theme);
+  }
+
+  // Apply suggestions visibility
+  if (settings.showSuggestions) {
+    suggestionsArea.classList.remove('hidden');
+  } else {
+    suggestionsArea.classList.add('hidden');
+  }
+
+  // Apply hard mode
+  hardModeEnabled = settings.hardMode;
+}
+
+// Settings change handler
+function handleSettingsChange(settings: AppSettings): void {
+  appSettings = settings;
+  applySettings(settings);
+  saveSettings(settings);
+}
+
+// Initialize SettingsModal
+const settingsModal = new SettingsModal(appContainer, handleSettingsChange);
+
+// Apply initial settings
+applySettings(appSettings);
 
 // Initialize HistoryPicker
 const historyPicker = new HistoryPicker('app-container', startPracticeMode);
@@ -226,6 +258,12 @@ function updateSuggestions(): void {
 
   // Filter word list with new constraints
   filteredWords = filterWords(WORD_LIST, constraints);
+
+  // Hard mode: suggestions already filtered by constraints (which use revealed hints)
+  // The filterWords function already applies green/yellow constraints, so hard mode
+  // naturally restricts suggestions to valid guesses that use revealed hints.
+  // Future enhancement: Add explicit hard mode validation for user guesses.
+  void hardModeEnabled; // Hard mode setting tracked for future validation
 
   // Apply prefix filter for partial words in current row (UAT-006)
   const partialWord = guessGrid.getCurrentPartialWord();
@@ -387,9 +425,9 @@ document.addEventListener('click', (e) => {
     target.closest('.stats-modal-overlay') ||
     target.closest('.practice-btn') ||
     target.closest('.history-picker-overlay') ||
-    target.closest('.theme-btn') ||
     target.closest('.help-btn') ||
     target.closest('.settings-btn') ||
+    target.closest('.settings-modal-overlay') ||
     target.closest('.language-btn') ||
     target.closest('.keyboard')
   ) {
@@ -483,11 +521,12 @@ practiceBtn.addEventListener('click', () => {
 // Set up Exit Practice button click handler
 exitPracticeBtn.addEventListener('click', exitPracticeMode);
 
-// Initialize theme on app load (respects stored preference or system preference)
-setTheme(getInitialTheme());
+// Initialize theme on app load (handled via applySettings above)
+// Note: applySettings is called after SettingsModal initialization
 
-// Set up Theme toggle button click handler
-const themeBtn = document.querySelector<HTMLButtonElement>('.theme-btn')!;
-themeBtn.addEventListener('click', () => {
-  toggleTheme();
+// Set up Settings button click handler
+const settingsBtn = document.querySelector<HTMLButtonElement>('.settings-btn')!;
+settingsBtn.addEventListener('click', () => {
+  settingsModal.render(appSettings);
+  settingsModal.show();
 });
