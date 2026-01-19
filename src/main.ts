@@ -69,11 +69,11 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         </button>
       </div>
     </nav>
-    <div class="practice-indicator hidden">
-      <span class="practice-indicator-text"></span>
-      <button class="exit-practice-btn">Exit Practice</button>
-    </div>
     <main class="app-main">
+      <div class="practice-indicator hidden">
+        <span class="practice-indicator-text"></span>
+        <button class="exit-practice-btn">Exit Practice</button>
+      </div>
       <div class="puzzle-info"></div>
       ${createGuessGrid()}
       <div class="game-message"></div>
