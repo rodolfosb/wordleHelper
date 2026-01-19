@@ -131,6 +131,6 @@ Phases execute in numeric order: 1 → 2 → ... → 11 → 12 → 13 → 14 →
 | 15. Open Mode | v1.2 | 0/? | Not started | - |
 | 16. Keyboard Enhancements | v1.2 | 0/? | Not started | - |
 | 17. Hints System | v1.2 | 0/? | Not started | - |
-| 18. Internationalization | v1.2 | 0/? | Not started | - |
+| 18. Internationalization | v1.2 | 2/4 | In progress | - |
 
-**Overall:** 11/18 phases complete (61%)
+**Overall:** 17/18 phases complete (94%)

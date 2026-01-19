@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-16)
 ## Current Position
 
 Phase: 18 of 18 (Internationalization)
-Plan: 01 complete
-Status: Word list architecture restructured for multi-language support
-Last activity: 2026-01-19 — Phase 18 Plan 01 complete
+Plan: 02 complete
+Status: Portuguese word lists added for all lengths
+Last activity: 2026-01-19 — Phase 18 Plan 02 complete
 
-Progress: █████████░ 97%
+Progress: █████████░ 98%
 
 ## Performance Metrics
 
@@ -79,6 +79,12 @@ See milestone archives for historical decisions:
 - Language filtering with caching layer for performance
 - WordLanguage type defined as 'en' | 'pt' for future Portuguese support
 
+**Phase 18-02:**
+- Portuguese word lists added from IME-USP dictionary (CC BY license)
+- 157k+ Portuguese words across lengths 4-10 with accented characters
+- PWA cache limit increased to 3MB for multilingual word lists
+- Generation script kept in scripts/generate-pt-words.cjs for future updates
+
 ### Deferred Issues
 
 None.
@@ -90,7 +96,7 @@ None.
 ### Blockers/Concerns
 
 **From milestone context:**
-- Word lists need Portuguese words for i18n support
+- ~~Word lists need Portuguese words for i18n support~~ (ADDRESSED: Phase 18-02)
 - ~~Variable word length (4-10) requires word lists for each length~~ (ADDRESSED: Phase 15-01)
 - ~~NYT word auto-sync mechanism needs to handle daily updates reliably~~ (ADDRESSED: JSON now updatable independently)
 - Hard mode guess validation missing (tracked in Pending Todos above)
@@ -104,5 +110,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-19
-Stopped at: Phase 18 Plan 01 complete, ready for Plan 02 (Portuguese word lists)
+Stopped at: Phase 18 Plan 02 complete, ready for Plan 03 (Language toggle UI)
 Resume file: None
