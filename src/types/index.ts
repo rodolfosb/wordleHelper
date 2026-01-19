@@ -102,4 +102,5 @@ export interface AppSettings {
   showSuggestions: boolean;
   hardMode: boolean;
   nytMode: boolean;  // true: follow NYT daily puzzle, false: open mode
+  wordLength: number;  // 4-10, only applies when nytMode is false
 }

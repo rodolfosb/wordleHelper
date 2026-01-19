@@ -10,6 +10,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   showSuggestions: true,
   hardMode: false,
   nytMode: true,  // Default to NYT mode
+  wordLength: 5,  // Default word length for Open Mode
 };
 
 /**

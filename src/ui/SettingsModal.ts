@@ -22,6 +22,7 @@ export class SettingsModal {
       showSuggestions: true,
       hardMode: false,
       nytMode: true,
+      wordLength: 5,
     };
     this.createModal();
   }
