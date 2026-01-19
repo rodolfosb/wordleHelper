@@ -100,6 +100,7 @@ export interface TodaysPuzzleResult {
 export interface AppSettings {
   theme: 'light' | 'dark' | 'system';
   showSuggestions: boolean;
+  showHints: boolean;  // Display hints panel for progressive clues
   hardMode: boolean;
   nytMode: boolean;  // true: follow NYT daily puzzle, false: open mode
   wordLength: number;  // 4-10, only applies when nytMode is false

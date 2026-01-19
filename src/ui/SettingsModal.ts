@@ -20,6 +20,7 @@ export class SettingsModal {
     this.currentSettings = {
       theme: 'system',
       showSuggestions: true,
+      showHints: true,
       hardMode: false,
       nytMode: true,
       wordLength: 5,

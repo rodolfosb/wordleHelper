@@ -8,6 +8,7 @@ const SETTINGS_KEY = 'wordle-helper-settings';
 const DEFAULT_SETTINGS: AppSettings = {
   theme: 'system',
   showSuggestions: true,
+  showHints: true,  // Display hints panel by default
   hardMode: false,
   nytMode: true,  // Default to NYT mode
   wordLength: 5,  // Default word length for Open Mode
