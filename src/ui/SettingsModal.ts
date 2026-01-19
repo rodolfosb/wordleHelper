@@ -84,6 +84,21 @@ export class SettingsModal {
             <span class="toggle-slider"></span>
           </label>
         </div>
+        <div class="settings-item">
+          <div class="settings-label">
+            <span class="settings-name">Word Length</span>
+            <span class="settings-description" id="word-length-description">Number of letters for Open Mode games</span>
+          </div>
+          <select id="setting-word-length" class="settings-select">
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+        </div>
       </div>
     `;
 
@@ -118,6 +133,7 @@ export class SettingsModal {
     const hardModeToggle = this.modalElement.querySelector('#setting-hard-mode') as HTMLInputElement;
     const showSuggestionsToggle = this.modalElement.querySelector('#setting-show-suggestions') as HTMLInputElement;
     const nytModeToggle = this.modalElement.querySelector('#setting-nyt-mode') as HTMLInputElement;
+    const wordLengthSelect = this.modalElement.querySelector('#setting-word-length') as HTMLSelectElement;
 
     darkThemeToggle?.addEventListener('change', () => {
       this.currentSettings.theme = darkThemeToggle.checked ? 'dark' : 'light';
@@ -136,8 +152,37 @@ export class SettingsModal {
 
     nytModeToggle?.addEventListener('change', () => {
       this.currentSettings.nytMode = nytModeToggle.checked;
+      // Update word length selector enabled state
+      this.updateWordLengthSelectorState();
       this.notifySettingsChange();
     });
+
+    wordLengthSelect?.addEventListener('change', () => {
+      this.currentSettings.wordLength = parseInt(wordLengthSelect.value, 10);
+      this.notifySettingsChange();
+    });
+  }
+
+  /**
+   * Update the word length selector's enabled/disabled state based on NYT mode
+   */
+  private updateWordLengthSelectorState(): void {
+    if (!this.modalElement) return;
+
+    const wordLengthSelect = this.modalElement.querySelector('#setting-word-length') as HTMLSelectElement;
+    const wordLengthDescription = this.modalElement.querySelector('#word-length-description') as HTMLSpanElement;
+
+    if (wordLengthSelect) {
+      wordLengthSelect.disabled = this.currentSettings.nytMode;
+    }
+
+    if (wordLengthDescription) {
+      if (this.currentSettings.nytMode) {
+        wordLengthDescription.textContent = 'NYT Mode uses 5 letters';
+      } else {
+        wordLengthDescription.textContent = 'Number of letters for Open Mode games';
+      }
+    }
   }
 
   /**
@@ -162,6 +207,7 @@ export class SettingsModal {
     const hardModeToggle = this.modalElement.querySelector('#setting-hard-mode') as HTMLInputElement;
     const showSuggestionsToggle = this.modalElement.querySelector('#setting-show-suggestions') as HTMLInputElement;
     const nytModeToggle = this.modalElement.querySelector('#setting-nyt-mode') as HTMLInputElement;
+    const wordLengthSelect = this.modalElement.querySelector('#setting-word-length') as HTMLSelectElement;
 
     if (darkThemeToggle) {
       // Dark theme toggle is checked when theme is 'dark' or when 'system' preference is dark
@@ -180,6 +226,13 @@ export class SettingsModal {
     if (nytModeToggle) {
       nytModeToggle.checked = settings.nytMode;
     }
+
+    if (wordLengthSelect) {
+      wordLengthSelect.value = String(settings.wordLength);
+    }
+
+    // Update word length selector enabled state
+    this.updateWordLengthSelectorState();
   }
 
   /**

@@ -1174,6 +1174,46 @@ button:focus-visible {
   display: none;
 }
 
+/* Settings Select Styles */
+.settings-select {
+  appearance: none;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  min-width: 60px;
+  text-align: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23818384' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.settings-select:hover:not(:disabled) {
+  border-color: var(--cell-filled-border);
+  background-color: var(--color-absent);
+}
+
+.settings-select:focus {
+  outline: none;
+  border-color: var(--color-correct);
+}
+
+.settings-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: var(--bg-secondary);
+}
+
+/* Light theme adjustments for select */
+[data-theme="light"] .settings-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23787c7e' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+}
+
 /* Stale Data Warning Styles */
 .puzzle-info.stale-data-warning {
   color: var(--color-present);
