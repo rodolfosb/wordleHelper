@@ -70,13 +70,13 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         <button class="exit-practice-btn">Exit Practice</button>
       </div>
       <div class="puzzle-info"></div>
-      <div class="hints-area"></div>
       ${createGuessGrid()}
       <div class="game-message"></div>
       <div class="keyboard-area"></div>
       <div class="controls">
         <button class="reset-game-btn">Reset Game</button>
       </div>
+      <div class="hints-area"></div>
       <div class="suggestions-area"></div>
     </main>
   </div>
@@ -156,9 +156,9 @@ function applySettings(settings: AppSettings, isInitial: boolean = false): void 
 
   // Apply hints visibility
   if (settings.showHints) {
-    hintsArea.classList.remove('hidden');
+    hintsPanel.show();
   } else {
-    hintsArea.classList.add('hidden');
+    hintsPanel.hide();
   }
 
   // Apply hard mode
