@@ -1373,7 +1373,7 @@ button:focus-visible {
 
 /* Highlight key when accent popup is showing */
 .key-accent-active {
-  background: var(--color-present) !important;
-  color: white !important;
+  filter: brightness(1.3) !important;
+  transform: scale(1.05) !important;
 }
 
