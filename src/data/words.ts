@@ -2403,3 +2403,72 @@ export const WORD_LIST: string[] = [
  * Set for O(1) word lookup
  */
 export const WORD_SET: Set<string> = new Set(WORD_LIST);
+
+// Import word lists for other lengths
+import { WORD_LIST_4, WORD_SET_4 } from './words4';
+import { WORD_LIST_6, WORD_SET_6 } from './words6';
+import { WORD_LIST_7, WORD_SET_7 } from './words7';
+import { WORD_LIST_8, WORD_SET_8 } from './words8';
+import { WORD_LIST_9, WORD_SET_9 } from './words9';
+import { WORD_LIST_10, WORD_SET_10 } from './words10';
+
+// Re-export for convenience
+export { WORD_LIST_4, WORD_SET_4 };
+export { WORD_LIST_6, WORD_SET_6 };
+export { WORD_LIST_7, WORD_SET_7 };
+export { WORD_LIST_8, WORD_SET_8 };
+export { WORD_LIST_9, WORD_SET_9 };
+export { WORD_LIST_10, WORD_SET_10 };
+
+/**
+ * Get the word list for a given word length
+ * Returns the appropriate word list for Open Mode
+ * @param length - Word length (4-10)
+ * @returns Array of words of the specified length
+ */
+export function getWordListForLength(length: number): string[] {
+  switch (length) {
+    case 4:
+      return WORD_LIST_4;
+    case 5:
+      return WORD_LIST;
+    case 6:
+      return WORD_LIST_6;
+    case 7:
+      return WORD_LIST_7;
+    case 8:
+      return WORD_LIST_8;
+    case 9:
+      return WORD_LIST_9;
+    case 10:
+      return WORD_LIST_10;
+    default:
+      return WORD_LIST; // Default to 5-letter words
+  }
+}
+
+/**
+ * Get the word set for a given word length (O(1) lookup)
+ * @param length - Word length (4-10)
+ * @returns Set of words of the specified length
+ */
+export function getWordSetForLength(length: number): Set<string> {
+  switch (length) {
+    case 4:
+      return WORD_SET_4;
+    case 5:
+      return WORD_SET;
+    case 6:
+      return WORD_SET_6;
+    case 7:
+      return WORD_SET_7;
+    case 8:
+      return WORD_SET_8;
+    case 9:
+      return WORD_SET_9;
+    case 10:
+      return WORD_SET_10;
+    default:
+      return WORD_SET; // Default to 5-letter words
+  }
+}
