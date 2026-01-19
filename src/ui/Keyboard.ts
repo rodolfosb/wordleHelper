@@ -44,6 +44,8 @@ export class Keyboard {
   private letterStates: Map<string, KeyStatus> = new Map();
   private keyPressCallback?: KeyPressCallback;
   private accentsEnabled: boolean = false;
+  private longPressTimer: number | null = null;
+  private accentPopup: HTMLElement | null = null;
 
   // QWERTY keyboard layout with Enter and Backspace
   private static readonly ROWS = [
@@ -107,8 +109,46 @@ export class Keyboard {
    * Attach click event listeners to keyboard keys
    */
   private attachClickListeners(): void {
-    this.containerElement.addEventListener('click', (event) => {
+    // Handle pointer down for long-press detection
+    this.containerElement.addEventListener('pointerdown', (event) => {
       const target = event.target as HTMLElement;
+      const keyElement = target.closest('.key') as HTMLElement | null;
+
+      if (!keyElement) return;
+
+      const key = keyElement.dataset.key?.toLowerCase();
+      if (!key || key === 'enter' || key === 'backspace') return;
+
+      // Start long-press timer if accents enabled and key has accents
+      if (this.accentsEnabled && ACCENT_MAP[key]) {
+        this.longPressTimer = window.setTimeout(() => {
+          this.showAccentPopup(keyElement, key);
+        }, LONG_PRESS_DELAY);
+      }
+    });
+
+    // Handle pointer up - either fire key or select accent
+    this.containerElement.addEventListener('pointerup', (event) => {
+      const target = event.target as HTMLElement;
+
+      // If accent popup is showing, check if we're over an accent option
+      if (this.accentPopup) {
+        const accentOption = target.closest('.accent-option') as HTMLElement | null;
+        if (accentOption && this.keyPressCallback) {
+          const accent = accentOption.dataset.accent;
+          if (accent) {
+            this.keyPressCallback(accent);
+          }
+        }
+        this.hideAccentPopup();
+        this.clearLongPressTimer();
+        return;
+      }
+
+      // Clear long-press timer
+      this.clearLongPressTimer();
+
+      // Normal click handling
       const keyElement = target.closest('.key') as HTMLElement | null;
       if (keyElement && this.keyPressCallback) {
         const key = keyElement.dataset.key;
@@ -117,6 +157,74 @@ export class Keyboard {
         }
       }
     });
+
+    // Handle pointer leave (cancel long-press if user drags away)
+    this.containerElement.addEventListener('pointerleave', () => {
+      this.clearLongPressTimer();
+      // Don't hide popup - user might be dragging to select
+    });
+
+    // Handle pointer cancel
+    this.containerElement.addEventListener('pointercancel', () => {
+      this.clearLongPressTimer();
+      this.hideAccentPopup();
+    });
+  }
+
+  private clearLongPressTimer(): void {
+    if (this.longPressTimer !== null) {
+      window.clearTimeout(this.longPressTimer);
+      this.longPressTimer = null;
+    }
+  }
+
+  private showAccentPopup(keyElement: HTMLElement, key: string): void {
+    const accents = ACCENT_MAP[key];
+    if (!accents || accents.length === 0) return;
+
+    // Create popup element
+    this.accentPopup = document.createElement('div');
+    this.accentPopup.className = 'accent-popup';
+    this.accentPopup.innerHTML = accents
+      .map(
+        (accent) =>
+          `<div class="accent-option" data-accent="${accent}">${accent.toUpperCase()}</div>`
+      )
+      .join('');
+
+    // Position popup above the key
+    const keyRect = keyElement.getBoundingClientRect();
+    const containerRect = this.containerElement.getBoundingClientRect();
+
+    // Calculate position relative to container
+    const left = keyRect.left - containerRect.left + keyRect.width / 2;
+    const top = keyRect.top - containerRect.top;
+
+    this.accentPopup.style.left = `${left}px`;
+    this.accentPopup.style.top = `${top}px`;
+
+    // Add to container
+    this.containerElement.appendChild(this.accentPopup);
+
+    // Add active class after a frame for animation
+    requestAnimationFrame(() => {
+      this.accentPopup?.classList.add('active');
+    });
+
+    // Highlight the key
+    keyElement.classList.add('key-accent-active');
+  }
+
+  private hideAccentPopup(): void {
+    if (this.accentPopup) {
+      // Remove highlight from key
+      const activeKey = this.containerElement.querySelector('.key-accent-active');
+      activeKey?.classList.remove('key-accent-active');
+
+      // Remove popup
+      this.accentPopup.remove();
+      this.accentPopup = null;
+    }
   }
 
   /**
