@@ -3,17 +3,23 @@
  *
  * Supported languages:
  * - en: English (4-10 letter words)
- * - pt: Portuguese (coming in 18-02)
+ * - pt: Portuguese (4-10 letter words)
  */
 
 // Re-export English word lists and helpers
 export * from "./en";
+
+// Re-export Portuguese word lists and helpers
+export * from "./pt";
 
 // Type for supported languages
 export type WordLanguage = "en" | "pt";
 
 // Import English helpers
 import { getEnglishWordList } from "./en";
+
+// Import Portuguese helpers
+import { getPortugueseWordList } from "./pt";
 
 // Cache for filtered word lists (ensures ASCII-only filtering once per length)
 const filteredWordListCache: Map<string, string[]> = new Map();
@@ -38,15 +44,14 @@ export function getWordListForLanguageAndLength(
   let rawList: string[];
 
   if (language === "pt") {
-    // Portuguese - will be added in 18-02, fall back to English for now
-    rawList = getEnglishWordList(length);
+    rawList = getPortugueseWordList(length);
   } else {
     rawList = getEnglishWordList(length);
   }
 
   // Filter to ensure correct length and valid characters
   // For English: ASCII lowercase only
-  // For Portuguese: will include accented chars
+  // For Portuguese: includes accented chars (á, é, etc.)
   const validChars = language === "pt" ? /^[a-záàâãéêíóôõúç]+$/ : /^[a-z]+$/;
   const filtered = rawList.filter(
     (word) => word.length === length && validChars.test(word)

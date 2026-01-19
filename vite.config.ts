@@ -7,6 +7,10 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png'],
+      workbox: {
+        // Increase cache size limit to accommodate multilingual word lists (~2.5MB)
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024, // 3MB
+      },
       manifest: {
         name: 'Wordle Helper',
         short_name: 'WordleHelp',
