@@ -2,11 +2,11 @@
 
 ## What This Is
 
-A fully playable web-based Wordle game with intelligent word suggestions. Play daily puzzles or practice with 1,671 historical puzzles from June 2021. The app auto-reveals letter colors using Wordle's exact algorithm, tracks session statistics, and works offline as an installable PWA.
+A full-featured multilingual Wordle game with intelligent word suggestions. Play NYT daily puzzles, practice with 1,671 historical puzzles, or enjoy Open Mode with random words in variable lengths (4-10 letters). Supports English and Portuguese with accented character input. Progressive hints help when stuck. Works offline as an installable PWA.
 
 ## Core Value
 
-A complete Wordle experience that works anywhere—play daily puzzles, practice past games, track your stats, and get intelligent word suggestions when stuck.
+A complete Wordle experience that works anywhere—play daily or historical puzzles, practice in multiple languages with variable word lengths, track your stats, and get progressive hints when stuck.
 
 ## Requirements
 
@@ -28,10 +28,21 @@ A complete Wordle experience that works anywhere—play daily puzzles, practice 
 - ✓ Click-to-insert suggestions for faster word entry — v1.1
 - ✓ Light/dark mode toggle with system preference detection — v1.1
 - ✓ Full game mode with auto-revealing colors and flip animations — v1.1
+- ✓ Header navigation bar with icon buttons — v1.2
+- ✓ Clickable on-screen keyboard for mobile users — v1.2
+- ✓ Consolidated settings modal (theme, hints, hard mode, NYT mode) — v1.2
+- ✓ JSON-based word data with freshness tracking — v1.2
+- ✓ NYT mode toggle for daily puzzle vs open mode — v1.2
+- ✓ Open Mode with random word selection and unlimited replays — v1.2
+- ✓ Variable word lengths (4-10 letters) in Open Mode — v1.2
+- ✓ Progressive hints system with 6 sequential hints per word — v1.2
+- ✓ Portuguese language support with 157k+ words — v1.2
+- ✓ Accented character keyboard input (long-press on mobile) — v1.2
+- ✓ Language selector in settings (English/Portuguese) — v1.2
 
 ### Active
 
-(None — v1.1 Features complete)
+(None — v1.2 Complete Experience shipped)
 
 ### Out of Scope
 
@@ -41,10 +52,10 @@ A complete Wordle experience that works anywhere—play daily puzzles, practice 
 
 ## Context
 
-Shipped v1.1 with ~18,800 lines TypeScript/HTML/CSS.
+Shipped v1.2 with ~3,800 lines TypeScript code plus ~164k lines word list data.
 Tech stack: Vite, TypeScript, vanilla DOM (no framework), vite-plugin-pwa.
-App is now a playable Wordle game, not just a helper tool.
-1,671 historical puzzles embedded for comprehensive practice mode.
+App is a full-featured multilingual Wordle with three modes: NYT daily, Practice (1,671 historical puzzles), and Open Mode (random words, 4-10 letters).
+Supports English and Portuguese languages with accented character input.
 Installable as PWA on mobile and desktop.
 
 ## Constraints
@@ -65,8 +76,16 @@ Installable as PWA on mobile and desktop.
 | Embed historical Wordle answers | Avoid CORS issues with NYT/WordleHints APIs | ✓ Good - reliable, no network dependency |
 | CSS custom properties for theming | Runtime theme switching without reload | ✓ Good - smooth transitions |
 | Two-pass color algorithm | Match Wordle's exact behavior for duplicates | ✓ Good - accurate game logic |
-| Display-only keyboard (not clickable) | Avoid scope creep, show hints only | ✓ Good - focused feature |
+| Display-only keyboard (not clickable) | Avoid scope creep, show hints only | ⚠️ Revised in v1.2 - made clickable for mobile |
 | Stats persist across sessions | Reset Game doesn't clear cumulative stats | ✓ Good - meaningful long-term tracking |
+| Header at top with icon navigation | Consistent with app conventions | ✓ Good - familiar UX pattern |
+| Settings modal consolidation | Single place for all preferences | ✓ Good - cleaner header, discoverable settings |
+| JSON word data format | Independent updates without code changes | ✓ Good - flexible data management |
+| Open Mode with variable lengths | Extend gameplay beyond 5-letter words | ✓ Good - replayability and variety |
+| Progressive hints (6 per word) | Help stuck players without giving answer | ✓ Good - balanced assistance |
+| Portuguese word lists from IME-USP | CC BY license, comprehensive dictionary | ✓ Good - 157k+ quality words |
+| Accent popup above key | Avoid finger occlusion on mobile | ✓ Good - better touch UX |
+| Language setting disabled in NYT mode | NYT puzzles are English only | ✓ Good - prevents confusion |
 
 ---
-*Last updated: 2026-01-16 after v1.1 milestone*
+*Last updated: 2026-01-19 after v1.2 milestone*

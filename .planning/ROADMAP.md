@@ -8,7 +8,7 @@ Build a web application that helps users solve Wordle puzzles by suggesting opti
 
 - ✅ **[v1.0 MVP](milestones/v1.0-ROADMAP.md)** — Phases 1-5 (shipped 2026-01-13)
 - ✅ **[v1.1 Features](milestones/v1.1-ROADMAP.md)** — Phases 6-11 (shipped 2026-01-16)
-- 🚧 **v1.2 Complete Experience** — Phases 12-18 (in progress)
+- ✅ **[v1.2 Complete Experience](milestones/v1.2-ROADMAP.md)** — Phases 12-18 (shipped 2026-01-19)
 
 ## Completed Milestones
 
@@ -39,78 +39,33 @@ See [v1.1 archive](milestones/v1.1-ROADMAP.md) for full details.
 
 </details>
 
-### 🚧 v1.2 Complete Experience (In Progress)
+<details>
+<summary>✅ v1.2 Complete Experience (Phases 12-18) — SHIPPED 2026-01-19</summary>
 
-**Milestone Goal:** Transform from helper tool into full-featured, multilingual Wordle experience with multiple game modes and progressive hints
+- [x] Phase 12: Header Layout (1/1 plans) — completed 2026-01-19
+- [x] Phase 13: Settings Menu (1/1 plans) — completed 2026-01-19
+- [x] Phase 14: Word Sync NYT (1/1 plans) — completed 2026-01-19
+- [x] Phase 15: Open Mode (1/1 plans) — completed 2026-01-19
+- [x] Phase 16: Keyboard Enhancements (1/1 plans) — completed 2026-01-19
+- [x] Phase 17: Hints System (1/1 plans) — completed 2026-01-19
+- [x] Phase 18: Internationalization (4/4 plans) — completed 2026-01-19
 
-#### Phase 12: Header Layout
-**Goal**: Restructure layout with focus on puzzle and keyboard as primary elements, add header nav with Stats/How-to-play/Settings/Language
-**Depends on**: v1.1 complete
-**Research**: Unlikely (internal UI patterns)
-**Plans**: TBD
+See [v1.2 archive](milestones/v1.2-ROADMAP.md) for full details.
 
-Plans:
-- [ ] 12-01: TBD (run /gsd:plan-phase 12 to break down)
+</details>
 
-#### Phase 13: Settings Menu
-**Goal**: Consolidate settings into modal: Light/dark mode, Hard mode, NYT mode toggle, Open mode toggle, Word list visibility, Hints toggle
-**Depends on**: Phase 12
-**Research**: Unlikely (internal UI patterns)
-**Plans**: TBD
+## Future Milestones
 
-Plans:
-- [ ] 13-01: TBD
-
-#### Phase 14: Word Sync NYT
-**Goal**: Overhaul daily word loading system, sync word lists to app, auto-add NYT words daily, implement NYT mode following official daily word
-**Depends on**: Phase 13
-**Research**: Unlikely (internal data handling)
-**Plans**: 1
-
-Plans:
-- [ ] 14-01: JSON word data, freshness tracking, NYT mode toggle
-
-#### Phase 15: Open Mode
-**Goal**: Random word selection with unlimited replays, variable word length support (4-10 letters)
-**Depends on**: Phase 14
-**Research**: Unlikely (extending existing patterns)
-**Plans**: TBD
-
-Plans:
-- [ ] 15-01: TBD
-
-#### Phase 16: Keyboard Enhancements
-**Goal**: Add Enter and Backspace keys to on-screen keyboard
-**Depends on**: Phase 15
-**Research**: Unlikely (existing keyboard component)
-**Plans**: TBD
-
-Plans:
-- [ ] 16-01: TBD
-
-#### Phase 17: Hints System
-**Goal**: 6 progressive hints per word, hidden by default, revealed sequentially via visibility icon click, final hint reveals answer
-**Depends on**: Phase 16
-**Research**: Unlikely (internal feature)
-**Plans**: TBD
-
-Plans:
-- [ ] 17-01: TBD
-
-#### Phase 18: Internationalization
-**Goal**: Language selector in header, English and Portuguese support initially, extensible architecture for more languages
-**Depends on**: Phase 17
-**Research**: Likely (i18n library choice, locale patterns)
-**Research topics**: i18n library options for Vite/TypeScript (i18next, vue-i18n equivalent for vanilla TS), Portuguese word list sources
-**Plans**: TBD
-
-Plans:
-- [ ] 18-01: TBD
+Project is feature-complete. Future enhancements could include:
+- Additional languages (Spanish, French, German)
+- Achievements and badges system
+- Social sharing features
+- Competitive multiplayer mode
 
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → ... → 11 → 12 → 13 → 14 → 15 → 16 → 17 → 18
+All phases complete: 1 → 2 → ... → 17 → 18
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -125,12 +80,12 @@ Phases execute in numeric order: 1 → 2 → ... → 11 → 12 → 13 → 14 →
 | 9. Wordle History | v1.1 | 1/1 | Complete | 2026-01-15 |
 | 10. UI Enhancements | v1.1 | 2/2 | Complete | 2026-01-15 |
 | 11. Game Mode | v1.1 | 1/1 | Complete | 2026-01-16 |
-| 12. Header Layout | v1.2 | 0/? | Not started | - |
-| 13. Settings Menu | v1.2 | 0/? | Not started | - |
-| 14. Word Sync NYT | v1.2 | 0/? | Not started | - |
-| 15. Open Mode | v1.2 | 0/? | Not started | - |
-| 16. Keyboard Enhancements | v1.2 | 0/? | Not started | - |
-| 17. Hints System | v1.2 | 0/? | Not started | - |
-| 18. Internationalization | v1.2 | 2/4 | In progress | - |
+| 12. Header Layout | v1.2 | 1/1 | Complete | 2026-01-19 |
+| 13. Settings Menu | v1.2 | 1/1 | Complete | 2026-01-19 |
+| 14. Word Sync NYT | v1.2 | 1/1 | Complete | 2026-01-19 |
+| 15. Open Mode | v1.2 | 1/1 | Complete | 2026-01-19 |
+| 16. Keyboard Enhancements | v1.2 | 1/1 | Complete | 2026-01-19 |
+| 17. Hints System | v1.2 | 1/1 | Complete | 2026-01-19 |
+| 18. Internationalization | v1.2 | 4/4 | Complete | 2026-01-19 |
 
-**Overall:** 17/18 phases complete (94%)
+**Overall:** 18/18 phases complete (100%)

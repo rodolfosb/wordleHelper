@@ -1,5 +1,33 @@
 # Project Milestones: Wordle Helper
 
+## v1.2 Complete Experience (Shipped: 2026-01-19)
+
+**Delivered:** Full-featured multilingual Wordle with header navigation, settings modal, Open Mode with variable word lengths, progressive hints, and Portuguese language support.
+
+**Phases completed:** 12-18 (10 plans total)
+
+**Key accomplishments:**
+
+- Header navigation bar with clickable on-screen keyboard for mobile users
+- Consolidated settings modal with theme, hints, hard mode, and NYT mode toggles
+- Open Mode with random word selection and variable word lengths (4-10 letters)
+- JSON-based word data with freshness tracking for independent updates
+- Progressive hints system with 6 sequential hints per word (first letter, last letter, vowel count, positions, full reveal)
+- Full Portuguese language support with 157k+ words and accented character keyboard input
+
+**Stats:**
+
+- 60 files modified
+- ~3,800 lines of TypeScript code (plus ~164k lines of Portuguese word data)
+- 7 phases, 10 plans
+- 3 days from v1.1 to ship (2026-01-16 → 2026-01-19)
+
+**Git range:** `2689545` → `cbe68f3`
+
+**What's next:** Project feature-complete. Future enhancements could include additional languages, achievements, or social features.
+
+---
+
 ## v1.1 Features (Shipped: 2026-01-16)
 
 **Delivered:** A playable Wordle game with PWA support, hard mode, session statistics, historical puzzle practice, keyboard hints, light/dark mode, and auto-revealing letter colors.
