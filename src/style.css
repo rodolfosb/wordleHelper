@@ -1011,6 +1011,100 @@ button:focus-visible {
   }
 }
 
+/* Hints Panel */
+.hints-panel {
+  width: 100%;
+  max-width: 350px;
+  margin: 0.75rem auto;
+  padding: 0.75rem;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.hints-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.hints-header svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.hints-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hint-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+  font-size: 0.85rem;
+}
+
+.hint-item.revealed {
+  background: var(--suggestion-top-bg);
+}
+
+.hint-item.final-reveal {
+  background: var(--color-correct);
+  color: white;
+  font-weight: 600;
+}
+
+.hint-eye-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.hint-eye-btn:hover {
+  opacity: 1;
+}
+
+.hint-eye-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
+}
+
+.hint-eye-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.hint-text {
+  flex: 1;
+}
+
+.hint-text.hidden-hint {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.hints-panel.hidden {
+  display: none;
+}
+
 /* Settings Modal Styles */
 .settings-modal-overlay {
   position: fixed;
