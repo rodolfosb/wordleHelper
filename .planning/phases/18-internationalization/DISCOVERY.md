@@ -1,63 +1,85 @@
 # Discovery: Phase 18 - Internationalization (Word Lists)
 
 **Discovery Level:** 2 (Standard Research)
-**Duration:** ~10 min
+**Duration:** ~15 min
 **Date:** 2026-01-19
 
 ## Scope Clarification
 
-**User Decision:** Focus on adding Portuguese words for gameplay, not UI translation.
+**User Decision:**
+- Word lists for **all lengths (4-10)** for both English and Portuguese
+- Architecture designed for **future language additions**
+- Keyboard with **long-press accent support** for language-specific characters
 
-**Feature:** Language selector in Open Mode allowing users to choose between English and Portuguese word lists.
+**Feature:** Language selector in Open Mode allowing users to choose between English and Portuguese word lists, with keyboard support for accented characters.
 
 ## Portuguese Word List Source
 
-**Primary Source:** [Gpossas/Termo GitHub Repository](https://github.com/Gpossas/Termo)
-- File: `br-utf8.txt-5-letras.txt`
-- Word count: ~6,016 five-letter Portuguese words
-- Source origin: https://www.ime.usp.br/~pf/dicios/
+**Primary Source:** [IME-USP Dictionary](https://www.ime.usp.br/~pf/dicios/)
+- File: `br-utf8.txt` (comprehensive Brazilian Portuguese dictionary)
 - Format: UTF-8 encoded text, one word per line
+- License: Creative Commons Attribution (CC BY)
+- Filter by length to generate 4, 5, 6, 7, 8, 9, 10 letter word lists
 
-**Considerations:**
-- Words include accented characters (á, é, í, ó, ú, ã, õ, ç, etc.)
-- Need to handle character validation in grid input
-- Keyboard display needs to show Portuguese letters
+**Estimated Word Counts by Length:**
+
+| Length | Estimated Count |
+|--------|-----------------|
+| 4 letters | 2,000 - 5,000 |
+| 5 letters | 5,000 - 10,000 |
+| 6 letters | 8,000 - 15,000 |
+| 7 letters | 10,000 - 20,000 |
+| 8 letters | 12,000 - 25,000 |
+| 9 letters | 10,000 - 20,000 |
+| 10 letters | 8,000 - 18,000 |
+
+**Portuguese Characters:**
+- Vowels with accents: á, à, â, ã, é, ê, í, ó, ô, õ, ú
+- Cedilla: ç
 
 ## Architecture Decision
 
 ### Word List Organization
 
-Current structure (English only):
+**Current structure (flat, English only):**
 ```
 src/data/
-  words.ts      # 5-letter English (2,309 words)
+  words.ts      # 5-letter English (2,309 words) + helper functions
   words4.ts     # 4-letter English
   words6.ts     # 6-letter English
   ... (7, 8, 9, 10)
 ```
 
-Proposed structure (English + Portuguese):
+**New structure (folder per language):**
 ```
 src/data/
   words/
+    index.ts       # Re-exports, types, helper functions
     en/
-      words5.ts   # 5-letter English (move from words.ts)
-      words4.ts   # 4-letter English (move existing)
-      ... (6, 7, 8, 9, 10)
+      index.ts     # English exports
+      words4.ts    # 4-letter English
+      words5.ts    # 5-letter English (moved from words.ts)
+      words6.ts    # 6-letter English
+      words7.ts
+      words8.ts
+      words9.ts
+      words10.ts
     pt/
-      words5.ts   # 5-letter Portuguese (~6,000 words)
+      index.ts     # Portuguese exports
+      words4.ts    # 4-letter Portuguese
+      words5.ts    # 5-letter Portuguese
+      words6.ts    # 6-letter Portuguese
+      words7.ts
+      words8.ts
+      words9.ts
+      words10.ts
 ```
 
-**Alternative (simpler):** Keep existing structure, add Portuguese as new files:
-```
-src/data/
-  words.ts           # English 5-letter (existing)
-  words4.ts          # English 4-letter (existing)
-  ...
-  wordsPt5.ts        # Portuguese 5-letter (new)
-```
-
-**Decision:** Use simpler approach - add `wordsPt5.ts` alongside existing files. Avoids restructuring working code.
+**Benefits:**
+- Clean separation by language
+- Easy to add new languages (es/, fr/, de/, etc.)
+- Each language folder has consistent structure
+- Single import point via `src/data/words/index.ts`
 
 ### Language Setting
 
@@ -65,6 +87,33 @@ Add `wordLanguage: 'en' | 'pt'` to AppSettings:
 - Default: 'en'
 - Only affects Open Mode (NYT Mode always uses English)
 - Persisted in localStorage with other settings
+
+### Keyboard Enhancement: Long-Press Accents
+
+**Approach:** Hold a key to show accent popup
+
+1. **Detection:** Track pointer/touch duration on letter keys
+2. **Popup:** After 500ms hold, show accent options above the key
+3. **Selection:**
+   - Drag to desired accent and release
+   - Or tap accent option
+4. **Accent Map by Language:**
+
+```typescript
+const ACCENT_MAP: Record<string, Record<string, string[]>> = {
+  pt: {
+    a: ['á', 'à', 'â', 'ã'],
+    e: ['é', 'ê'],
+    i: ['í'],
+    o: ['ó', 'ô', 'õ'],
+    u: ['ú'],
+    c: ['ç'],
+  },
+  // Future: add es, fr, de, etc.
+};
+```
+
+5. **Physical keyboard:** Accept accented characters directly (no change needed)
 
 ### UI Changes
 
@@ -76,59 +125,48 @@ Add `wordLanguage: 'en' | 'pt'` to AppSettings:
    - "Open Mode (5 letters) - English"
    - "Open Mode (5 letters) - Português"
 
-3. **Keyboard**: When Portuguese selected, need to support accented characters
-   - Option A: Add accent row to keyboard
-   - Option B: Support typing accents via key combinations
-   - **Decision:** Option B - simpler, keeps keyboard layout consistent
+3. **Keyboard**: Long-press accent popup for on-screen keyboard
 
-### Character Handling
+## Implementation Plan
 
-Portuguese characters to support:
-- Vowels with accents: á, à, â, ã, é, ê, í, ó, ô, õ, ú
-- Cedilla: ç
+### Plan 18-01: Restructure Word List Architecture (Wave 1)
+- Create new folder structure `src/data/words/`
+- Move English word files to `src/data/words/en/`
+- Create index files with helper functions
+- Update all imports across codebase
+- Maintain backward compatibility during transition
 
-**Keyboard input approach:**
-- Physical keyboard: Accept accented characters directly
-- On-screen keyboard: User types base letter, word validation handles accents
-- Alternative: Normalize accents for matching (risky - changes game difficulty)
+### Plan 18-02: Add Portuguese Word Lists (Wave 2)
+- Fetch IME-USP dictionary
+- Filter and generate Portuguese word files for lengths 4-10
+- Create `src/data/words/pt/` with all word files
+- Add Portuguese exports to main index
 
-**Decision:** Accept accented characters in input. Grid cells display exactly what user types. Validation uses Portuguese word list with accents.
+### Plan 18-03: Keyboard Long-Press Accent Support (Wave 2)
+- Add hold detection to Keyboard component
+- Create accent popup UI
+- Implement accent map for Portuguese
+- Handle touch and mouse interactions
+- Style accent popup
 
-### Word Length Support
+### Plan 18-04: UI Integration (Wave 3)
+- Add `wordLanguage` to AppSettings
+- Add language selector to SettingsModal
+- Update word validation to use language
+- Update Open Mode to use language setting
+- Update puzzle info display
 
-Portuguese word lists available:
-- 5 letters: Yes (~6,000 words from Termo)
-- 4, 6, 7, 8, 9, 10 letters: Not readily available
-
-**Decision for Phase 18:** Portuguese support for 5-letter words only.
-- When Portuguese selected + word length ≠ 5, show warning or auto-switch to English
-- Or: Disable word length selector when Portuguese selected (like NYT Mode)
-
-**Simpler approach:** When Portuguese selected, word length is fixed at 5. This mirrors how Termo works.
-
-## Implementation Summary
-
-### Files to Create
-- `src/data/wordsPt5.ts` - Portuguese 5-letter word list
-
-### Files to Modify
-- `src/types/index.ts` - Add `wordLanguage` to AppSettings
-- `src/utils/settings.ts` - Add default for wordLanguage
-- `src/ui/SettingsModal.ts` - Add language dropdown
-- `src/data/words.ts` - Add `getWordListForLanguage()` helper
-- `src/main.ts` - Use language setting in Open Mode, update puzzle info
-
-### Scope Constraints
+## Scope Summary
 
 **In scope:**
-- Portuguese 5-letter word list (~6,000 words)
+- Word lists for 4-10 letter words in English and Portuguese
+- Folder-per-language architecture for future extensibility
 - Language selector in Settings (English / Português)
+- Long-press accent keyboard support
 - Language setting persisted in localStorage
 - Open Mode uses selected language
-- Word length fixed to 5 when Portuguese selected
 
 **Out of scope:**
-- Portuguese word lists for lengths 4, 6, 7, 8, 9, 10
 - UI translation (labels, buttons, messages stay English)
-- Keyboard layout changes for accented characters
-- NYT Mode with Portuguese (NYT puzzles are English)
+- NYT Mode with other languages (NYT puzzles are English)
+- Additional languages beyond Portuguese (future phases)
