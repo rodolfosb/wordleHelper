@@ -1,5 +1,6 @@
 import type { HistoricalPuzzle, TodaysPuzzleResult } from '../types';
 import { getFirstDate, isDataStale, WORDLE_ANSWERS } from './wordleAnswers';
+import { fetchTodaysAnswer, fetchAnswerByDate } from '../utils/nytApi';
 
 // Wordle #0 was June 19, 2021
 const WORDLE_EPOCH = new Date('2021-06-19T00:00:00');
@@ -117,4 +118,60 @@ export function getTodaysPuzzle(): TodaysPuzzleResult | null {
     isFallback: false,
     dataStale: isDataStale(),
   };
+}
+
+/**
+ * Get today's puzzle from NYT API with fallback to embedded data
+ *
+ * Tries to fetch from NYT API first for the most up-to-date answer.
+ * Falls back to embedded data if API is unavailable.
+ *
+ * @returns Promise resolving to TodaysPuzzleResult with puzzle and source indicator
+ */
+export async function getTodaysPuzzleAsync(): Promise<TodaysPuzzleResult | null> {
+  // Try to fetch from NYT API first
+  try {
+    const nytAnswer = await fetchTodaysAnswer();
+    if (nytAnswer) {
+      return {
+        puzzle: {
+          game: nytAnswer.game,
+          date: nytAnswer.date,
+          answer: nytAnswer.answer,
+        },
+        isFallback: false,
+        dataStale: false,
+      };
+    }
+  } catch (e) {
+    console.warn('Failed to fetch from NYT API:', e);
+  }
+
+  // Fall back to synchronous embedded data lookup
+  return getTodaysPuzzle();
+}
+
+/**
+ * Get puzzle by date, trying NYT API first
+ *
+ * @param date - Date string in "YYYY-MM-DD" format
+ * @returns Promise resolving to puzzle data or null if not found
+ */
+export async function getPuzzleByDateAsync(date: string): Promise<HistoricalPuzzle | null> {
+  // Try NYT API first
+  try {
+    const nytAnswer = await fetchAnswerByDate(date);
+    if (nytAnswer) {
+      return {
+        game: nytAnswer.game,
+        date: nytAnswer.date,
+        answer: nytAnswer.answer,
+      };
+    }
+  } catch (e) {
+    console.warn(`Failed to fetch ${date} from NYT API:`, e);
+  }
+
+  // Fall back to embedded data lookup
+  return getPuzzleByDate(date);
 }

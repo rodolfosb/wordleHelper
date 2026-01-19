@@ -15,7 +15,7 @@ import { loadStats, saveStats, recordGame } from './logic/stats';
 import { setTheme } from './utils/theme';
 import { loadSettings, saveSettings } from './utils/settings';
 import { calculateLetterStatuses } from './logic/gameLogic';
-import { getTodaysPuzzle } from './data/history';
+import { getTodaysPuzzleAsync } from './data/history';
 
 // Create guess grid HTML structure (initial structure, GuessGrid handles dynamic rebuild)
 function createGuessGrid(wordLength: number = 5): string {
@@ -295,7 +295,7 @@ function updatePuzzleInfo(puzzle: HistoricalPuzzle | null, isNYTMode: boolean, i
 }
 
 // Initialize game with today's puzzle or open mode based on settings
-function initializeGame(): void {
+async function initializeGame(): Promise<void> {
   if (!appSettings.nytMode) {
     // Open mode: select random word based on word length and language settings
     currentPuzzle = null;
@@ -325,7 +325,8 @@ function initializeGame(): void {
   // Ensure grid is set to 5 letters for NYT mode
   guessGrid.setWordLength(5);
 
-  const result = getTodaysPuzzle();
+  // Try async API first (fetches from NYT), falls back to embedded data
+  const result = await getTodaysPuzzleAsync();
   if (result) {
     currentPuzzle = result.puzzle;
     guessGrid.setGameMode(true);

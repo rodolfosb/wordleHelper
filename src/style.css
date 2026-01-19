@@ -345,6 +345,17 @@ button:focus-visible {
   border-color: var(--cell-border);
 }
 
+/* Hints Area */
+.hints-area {
+  width: 100%;
+  opacity: 0.85;
+  margin-bottom: 0.5rem;
+}
+
+.hints-area.hidden {
+  display: none;
+}
+
 /* Suggestions Panel Styles */
 .suggestions-area {
   width: 100%;
@@ -1016,36 +1027,71 @@ button:focus-visible {
   }
 }
 
-/* Hints Panel */
+/* Hints Panel - matches suggestions-panel styling */
 .hints-panel {
-  width: 100%;
-  max-width: 350px;
-  margin: 0.75rem auto;
-  padding: 0.75rem;
-  background: var(--bg-secondary);
+  background-color: var(--bg-secondary);
   border-radius: 8px;
-  border: 1px solid var(--border-color);
+  padding: 0.75rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .hints-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  font-size: 0.9rem;
+  padding-bottom: 0.4rem;
 }
 
-.hints-header svg {
-  width: 18px;
-  height: 18px;
+.hints-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.hints-title svg {
+  width: 16px;
+  height: 16px;
   fill: currentColor;
 }
 
-.hints-list {
+.hints-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 0.35rem 0.6rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.hints-toggle:hover {
+  background-color: var(--bg-tertiary);
+  border-color: var(--cell-filled-border);
+  color: var(--text-primary);
+}
+
+.hints-toggle .toggle-icon {
+  font-size: 0.7rem;
+}
+
+.hints-body {
+  border-top: 1px solid var(--border-color);
+  padding-top: 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.hints-body.collapsed {
+  display: none;
 }
 
 .hint-item {
@@ -1204,6 +1250,7 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  text-align: left;
 }
 
 .settings-name {

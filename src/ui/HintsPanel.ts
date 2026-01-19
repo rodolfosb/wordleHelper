@@ -8,6 +8,7 @@ export class HintsPanel {
   private answer: string = '';
   private hintsRevealed: number = 0;
   private wordLength: number = 5;
+  private isCollapsed: boolean = true;
 
   constructor(containerElement: HTMLElement) {
     this.containerElement = containerElement;
@@ -80,12 +81,23 @@ export class HintsPanel {
   }
 
   /**
+   * Toggle the collapsed state
+   */
+  private toggleCollapse(): void {
+    this.isCollapsed = !this.isCollapsed;
+    this.render();
+  }
+
+  /**
    * Render the hints panel
    */
   public render(): void {
     if (!this.panelElement) return;
 
     const hints = this.generateHints(this.answer);
+    const collapsedClass = this.isCollapsed ? 'collapsed' : '';
+    const toggleIcon = this.isCollapsed ? '▶' : '▼';
+    const toggleText = this.isCollapsed ? 'Show' : 'Hide';
 
     let hintsListHtml = '';
     for (let i = 0; i < 6; i++) {
@@ -114,23 +126,30 @@ export class HintsPanel {
 
     this.panelElement.innerHTML = `
       <div class="hints-header">
-        ${this.getLightbulbIcon()}
-        <span>Hints</span>
+        <span class="hints-title">${this.getLightbulbIcon()} Hints</span>
+        <button class="hints-toggle" aria-expanded="${!this.isCollapsed}">
+          <span class="toggle-icon">${toggleIcon}</span>
+          <span class="toggle-text">${toggleText}</span>
+        </button>
       </div>
-      <div class="hints-list">
+      <div class="hints-body ${collapsedClass}">
         ${hintsListHtml}
       </div>
     `;
 
-    // Attach click handlers to eye buttons
+    // Attach click handlers to eye buttons and toggle
     this.attachEventHandlers();
   }
 
   /**
-   * Attach click handlers to hint eye buttons
+   * Attach click handlers to hint eye buttons and toggle
    */
   private attachEventHandlers(): void {
     if (!this.panelElement) return;
+
+    // Toggle button click handler
+    const toggleBtn = this.panelElement.querySelector('.hints-toggle');
+    toggleBtn?.addEventListener('click', () => this.toggleCollapse());
 
     const eyeButtons = this.panelElement.querySelectorAll('.hint-eye-btn');
     eyeButtons.forEach((btn) => {
