@@ -9,12 +9,12 @@ See: .planning/PROJECT.md (updated 2026-01-16)
 
 ## Current Position
 
-Phase: 15 of 18 (Open Mode)
+Phase: 16 of 18 (Keyboard Enhancements)
 Plan: 01 complete
-Status: Ready for UAT
-Last activity: 2026-01-19 — Phase 15 Plan 01 complete
+Status: Phase complete (verification only - Enter/Backspace already implemented in Phase 12)
+Last activity: 2026-01-19 — Phase 16 Plan 01 complete (verified existing implementation)
 
-Progress: ████████░░ 83%
+Progress: ████████░░ 89%
 
 ## Performance Metrics
 
@@ -63,6 +63,10 @@ See milestone archives for historical decisions:
 - Grid uses CSS custom property --word-length for dynamic columns
 - Open Mode synthetic puzzle uses game: -1 to distinguish from real puzzles
 
+**Phase 16-01:**
+- Enter and Backspace keys already implemented in Phase 12 (header-layout)
+- No code changes required - verification only confirmed existing implementation
+
 ### Deferred Issues
 
 None.
@@ -88,5 +92,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-19
-Stopped at: Phase 15 Plan 01 complete, ready for UAT
+Stopped at: Phase 16 Plan 01 complete, ready for next phase
 Resume file: None
