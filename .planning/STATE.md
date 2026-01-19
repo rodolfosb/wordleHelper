@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-19)
 
 **Core value:** A complete Wordle experience that works anywhere—play daily or historical puzzles, practice in multiple languages with variable word lengths, track your stats, and get progressive hints when stuck.
-**Current focus:** Project feature-complete (v1.2 shipped)
+**Current focus:** Deploy to custom domain via Vercel
 
 ## Current Position
 
-Phase: 18 of 18 (all complete)
-Plan: All plans complete
-Status: v1.2 Complete Experience shipped
-Last activity: 2026-01-19 — v1.2 milestone complete
+Phase: 19 of 23 (Vercel Setup)
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-01-19 — Milestone v1.3 Deployment created
 
-Progress: ██████████ 100%
+Progress: ██████████░░ 78%
 
 ## Performance Metrics
 
@@ -58,9 +58,10 @@ None — all milestone concerns addressed.
 - v1.0 MVP shipped 2026-01-13 (Phases 1-5)
 - v1.1 Features shipped 2026-01-16 (Phases 6-11)
 - v1.2 Complete Experience shipped 2026-01-19 (Phases 12-18)
+- Milestone v1.3 Deployment created: Vercel + custom Cloudflare subdomain, 5 phases (Phase 19-23)
 
 ## Session Continuity
 
 Last session: 2026-01-19
-Stopped at: v1.2 milestone complete - Project feature-complete
+Stopped at: Milestone v1.3 initialization
 Resume file: None
