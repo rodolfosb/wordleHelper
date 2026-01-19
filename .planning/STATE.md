@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-01-16)
 
 ## Current Position
 
-Phase: 13 of 18 (Settings Menu)
+Phase: 14 of 18 (Word Sync NYT)
 Plan: 01 complete
 Status: Ready for next plan
-Last activity: 2026-01-19 — Phase 13 Plan 01 complete
+Last activity: 2026-01-19 — Phase 14 Plan 01 complete
 
-Progress: ███████░░░ 69%
+Progress: ████████░░ 78%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 18 (v1.0: 9, v1.1: 8, v1.2: 1)
+- Total plans completed: 19 (v1.0: 9, v1.1: 8, v1.2: 2)
 - Average duration: ~10 min
-- Total execution time: ~184 min
+- Total execution time: ~189 min
 
 **By Milestone:**
 
@@ -50,6 +50,13 @@ See milestone archives for historical decisions:
 - Theme toggle moved from header into settings modal
 - CSS-only toggle switches (40x24px pill-shaped)
 
+**Phase 14-01:**
+- Word data stored as JSON file for independent updates (src/data/wordleAnswers.json)
+- Data freshness tracking: getDataAge(), isDataStale(), getMissingPuzzleCount()
+- Stale data threshold >1 day, warning displayed with amber styling
+- NYT mode defaults to true, toggle in settings
+- Open mode disables game mode auto-color reveal
+
 ### Deferred Issues
 
 None.
@@ -63,8 +70,7 @@ None.
 **From milestone context:**
 - Word lists need Portuguese words for i18n support
 - Variable word length (4-10) requires word lists for each length
-- NYT word auto-sync mechanism needs to handle daily updates reliably
-- Daily word loading not working optimally — needs complete overhaul
+- NYT word auto-sync mechanism needs to handle daily updates reliably (ADDRESSED: JSON now updatable independently)
 - Hard mode functionality needs to be re-established
 
 ### Roadmap Evolution
@@ -76,5 +82,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-19
-Stopped at: Phase 13 Plan 01 complete
+Stopped at: Phase 14 Plan 01 complete
 Resume file: None
