@@ -65,10 +65,10 @@ Plans:
 **Goal**: Overhaul daily word loading system, sync word lists to app, auto-add NYT words daily, implement NYT mode following official daily word
 **Depends on**: Phase 13
 **Research**: Unlikely (internal data handling)
-**Plans**: TBD
+**Plans**: 1
 
 Plans:
-- [ ] 14-01: TBD
+- [ ] 14-01: JSON word data, freshness tracking, NYT mode toggle
 
 #### Phase 15: Open Mode
 **Goal**: Random word selection with unlimited replays, variable word length support (4-10 letters)
