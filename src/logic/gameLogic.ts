@@ -12,9 +12,12 @@ export function calculateLetterStatuses(
   guess: string,
   answer: string
 ): LetterStatus[] {
-  const result: LetterStatus[] = ['gray', 'gray', 'gray', 'gray', 'gray'];
-  const answerChars = answer.toLowerCase().split('');
   const guessChars = guess.toLowerCase().split('');
+  const answerChars = answer.toLowerCase().split('');
+  const wordLength = guessChars.length;
+
+  // Initialize result array with 'gray' for each letter
+  const result: LetterStatus[] = Array(wordLength).fill('gray');
   const answerCharCounts: Record<string, number> = {};
 
   // Count available letters in answer
@@ -23,7 +26,7 @@ export function calculateLetterStatuses(
   }
 
   // First pass: mark greens (exact position matches)
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < wordLength; i++) {
     if (guessChars[i] === answerChars[i]) {
       result[i] = 'green';
       answerCharCounts[guessChars[i]]--;
@@ -31,7 +34,7 @@ export function calculateLetterStatuses(
   }
 
   // Second pass: mark yellows (letter exists but wrong position)
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < wordLength; i++) {
     if (result[i] === 'green') continue; // Already matched
     const char = guessChars[i];
     if (answerCharCounts[char] && answerCharCounts[char] > 0) {
