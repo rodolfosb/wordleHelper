@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-01-16)
 
 ## Current Position
 
-Phase: 16 of 18 (Keyboard Enhancements)
+Phase: 17 of 18 (Hints System)
 Plan: 01 complete
-Status: Phase complete (verification only - Enter/Backspace already implemented in Phase 12)
-Last activity: 2026-01-19 — Phase 16 Plan 01 complete (verified existing implementation)
+Status: Phase complete - Progressive hints system with 6 sequential hints
+Last activity: 2026-01-19 — Phase 17 Plan 01 complete
 
-Progress: ████████░░ 89%
+Progress: █████████░ 94%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 20 (v1.0: 9, v1.1: 8, v1.2: 3)
+- Total plans completed: 21 (v1.0: 9, v1.1: 8, v1.2: 4)
 - Average duration: ~10 min
-- Total execution time: ~189 min
+- Total execution time: ~214 min
 
 **By Milestone:**
 
@@ -67,6 +67,11 @@ See milestone archives for historical decisions:
 - Enter and Backspace keys already implemented in Phase 12 (header-layout)
 - No code changes required - verification only confirmed existing implementation
 
+**Phase 17-01:**
+- HintsPanel positioned below Reset Game button, above suggestions (changed from original plan)
+- Panel visibility controlled via parent container hidden class, not panel element
+- Sequential reveal enforced (must reveal hints 1-6 in order)
+
 ### Deferred Issues
 
 None.
@@ -92,5 +97,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-19
-Stopped at: Phase 16 Plan 01 complete, ready for next phase
+Stopped at: Phase 17 Plan 01 complete, ready for Phase 18
 Resume file: None
