@@ -2420,55 +2420,82 @@ export { WORD_LIST_8, WORD_SET_8 };
 export { WORD_LIST_9, WORD_SET_9 };
 export { WORD_LIST_10, WORD_SET_10 };
 
+// Cache for filtered word lists (ensures we only filter once per length)
+const filteredWordListCache: Map<number, string[]> = new Map();
+
 /**
  * Get the word list for a given word length
  * Returns the appropriate word list for Open Mode
+ * Filters to ensure all words are exactly the specified length and ASCII-only
  * @param length - Word length (4-10)
  * @returns Array of words of the specified length
  */
 export function getWordListForLength(length: number): string[] {
+  // Check cache first
+  if (filteredWordListCache.has(length)) {
+    return filteredWordListCache.get(length)!;
+  }
+
+  let rawList: string[];
   switch (length) {
     case 4:
-      return WORD_LIST_4;
+      rawList = WORD_LIST_4;
+      break;
     case 5:
-      return WORD_LIST;
+      rawList = WORD_LIST;
+      break;
     case 6:
-      return WORD_LIST_6;
+      rawList = WORD_LIST_6;
+      break;
     case 7:
-      return WORD_LIST_7;
+      rawList = WORD_LIST_7;
+      break;
     case 8:
-      return WORD_LIST_8;
+      rawList = WORD_LIST_8;
+      break;
     case 9:
-      return WORD_LIST_9;
+      rawList = WORD_LIST_9;
+      break;
     case 10:
-      return WORD_LIST_10;
+      rawList = WORD_LIST_10;
+      break;
     default:
-      return WORD_LIST; // Default to 5-letter words
+      rawList = WORD_LIST;
+      break;
   }
+
+  // Filter to ensure correct length and ASCII-only lowercase letters
+  const filtered = rawList.filter(word =>
+    word.length === length && /^[a-z]+$/.test(word)
+  );
+
+  // Cache the result
+  filteredWordListCache.set(length, filtered);
+
+  return filtered;
 }
+
+// Cache for filtered word sets (ensures we only create sets once per length)
+const filteredWordSetCache: Map<number, Set<string>> = new Map();
 
 /**
  * Get the word set for a given word length (O(1) lookup)
+ * Creates a set from the filtered word list to ensure correct length validation
  * @param length - Word length (4-10)
  * @returns Set of words of the specified length
  */
 export function getWordSetForLength(length: number): Set<string> {
-  switch (length) {
-    case 4:
-      return WORD_SET_4;
-    case 5:
-      return WORD_SET;
-    case 6:
-      return WORD_SET_6;
-    case 7:
-      return WORD_SET_7;
-    case 8:
-      return WORD_SET_8;
-    case 9:
-      return WORD_SET_9;
-    case 10:
-      return WORD_SET_10;
-    default:
-      return WORD_SET; // Default to 5-letter words
+  // Check cache first
+  if (filteredWordSetCache.has(length)) {
+    return filteredWordSetCache.get(length)!;
   }
+
+  // Get the filtered word list and create a set from it
+  const wordList = getWordListForLength(length);
+  const wordSet = new Set(wordList);
+
+  // Cache the result
+  filteredWordSetCache.set(length, wordSet);
+
+  return wordSet;
 }
