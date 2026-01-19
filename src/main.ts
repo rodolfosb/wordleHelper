@@ -1,6 +1,6 @@
 import './style.css';
 import type { Constraints, SessionStats, HistoricalPuzzle, AppSettings } from './types';
-import { WORD_LIST, getWordListForLength } from './data/words';
+import { WORD_LIST, getWordListForLength, getWordListForLanguageAndLength } from './data/words';
 import { GuessGrid } from './ui/GuessGrid';
 import { Suggestions } from './ui/Suggestions';
 import { Keyboard } from './ui/Keyboard';
@@ -127,9 +127,10 @@ let hardModeEnabled: boolean = appSettings.hardMode;
 const appContainer = document.querySelector<HTMLElement>('.app-container')!;
 const statsModal = new StatsModal(appContainer);
 
-// Track previous nytMode and wordLength to detect changes
+// Track previous nytMode, wordLength, and wordLanguage to detect changes
 let previousNytMode: boolean = true;
 let previousWordLength: number = 5;
+let previousWordLanguage: 'en' | 'pt' = 'en';
 
 // Helper function to select a random word from the word list
 function selectRandomWord(wordList: string[]): string {
@@ -189,6 +190,21 @@ function applySettings(settings: AppSettings, isInitial: boolean = false): void 
     resetGame();
   }
   previousWordLength = settings.wordLength;
+
+  // Apply word language change in Open Mode (but not on initial load)
+  if (!isInitial && !settings.nytMode && settings.wordLanguage !== previousWordLanguage) {
+    // Exit practice mode if active
+    if (practiceMode) {
+      practiceMode = false;
+      practiceIndicator.classList.add('hidden');
+    }
+    // Reset and reinitialize with new language
+    resetGame();
+  }
+  previousWordLanguage = settings.wordLanguage;
+
+  // Enable/disable keyboard accents based on language
+  keyboard.setAccentsEnabled(settings.wordLanguage === 'pt');
 }
 
 // Settings change handler
@@ -204,6 +220,7 @@ const settingsModal = new SettingsModal(appContainer, handleSettingsChange);
 // Apply initial settings (isInitial=true to avoid resetting on startup)
 applySettings(appSettings, true);
 previousNytMode = appSettings.nytMode;
+previousWordLanguage = appSettings.wordLanguage;
 
 // Initialize HistoryPicker
 const historyPicker = new HistoryPicker('app-container', startPracticeMode);
@@ -250,8 +267,9 @@ function formatDateForDisplay(dateStr: string): string {
 // Helper function to update the puzzle info displayed above the grid
 function updatePuzzleInfo(puzzle: HistoricalPuzzle | null, isNYTMode: boolean, isFallback: boolean = false, wordLength: number = 5): void {
   if (!puzzle && !isNYTMode) {
-    // Open Mode: show word length
-    puzzleInfo.textContent = `Open Mode (${wordLength} letters)`;
+    // Open Mode: show word length and language
+    const langLabel = appSettings.wordLanguage === 'pt' ? 'Portugues' : 'English';
+    puzzleInfo.textContent = `Open Mode (${wordLength} letters) - ${langLabel}`;
     puzzleInfo.classList.remove('stale-data-warning');
     return;
   }
@@ -277,12 +295,12 @@ function updatePuzzleInfo(puzzle: HistoricalPuzzle | null, isNYTMode: boolean, i
 // Initialize game with today's puzzle or open mode based on settings
 function initializeGame(): void {
   if (!appSettings.nytMode) {
-    // Open mode: select random word based on word length setting
+    // Open mode: select random word based on word length and language settings
     currentPuzzle = null;
     currentWordLength = appSettings.wordLength;
 
-    // Get word list for current length and select random target
-    const wordList = getWordListForLength(currentWordLength);
+    // Get word list for current length and language, then select random target
+    const wordList = getWordListForLanguageAndLength(appSettings.wordLanguage, currentWordLength);
     openModeTarget = selectRandomWord(wordList);
 
     // Update grid for new word length
@@ -328,8 +346,8 @@ function initializeGame(): void {
 // Initialize game on app start
 initializeGame();
 
-// Display initial suggestions (full word list ranked for current word length)
-const initialWordList = getWordListForLength(currentWordLength);
+// Display initial suggestions (full word list ranked for current word length and language)
+const initialWordList = getWordListForLanguageAndLength(appSettings.wordLanguage, currentWordLength);
 filteredWords = initialWordList;
 const initialRankedWords = rankWords(initialWordList, initialWordList);
 suggestions.update(initialRankedWords, initialWordList.length);
@@ -353,8 +371,8 @@ suggestions.onWordClick(handleSuggestionClick);
 function updateSuggestions(): void {
   const allFeedback = guessGrid.getAllFeedback();
 
-  // Get the appropriate word list for current word length
-  const wordList = getWordListForLength(currentWordLength);
+  // Get the appropriate word list for current word length and language
+  const wordList = getWordListForLanguageAndLength(appSettings.wordLanguage, currentWordLength);
 
   // Rebuild constraints from all complete rows
   let constraints: Constraints = createEmptyConstraints();
@@ -400,8 +418,8 @@ guessGrid.onSubmit((row: number) => {
 
   const word = guessGrid.getCurrentWord();
 
-  // Check if word is valid using the current word length's word list
-  if (!isValidWord(word, currentWordLength)) {
+  // Check if word is valid using the current word length and language
+  if (!isValidWord(word, currentWordLength, appSettings.wordLanguage)) {
     // Shake row and show message for invalid word, don't advance
     guessGrid.shakeRow(row);
     showGameMessage('Not in word list', 'error');
@@ -525,8 +543,8 @@ function resetGame(): void {
     initializeGame();
   }
 
-  // Reset suggestions to show full word list ranked for current word length
-  const wordList = getWordListForLength(currentWordLength);
+  // Reset suggestions to show full word list ranked for current word length and language
+  const wordList = getWordListForLanguageAndLength(appSettings.wordLanguage, currentWordLength);
   filteredWords = wordList;
   const rankedWords = rankWords(wordList, wordList);
   suggestions.update(rankedWords, wordList.length);
