@@ -2,17 +2,18 @@
  * Word filtering based on Wordle constraints
  */
 import type { Constraints } from '../types';
-import { WORD_SET, getWordSetForLength } from '../data/words';
+import { WORD_SET, getWordSetForLanguageAndLength, type WordLanguage } from '../data/words';
 
 /**
- * Check if a word exists in the word list
- * @param word - The word to check
- * @param wordLength - Optional word length to use specific word set (defaults to word's length)
+ * Check if a word is valid (exists in word list for given length and language)
+ * @param word - The word to validate
+ * @param length - The word length to check against (defaults to 5)
+ * @param language - The word language to check against (defaults to 'en')
+ * @returns True if word is valid
  */
-export function isValidWord(word: string, wordLength?: number): boolean {
-  const length = wordLength ?? word.length;
-  const wordSet = getWordSetForLength(length);
-  return wordSet.has(word);
+export function isValidWord(word: string, length: number = 5, language: WordLanguage = 'en'): boolean {
+  const wordSet = getWordSetForLanguageAndLength(language, length);
+  return wordSet.has(word.toLowerCase());
 }
 
 /**
