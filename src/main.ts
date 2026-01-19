@@ -117,8 +117,11 @@ let hardModeEnabled: boolean = appSettings.hardMode;
 const appContainer = document.querySelector<HTMLElement>('.app-container')!;
 const statsModal = new StatsModal(appContainer);
 
+// Track previous nytMode to detect changes
+let previousNytMode: boolean = true;
+
 // Helper function to apply settings to the app
-function applySettings(settings: AppSettings): void {
+function applySettings(settings: AppSettings, isInitial: boolean = false): void {
   // Apply theme
   if (settings.theme === 'system') {
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -136,6 +139,19 @@ function applySettings(settings: AppSettings): void {
 
   // Apply hard mode
   hardModeEnabled = settings.hardMode;
+
+  // Apply NYT mode change - reinitialize game if mode changed (but not on initial load)
+  if (!isInitial && settings.nytMode !== previousNytMode) {
+    previousNytMode = settings.nytMode;
+    // Exit practice mode if active
+    if (practiceMode) {
+      practiceMode = false;
+      practiceIndicator.classList.add('hidden');
+    }
+    // Reset and reinitialize with new mode
+    resetGame();
+  }
+  previousNytMode = settings.nytMode;
 }
 
 // Settings change handler
@@ -148,8 +164,9 @@ function handleSettingsChange(settings: AppSettings): void {
 // Initialize SettingsModal
 const settingsModal = new SettingsModal(appContainer, handleSettingsChange);
 
-// Apply initial settings
-applySettings(appSettings);
+// Apply initial settings (isInitial=true to avoid resetting on startup)
+applySettings(appSettings, true);
+previousNytMode = appSettings.nytMode;
 
 // Initialize HistoryPicker
 const historyPicker = new HistoryPicker('app-container', startPracticeMode);
@@ -218,8 +235,17 @@ function updatePuzzleInfo(puzzle: HistoricalPuzzle | null, isNYTMode: boolean, i
   }
 }
 
-// Initialize game with today's puzzle
+// Initialize game with today's puzzle or open mode based on settings
 function initializeGame(): void {
+  if (!appSettings.nytMode) {
+    // Open mode: no specific puzzle, clear current puzzle
+    currentPuzzle = null;
+    guessGrid.setGameMode(false);
+    updatePuzzleInfo(null, false);
+    return;
+  }
+
+  // NYT mode: load today's puzzle
   const result = getTodaysPuzzle();
   if (result) {
     currentPuzzle = result.puzzle;
@@ -230,6 +256,8 @@ function initializeGame(): void {
   } else {
     // No puzzle data available at all - fallback to Open mode
     console.warn('No puzzle data available');
+    currentPuzzle = null;
+    guessGrid.setGameMode(false);
     updatePuzzleInfo(null, false);
   }
 }

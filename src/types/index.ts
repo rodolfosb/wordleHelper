@@ -101,4 +101,5 @@ export interface AppSettings {
   theme: 'light' | 'dark' | 'system';
   showSuggestions: boolean;
   hardMode: boolean;
+  nytMode: boolean;  // true: follow NYT daily puzzle, false: open mode
 }

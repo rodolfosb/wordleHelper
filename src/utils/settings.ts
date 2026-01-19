@@ -9,6 +9,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   theme: 'system',
   showSuggestions: true,
   hardMode: false,
+  nytMode: true,  // Default to NYT mode
 };
 
 /**

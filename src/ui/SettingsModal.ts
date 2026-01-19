@@ -21,6 +21,7 @@ export class SettingsModal {
       theme: 'system',
       showSuggestions: true,
       hardMode: false,
+      nytMode: true,
     };
     this.createModal();
   }
@@ -72,6 +73,16 @@ export class SettingsModal {
             <span class="toggle-slider"></span>
           </label>
         </div>
+        <div class="settings-item">
+          <div class="settings-label">
+            <span class="settings-name">NYT Mode</span>
+            <span class="settings-description">Follow official NYT daily puzzle</span>
+          </div>
+          <label class="settings-toggle">
+            <input type="checkbox" id="setting-nyt-mode" />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
       </div>
     `;
 
@@ -105,6 +116,7 @@ export class SettingsModal {
     const darkThemeToggle = this.modalElement.querySelector('#setting-dark-theme') as HTMLInputElement;
     const hardModeToggle = this.modalElement.querySelector('#setting-hard-mode') as HTMLInputElement;
     const showSuggestionsToggle = this.modalElement.querySelector('#setting-show-suggestions') as HTMLInputElement;
+    const nytModeToggle = this.modalElement.querySelector('#setting-nyt-mode') as HTMLInputElement;
 
     darkThemeToggle?.addEventListener('change', () => {
       this.currentSettings.theme = darkThemeToggle.checked ? 'dark' : 'light';
@@ -118,6 +130,11 @@ export class SettingsModal {
 
     showSuggestionsToggle?.addEventListener('change', () => {
       this.currentSettings.showSuggestions = showSuggestionsToggle.checked;
+      this.notifySettingsChange();
+    });
+
+    nytModeToggle?.addEventListener('change', () => {
+      this.currentSettings.nytMode = nytModeToggle.checked;
       this.notifySettingsChange();
     });
   }
@@ -143,6 +160,7 @@ export class SettingsModal {
     const darkThemeToggle = this.modalElement.querySelector('#setting-dark-theme') as HTMLInputElement;
     const hardModeToggle = this.modalElement.querySelector('#setting-hard-mode') as HTMLInputElement;
     const showSuggestionsToggle = this.modalElement.querySelector('#setting-show-suggestions') as HTMLInputElement;
+    const nytModeToggle = this.modalElement.querySelector('#setting-nyt-mode') as HTMLInputElement;
 
     if (darkThemeToggle) {
       // Dark theme toggle is checked when theme is 'dark' or when 'system' preference is dark
@@ -156,6 +174,10 @@ export class SettingsModal {
 
     if (showSuggestionsToggle) {
       showSuggestionsToggle.checked = settings.showSuggestions;
+    }
+
+    if (nytModeToggle) {
+      nytModeToggle.checked = settings.nytMode;
     }
   }
 
