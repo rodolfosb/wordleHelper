@@ -7,6 +7,7 @@ import { Keyboard } from './ui/Keyboard';
 import { StatsModal } from './ui/StatsModal';
 import { SettingsModal } from './ui/SettingsModal';
 import { HistoryPicker } from './ui/HistoryPicker';
+import { HintsPanel } from './ui/HintsPanel';
 import { rankWords } from './logic/ranking';
 import { createEmptyConstraints, addGuessToConstraints } from './logic/constraints';
 import { filterWords, filterByPrefix, isValidWord } from './logic/filter';
@@ -69,6 +70,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
         <button class="exit-practice-btn">Exit Practice</button>
       </div>
       <div class="puzzle-info"></div>
+      <div class="hints-area"></div>
       ${createGuessGrid()}
       <div class="game-message"></div>
       <div class="keyboard-area"></div>
@@ -91,6 +93,10 @@ const suggestions = new Suggestions(suggestionsArea);
 // Initialize Keyboard display
 const keyboardArea = document.querySelector<HTMLElement>('.keyboard-area')!;
 const keyboard = new Keyboard(keyboardArea);
+
+// Initialize HintsPanel
+const hintsArea = document.querySelector<HTMLElement>('.hints-area')!;
+const hintsPanel = new HintsPanel(hintsArea);
 
 // Set up keyboard click handler - forward key presses to the guess grid
 keyboard.onKeyPress((key: string) => {
@@ -146,6 +152,13 @@ function applySettings(settings: AppSettings, isInitial: boolean = false): void 
     suggestionsArea.classList.remove('hidden');
   } else {
     suggestionsArea.classList.add('hidden');
+  }
+
+  // Apply hints visibility
+  if (settings.showHints) {
+    hintsArea.classList.remove('hidden');
+  } else {
+    hintsArea.classList.add('hidden');
   }
 
   // Apply hard mode
@@ -276,6 +289,10 @@ function initializeGame(): void {
     guessGrid.setWordLength(currentWordLength);
     guessGrid.setGameMode(true);  // Enable game mode for auto-color reveal
 
+    // Set hints panel for Open Mode
+    hintsPanel.setWordLength(currentWordLength);
+    hintsPanel.setAnswer(openModeTarget);
+
     // Update puzzle info to show Open Mode with word length
     updatePuzzleInfo(null, false, false, currentWordLength);
     return;
@@ -292,6 +309,9 @@ function initializeGame(): void {
   if (result) {
     currentPuzzle = result.puzzle;
     guessGrid.setGameMode(true);
+    // Set hints panel for NYT mode
+    hintsPanel.setWordLength(5);
+    hintsPanel.setAnswer(currentPuzzle.answer);
     // Update puzzle info to show NYT mode with puzzle number and date
     // Show warning if using fallback (stale) data
     updatePuzzleInfo(currentPuzzle, true, result.isFallback);
@@ -300,6 +320,7 @@ function initializeGame(): void {
     console.warn('No puzzle data available');
     currentPuzzle = null;
     guessGrid.setGameMode(false);
+    hintsPanel.reset();
     updatePuzzleInfo(null, false);
   }
 }
@@ -496,6 +517,9 @@ function resetGame(): void {
   // Reset keyboard to show all letters as unused
   keyboard.reset();
 
+  // Reset hints panel (will be set with new answer after initializeGame)
+  hintsPanel.reset();
+
   // Reload today's puzzle for fresh game (if not in practice mode)
   if (!practiceMode) {
     initializeGame();
@@ -581,6 +605,10 @@ function startPracticeMode(puzzle: HistoricalPuzzle): void {
 
   // Enable game mode for auto-color reveal
   guessGrid.setGameMode(true);
+
+  // Set hints panel for practice mode
+  hintsPanel.setWordLength(5);
+  hintsPanel.setAnswer(puzzle.answer);
 
   // Reset suggestions to show full 5-letter word list ranked
   const rankedWords = rankWords(wordList, wordList);
