@@ -92,3 +92,12 @@ export interface TodaysPuzzleResult {
   puzzle: HistoricalPuzzle;
   isFallback: boolean;  // true if today's date wasn't found, using most recent instead
 }
+
+/**
+ * Application settings that persist to localStorage
+ */
+export interface AppSettings {
+  theme: 'light' | 'dark' | 'system';
+  showSuggestions: boolean;
+  hardMode: boolean;
+}
