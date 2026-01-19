@@ -9,17 +9,17 @@ See: .planning/PROJECT.md (updated 2026-01-16)
 
 ## Current Position
 
-Phase: 14 of 18 (Word Sync NYT)
+Phase: 15 of 18 (Open Mode)
 Plan: 01 complete
-Status: Ready for next plan
-Last activity: 2026-01-19 — Phase 14 Plan 01 complete
+Status: Ready for UAT
+Last activity: 2026-01-19 — Phase 15 Plan 01 complete
 
-Progress: ████████░░ 78%
+Progress: ████████░░ 83%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 19 (v1.0: 9, v1.1: 8, v1.2: 2)
+- Total plans completed: 20 (v1.0: 9, v1.1: 8, v1.2: 3)
 - Average duration: ~10 min
 - Total execution time: ~189 min
 
@@ -57,21 +57,27 @@ See milestone archives for historical decisions:
 - NYT mode defaults to true, toggle in settings
 - Open mode disables game mode auto-color reveal
 
+**Phase 15-01:**
+- Word lists for lengths 4-10 with getWordListForLength/getWordSetForLength helpers
+- Word length selector disabled when NYT mode active (NYT always 5 letters)
+- Grid uses CSS custom property --word-length for dynamic columns
+- Open Mode synthetic puzzle uses game: -1 to distinguish from real puzzles
+
 ### Deferred Issues
 
 None.
 
 ### Pending Todos
 
-- Refine hard mode functionality (from Phase 13 settings modal implementation)
+- **Hard mode guess validation** — Suggestions filter correctly, but guess submission doesn't enforce constraints. Need: `satisfiesConstraints()` function + validation in `guessGrid.onSubmit()` callback (src/main.ts:376). Show error "Hard mode: must use revealed hints" when violated.
 
 ### Blockers/Concerns
 
 **From milestone context:**
 - Word lists need Portuguese words for i18n support
-- Variable word length (4-10) requires word lists for each length
-- NYT word auto-sync mechanism needs to handle daily updates reliably (ADDRESSED: JSON now updatable independently)
-- Hard mode functionality needs to be re-established
+- ~~Variable word length (4-10) requires word lists for each length~~ (ADDRESSED: Phase 15-01)
+- ~~NYT word auto-sync mechanism needs to handle daily updates reliably~~ (ADDRESSED: JSON now updatable independently)
+- Hard mode guess validation missing (tracked in Pending Todos above)
 
 ### Roadmap Evolution
 
@@ -82,5 +88,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-19
-Stopped at: Phase 14 Plan 01 complete
+Stopped at: Phase 15 Plan 01 complete, ready for UAT
 Resume file: None
