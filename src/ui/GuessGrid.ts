@@ -1,8 +1,9 @@
 import type { LetterStatus, GuessFeedback, LetterFeedback } from '../types';
 
 /**
- * GuessGrid manages the input state and DOM updates for the 6x5 guess grid.
+ * GuessGrid manages the input state and DOM updates for the 6xN guess grid.
  * Handles keyboard input for letters and provides an interface for getting guess feedback.
+ * Supports variable word lengths (4-10 letters).
  */
 export class GuessGrid {
   private currentRow: number = 0;
@@ -15,9 +16,11 @@ export class GuessGrid {
   private onChangeCallback?: () => void;
   private inputLocked: boolean = false;
   private gameMode: boolean = false;
+  private wordLength: number = 5;
 
-  constructor(gridElement: HTMLElement) {
+  constructor(gridElement: HTMLElement, wordLength: number = 5) {
     this.gridElement = gridElement;
+    this.wordLength = wordLength;
     this.initializeGrid();
     this.attachKeyboardListeners();
     this.attachClickListeners();
@@ -29,9 +32,13 @@ export class GuessGrid {
    */
   private initializeGrid(): void {
     // Initialize state arrays
+    this.letters = [];
+    this.colors = [];
+    this.cells = [];
+
     for (let row = 0; row < 6; row++) {
-      this.letters[row] = ['', '', '', '', ''];
-      this.colors[row] = ['gray', 'gray', 'gray', 'gray', 'gray'];
+      this.letters[row] = Array(this.wordLength).fill('');
+      this.colors[row] = Array(this.wordLength).fill('gray') as LetterStatus[];
       this.cells[row] = [];
     }
 
@@ -46,6 +53,61 @@ export class GuessGrid {
 
     // Make grid focusable
     this.gridElement.setAttribute('tabindex', '0');
+  }
+
+  /**
+   * Rebuild the grid DOM with the current word length
+   */
+  private rebuildGrid(): void {
+    // Clear existing grid content
+    this.gridElement.innerHTML = '';
+
+    // Set CSS custom property for dynamic column count
+    this.gridElement.style.setProperty('--word-length', String(this.wordLength));
+
+    // Create new rows and cells
+    for (let row = 0; row < 6; row++) {
+      const rowEl = document.createElement('div');
+      rowEl.className = 'guess-row';
+      rowEl.dataset.row = String(row);
+
+      for (let col = 0; col < this.wordLength; col++) {
+        const cellEl = document.createElement('div');
+        cellEl.className = 'guess-cell';
+        cellEl.dataset.row = String(row);
+        cellEl.dataset.col = String(col);
+        rowEl.appendChild(cellEl);
+      }
+
+      this.gridElement.appendChild(rowEl);
+    }
+
+    // Reinitialize state arrays and cache cells
+    this.initializeGrid();
+  }
+
+  /**
+   * Set the word length and rebuild the grid
+   * @param length - Word length (4-10)
+   */
+  public setWordLength(length: number): void {
+    if (length < 4 || length > 10) return;
+    if (length === this.wordLength) return;
+
+    this.wordLength = length;
+    this.currentRow = 0;
+    this.currentCol = 0;
+    this.inputLocked = false;
+
+    this.rebuildGrid();
+    this.focusGrid();
+  }
+
+  /**
+   * Get the current word length
+   */
+  public getWordLength(): number {
+    return this.wordLength;
   }
 
   /**
@@ -78,7 +140,7 @@ export class GuessGrid {
     if (this.inputLocked) return; // Input is locked
     if (this.gameMode) return; // No manual color cycling in game mode
     if (row < 0 || row >= 6) return;
-    if (col < 0 || col >= 5) return;
+    if (col < 0 || col >= this.wordLength) return;
 
     // Only allow color change on cells that have letters
     if (!this.letters[row][col]) return;
@@ -146,7 +208,7 @@ export class GuessGrid {
   private inputLetter(letter: string): void {
     if (this.inputLocked) return; // Input is locked
     if (this.currentRow >= 6) return; // No more rows
-    if (this.currentCol >= 5) return; // Row is full
+    if (this.currentCol >= this.wordLength) return; // Row is full
 
     // Set the letter
     this.letters[this.currentRow][this.currentCol] = letter;
@@ -168,7 +230,7 @@ export class GuessGrid {
     // If at start of current row and not row 0, move back to previous row
     if (this.currentCol === 0 && this.currentRow > 0) {
       this.currentRow--;
-      this.currentCol = 5; // Move to end of previous row
+      this.currentCol = this.wordLength; // Move to end of previous row
     }
 
     // If still nothing to delete (row 0, col 0), return
@@ -191,7 +253,7 @@ export class GuessGrid {
    */
   private submitRow(): void {
     if (this.currentRow >= 6) return;
-    if (this.currentCol !== 5) return; // Row not full
+    if (this.currentCol !== this.wordLength) return; // Row not full
 
     // Call the callback if set
     if (this.onSubmitCallback) {
@@ -308,10 +370,10 @@ export class GuessGrid {
    */
   public setRowColors(row: number, colors: LetterStatus[]): void {
     if (row < 0 || row >= 6) return;
-    if (colors.length !== 5) return;
+    if (colors.length !== this.wordLength) return;
 
     // Apply colors with staggered flip animation
-    for (let col = 0; col < 5; col++) {
+    for (let col = 0; col < this.wordLength; col++) {
       const delay = col * 100; // 100ms stagger per cell
       setTimeout(() => {
         this.colors[row][col] = colors[col];
@@ -345,7 +407,7 @@ export class GuessGrid {
    * Check if current row is complete (all 5 letters filled)
    */
   public isCurrentRowComplete(): boolean {
-    return this.currentCol === 5;
+    return this.currentCol === this.wordLength;
   }
 
   /**
@@ -361,7 +423,7 @@ export class GuessGrid {
    */
   public getCurrentPartialWord(): string {
     // If row is complete, return empty (not a partial word)
-    if (this.currentCol === 5) return '';
+    if (this.currentCol === this.wordLength) return '';
     // Return letters typed so far in current row
     return this.letters[this.currentRow].slice(0, this.currentCol).join('');
   }
@@ -377,7 +439,7 @@ export class GuessGrid {
     if (rowLetters.some((l) => l === '')) return null;
 
     const feedback: LetterFeedback[] = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < this.wordLength; i++) {
       feedback.push({
         letter: rowLetters[i],
         position: i,
@@ -419,7 +481,7 @@ export class GuessGrid {
 
     // Clear all state arrays and update cells
     for (let row = 0; row < 6; row++) {
-      for (let col = 0; col < 5; col++) {
+      for (let col = 0; col < this.wordLength; col++) {
         this.letters[row][col] = '';
         this.colors[row][col] = 'gray';
         this.updateCell(row, col);
@@ -437,7 +499,7 @@ export class GuessGrid {
     if (this.inputLocked) return;
 
     // Clear all letters and colors in current row
-    for (let col = 0; col < 5; col++) {
+    for (let col = 0; col < this.wordLength; col++) {
       this.letters[this.currentRow][col] = '';
       this.colors[this.currentRow][col] = 'gray';
       this.updateCell(this.currentRow, col);
@@ -453,19 +515,19 @@ export class GuessGrid {
    */
   public fillCurrentRow(word: string): void {
     if (this.inputLocked) return;
-    if (word.length !== 5) return;
+    if (word.length !== this.wordLength) return;
 
     // Clear current row first
     this.clearCurrentRow();
 
     // Fill in each letter with animation
-    for (let col = 0; col < 5; col++) {
+    for (let col = 0; col < this.wordLength; col++) {
       this.letters[this.currentRow][col] = word[col].toLowerCase();
       this.updateCell(this.currentRow, col, true); // Animate
     }
 
     // Set position to end of row
-    this.currentCol = 5;
+    this.currentCol = this.wordLength;
 
     // Fire onChange callback
     this.fireOnChange();
