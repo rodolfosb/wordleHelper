@@ -1,6 +1,11 @@
 import type { LetterStatus, GuessFeedback, LetterFeedback } from '../types';
 
 /**
+ * Portuguese accented characters that are valid in Portuguese words
+ */
+const PORTUGUESE_ACCENTS = 'áàâãéêíóôõúç';
+
+/**
  * GuessGrid manages the input state and DOM updates for the 6xN guess grid.
  * Handles keyboard input for letters and provides an interface for getting guess feedback.
  * Supports variable word lengths (4-10 letters).
@@ -17,6 +22,7 @@ export class GuessGrid {
   private inputLocked: boolean = false;
   private gameMode: boolean = false;
   private wordLength: number = 5;
+  private accentsEnabled: boolean = false;
 
   constructor(gridElement: HTMLElement, wordLength: number = 5) {
     this.gridElement = gridElement;
@@ -175,13 +181,30 @@ export class GuessGrid {
   }
 
   /**
+   * Check if a character is valid for input
+   * Accepts A-Z, and optionally Portuguese accented characters
+   */
+  private isValidCharacter(char: string): boolean {
+    const lowerChar = char.toLowerCase();
+    // Always accept basic letters
+    if (/^[a-z]$/.test(lowerChar)) {
+      return true;
+    }
+    // Accept accented characters if enabled
+    if (this.accentsEnabled && PORTUGUESE_ACCENTS.includes(lowerChar)) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * Handle keydown events
    */
   private handleKeyDown(event: KeyboardEvent): void {
-    const key = event.key.toUpperCase();
+    const key = event.key;
 
-    // Handle letter input (A-Z)
-    if (/^[A-Z]$/.test(key)) {
+    // Handle letter input (A-Z and accented characters if enabled)
+    if (this.isValidCharacter(key)) {
       event.preventDefault();
       this.inputLetter(key.toLowerCase());
       return;
@@ -535,15 +558,23 @@ export class GuessGrid {
 
   /**
    * Handle a key press from the on-screen keyboard
-   * @param key - The key pressed ('a'-'z', 'Enter', or 'Backspace')
+   * @param key - The key pressed ('a'-'z', accented chars, 'Enter', or 'Backspace')
    */
   public handleKeyPress(key: string): void {
     if (key === 'Enter') {
       this.submitRow();
     } else if (key === 'Backspace') {
       this.deleteLetter();
-    } else if (/^[a-z]$/i.test(key)) {
+    } else if (this.isValidCharacter(key)) {
       this.inputLetter(key.toLowerCase());
     }
+  }
+
+  /**
+   * Enable or disable accented character input
+   * When enabled, Portuguese accented characters are accepted
+   */
+  public setAccentsEnabled(enabled: boolean): void {
+    this.accentsEnabled = enabled;
   }
 }

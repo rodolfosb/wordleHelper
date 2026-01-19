@@ -203,8 +203,10 @@ function applySettings(settings: AppSettings, isInitial: boolean = false): void 
   }
   previousWordLanguage = settings.wordLanguage;
 
-  // Enable/disable keyboard accents based on language
-  keyboard.setAccentsEnabled(settings.wordLanguage === 'pt');
+  // Enable/disable keyboard accents based on language (both on-screen keyboard and grid input)
+  const accentsEnabled = settings.wordLanguage === 'pt';
+  keyboard.setAccentsEnabled(accentsEnabled);
+  guessGrid.setAccentsEnabled(accentsEnabled);
 }
 
 // Settings change handler
