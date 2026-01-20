@@ -2,7 +2,7 @@ import { defineConfig } from 'vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
-  base: '/wordleHelper/',
+  base: '/',
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
@@ -18,8 +18,8 @@ export default defineConfig({
         theme_color: '#121213',
         background_color: '#121213',
         display: 'standalone',
-        scope: '/wordleHelper/',
-        start_url: '/wordleHelper/',
+        scope: '/',
+        start_url: '/',
         icons: [
           {
             src: 'pwa-192x192.png',
