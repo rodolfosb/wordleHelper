@@ -1,5 +1,33 @@
 # Project Milestones: Wordle Helper
 
+## v1.3 Deployment (Shipped: 2026-01-21)
+
+**Delivered:** Production deployment on Vercel with custom domain wordle.brdk.cc, automatic CI/CD, and comprehensive project documentation.
+
+**Phases completed:** 19-23 (3 plans total)
+
+**Key accomplishments:**
+
+- Deployed to Vercel with automatic GitHub CI/CD integration
+- Configured custom subdomain wordle.brdk.cc with Cloudflare DNS
+- Fixed base path for root deployment (removed /wordleHelper/ prefix)
+- Added PWA id field for stable app identity across domain changes
+- Removed gh-pages dependency (Vercel handles all deployment)
+- Created comprehensive README.md documentation
+
+**Stats:**
+
+- 19 files modified
+- ~4,000 lines of TypeScript code
+- 5 phases, 3 plans
+- 2 days from v1.2 to ship (2026-01-19 → 2026-01-21)
+
+**Git range:** `e1f38ea` → `8d231b0`
+
+**What's next:** Project deployed to production. Future enhancements could include additional languages, achievements, or social features.
+
+---
+
 ## v1.2 Complete Experience (Shipped: 2026-01-19)
 
 **Delivered:** Full-featured multilingual Wordle with header navigation, settings modal, Open Mode with variable word lengths, progressive hints, and Portuguese language support.

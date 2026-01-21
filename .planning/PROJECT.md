@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A full-featured multilingual Wordle game with intelligent word suggestions. Play NYT daily puzzles, practice with 1,671 historical puzzles, or enjoy Open Mode with random words in variable lengths (4-10 letters). Supports English and Portuguese with accented character input. Progressive hints help when stuck. Works offline as an installable PWA.
+A full-featured multilingual Wordle game with intelligent word suggestions, deployed at wordle.brdk.cc. Play NYT daily puzzles, practice with 1,671 historical puzzles, or enjoy Open Mode with random words in variable lengths (4-10 letters). Supports English and Portuguese with accented character input. Progressive hints help when stuck. Works offline as an installable PWA.
 
 ## Core Value
 
@@ -39,10 +39,13 @@ A complete Wordle experience that works anywhere—play daily or historical puzz
 - ✓ Portuguese language support with 157k+ words — v1.2
 - ✓ Accented character keyboard input (long-press on mobile) — v1.2
 - ✓ Language selector in settings (English/Portuguese) — v1.2
+- ✓ Production deployment on custom domain (wordle.brdk.cc) — v1.3
+- ✓ Automatic CI/CD via Vercel GitHub integration — v1.3
+- ✓ PWA stable identity across domain changes — v1.3
 
 ### Active
 
-(None — v1.2 Complete Experience shipped)
+(None — v1.3 Deployment shipped)
 
 ### Out of Scope
 
@@ -52,8 +55,9 @@ A complete Wordle experience that works anywhere—play daily or historical puzz
 
 ## Context
 
-Shipped v1.2 with ~3,800 lines TypeScript code plus ~164k lines word list data.
+Shipped v1.3 with ~4,000 lines TypeScript code plus ~164k lines word list data.
 Tech stack: Vite, TypeScript, vanilla DOM (no framework), vite-plugin-pwa.
+Deployed at https://wordle.brdk.cc via Vercel with automatic CI/CD from GitHub.
 App is a full-featured multilingual Wordle with three modes: NYT daily, Practice (1,671 historical puzzles), and Open Mode (random words, 4-10 letters).
 Supports English and Portuguese languages with accented character input.
 Installable as PWA on mobile and desktop.
@@ -86,6 +90,9 @@ Installable as PWA on mobile and desktop.
 | Portuguese word lists from IME-USP | CC BY license, comprehensive dictionary | ✓ Good - 157k+ quality words |
 | Accent popup above key | Avoid finger occlusion on mobile | ✓ Good - better touch UX |
 | Language setting disabled in NYT mode | NYT puzzles are English only | ✓ Good - prevents confusion |
+| Cloudflare DNS only mode for Vercel | SSL compatibility with Vercel certs | ✓ Good - Full (strict) SSL works |
+| PWA id field for domain migration | Stable app identity across domain changes | ✓ Good - smooth migration from gh-pages |
+| Vercel over GitHub Pages | Faster builds, automatic HTTPS, better DX | ✓ Good - simpler deployment process |
 
 ---
-*Last updated: 2026-01-19 after v1.2 milestone*
+*Last updated: 2026-01-21 after v1.3 milestone*
