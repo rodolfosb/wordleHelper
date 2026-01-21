@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-01-21)
 
 ## Current Position
 
-Phase: 24 of 25 (Input Validation Fixes)
-Plan: FIX-02 complete (final UAT fix)
-Status: Phase complete - All UAT issues resolved
-Last activity: 2026-01-21 — Completed 24-FIX-02 (backspace state corruption fix)
+Phase: 25 of 25 (NYT Sync Fix)
+Plan: 01 of 1 complete
+Status: Phase complete - Milestone complete
+Last activity: 2026-01-21 — Completed 25-01 (timezone fix + data update)
 
-Progress: ████████░░ 96%
+Progress: ██████████ 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 28 (v1.0: 9, v1.1: 8, v1.2: 8, v1.3: 3)
+- Total plans completed: 31 (v1.0: 9, v1.1: 8, v1.2: 8, v1.3: 3, v1.4: 3)
 - Average duration: ~10 min
-- Total execution time: ~280 min
+- Total execution time: ~310 min
 
 **By Milestone:**
 
@@ -31,6 +31,7 @@ Progress: ████████░░ 96%
 | v1.1 Features | 6-11 | 8 | 2026-01-13 → 2026-01-16 |
 | v1.2 Complete Experience | 12-18 | 8 | 2026-01-16 → 2026-01-19 |
 | v1.3 Deployment | 19-23 | 3 | 2026-01-19 → 2026-01-21 |
+| v1.4 Bug Fixes | 24-25 | 3 | 2026-01-21 |
 
 ## Accumulated Context
 
@@ -49,7 +50,7 @@ None.
 
 ### Pending Todos
 
-- **NYT puzzle sync issue** — User reported puzzle showing old date after deployment. Investigate NYT API auto-update mechanism - may be timing/timezone issue or API endpoint problem. (Reported: 2026-01-20 during Phase 21 verification)
+None - NYT sync issue resolved in Phase 25.
 
 ### Blockers/Concerns
 
@@ -61,10 +62,10 @@ None.
 - v1.1 Features shipped 2026-01-16 (Phases 6-11)
 - v1.2 Complete Experience shipped 2026-01-19 (Phases 12-18)
 - v1.3 Deployment shipped 2026-01-21 (Phases 19-23)
-- Milestone v1.4 Bug Fixes created: fixing gameplay bugs, 2 phases (Phase 24-25)
+- v1.4 Bug Fixes shipped 2026-01-21 (Phases 24-25)
 
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed 24-FIX-02 (backspace state corruption fix)
+Stopped at: Completed 25-01 (NYT sync fix)
 Resume file: None

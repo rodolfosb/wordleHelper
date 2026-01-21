@@ -10,7 +10,7 @@ Build a web application that helps users solve Wordle puzzles by suggesting opti
 - ✅ **[v1.1 Features](milestones/v1.1-ROADMAP.md)** — Phases 6-11 (shipped 2026-01-16)
 - ✅ **[v1.2 Complete Experience](milestones/v1.2-ROADMAP.md)** — Phases 12-18 (shipped 2026-01-19)
 - ✅ **[v1.3 Deployment](milestones/v1.3-ROADMAP.md)** — Phases 19-23 (shipped 2026-01-21)
-- 🚧 **v1.4 Bug Fixes** — Phases 24-25 (in progress)
+- ✅ **v1.4 Bug Fixes** — Phases 24-25 (shipped 2026-01-21)
 
 ## Completed Milestones
 
@@ -69,7 +69,7 @@ See [v1.3 archive](milestones/v1.3-ROADMAP.md) for full details.
 
 </details>
 
-### 🚧 v1.4 Bug Fixes (In Progress)
+### ✅ v1.4 Bug Fixes (Complete)
 
 **Milestone Goal:** Fix gameplay bugs to ensure correct behavior
 
@@ -87,14 +87,15 @@ Plans:
 
 #### Phase 25: NYT Sync Fix
 
-**Goal**: Investigate and fix puzzle date sync issue reported during Phase 21 verification
+**Goal**: Fix timezone-related puzzle date sync issue
 **Depends on**: Phase 24
-**Research**: Likely (investigating external API behavior and timing issues)
-**Research topics**: NYT puzzle API update mechanism, timezone handling, caching behavior
-**Plans**: TBD
+**Research**: None needed (root cause identified as UTC vs local time conversion)
+**Plans**: 1
+
+Status: **Complete**
 
 Plans:
-- [ ] 25-01: TBD (run /gsd:plan-phase 25 to break down)
+- [x] 25-01: Timezone fix + data update — completed 2026-01-21
 
 ## Future Milestones
 
@@ -107,7 +108,7 @@ Future enhancements could include:
 ## Progress
 
 **Execution Order:**
-Phases 1-23 complete. v1.4 phases 24-25 in progress.
+All phases complete. v1.4 Bug Fixes milestone shipped.
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -135,6 +136,6 @@ Phases 1-23 complete. v1.4 phases 24-25 in progress.
 | 22. PWA Updates | v1.3 | 1/1 | Complete | 2026-01-21 |
 | 23. CI/CD & Cleanup | v1.3 | 1/1 | Complete | 2026-01-21 |
 | 24. Input Validation Fixes | v1.4 | 1/1 | Complete | 2026-01-21 |
-| 25. NYT Sync Fix | v1.4 | 0/? | Not started | - |
+| 25. NYT Sync Fix | v1.4 | 1/1 | Complete | 2026-01-21 |
 
-**Overall:** 24/25 phases complete (96%)
+**Overall:** 25/25 phases complete (100%)
