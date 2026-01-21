@@ -78,10 +78,10 @@ See [v1.3 archive](milestones/v1.3-ROADMAP.md) for full details.
 **Goal**: Enforce hard mode constraints on guess submission + prevent editing submitted rows
 **Depends on**: v1.3 complete
 **Research**: Unlikely (internal patterns - modifying existing guess submission logic)
-**Plans**: TBD
+**Plans**: 1
 
 Plans:
-- [ ] 24-01: TBD (run /gsd:plan-phase 24 to break down)
+- [x] 24-01: Hard mode validation + row locking — completed 2026-01-21
 
 #### Phase 25: NYT Sync Fix
 
@@ -132,7 +132,7 @@ Phases 1-23 complete. v1.4 phases 24-25 in progress.
 | 21. Domain Configuration | v1.3 | 1/1 | Complete | 2026-01-20 |
 | 22. PWA Updates | v1.3 | 1/1 | Complete | 2026-01-21 |
 | 23. CI/CD & Cleanup | v1.3 | 1/1 | Complete | 2026-01-21 |
-| 24. Input Validation Fixes | v1.4 | 0/? | Not started | - |
+| 24. Input Validation Fixes | v1.4 | 1/1 | Complete | 2026-01-21 |
 | 25. NYT Sync Fix | v1.4 | 0/? | Not started | - |
 
-**Overall:** 23/25 phases complete (92%)
+**Overall:** 24/25 phases complete (96%)
