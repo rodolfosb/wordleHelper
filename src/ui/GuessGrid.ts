@@ -23,6 +23,7 @@ export class GuessGrid {
   private gameMode: boolean = false;
   private wordLength: number = 5;
   private accentsEnabled: boolean = false;
+  private submittedRows: Set<number> = new Set();
 
   constructor(gridElement: HTMLElement, wordLength: number = 5) {
     this.gridElement = gridElement;
@@ -104,6 +105,7 @@ export class GuessGrid {
     this.currentRow = 0;
     this.currentCol = 0;
     this.inputLocked = false;
+    this.submittedRows.clear();
 
     this.rebuildGrid();
     this.focusGrid();
@@ -246,12 +248,14 @@ export class GuessGrid {
 
   /**
    * Delete the last letter, allowing backspace across rows
+   * Does not allow editing submitted rows
    */
   private deleteLetter(): void {
     if (this.inputLocked) return; // Input is locked
 
     // If at start of current row and not row 0, move back to previous row
-    if (this.currentCol === 0 && this.currentRow > 0) {
+    // Only allow if previous row is NOT submitted
+    if (this.currentCol === 0 && this.currentRow > 0 && !this.submittedRows.has(this.currentRow - 1)) {
       this.currentRow--;
       this.currentCol = this.wordLength; // Move to end of previous row
     }
@@ -413,6 +417,16 @@ export class GuessGrid {
   }
 
   /**
+   * Mark a row as submitted (prevents backspace from editing it)
+   * @param row - Row index to mark as submitted
+   */
+  public markRowSubmitted(row: number): void {
+    if (row >= 0 && row < 6) {
+      this.submittedRows.add(row);
+    }
+  }
+
+  /**
    * Get the current row index
    */
   public getCurrentRow(): number {
@@ -501,6 +515,9 @@ export class GuessGrid {
 
     // Unlock input
     this.inputLocked = false;
+
+    // Clear submitted rows tracking
+    this.submittedRows.clear();
 
     // Clear all state arrays and update cells
     for (let row = 0; row < 6; row++) {
