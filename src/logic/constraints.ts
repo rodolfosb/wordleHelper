@@ -80,3 +80,49 @@ export function addGuessToConstraints(
     excludedLetters,
   };
 }
+
+/**
+ * Checks if a word satisfies all accumulated constraints from previous guesses
+ * Used for hard mode validation - ensures guess uses all revealed hints
+ *
+ * @param word - The word to validate
+ * @param constraints - Accumulated constraints from previous guesses
+ * @returns True if word satisfies all constraints
+ */
+export function satisfiesConstraints(word: string, constraints: Constraints): boolean {
+  const { exactPositions, requiredLetters, excludedLetters } = constraints;
+
+  // Check 1: Exact positions (green letters)
+  // Word must have the exact letter at each required position
+  for (const [position, letter] of exactPositions) {
+    if (word[position] !== letter) {
+      return false;
+    }
+  }
+
+  // Check 2: Required letters (yellow letters)
+  // Word must contain each required letter somewhere (but not at excluded positions)
+  for (const [letter, excludedPositions] of requiredLetters) {
+    // Letter must appear somewhere in the word
+    if (!word.includes(letter)) {
+      return false;
+    }
+
+    // Letter must NOT be at any of the excluded positions for that letter
+    for (const position of excludedPositions) {
+      if (word[position] === letter) {
+        return false;
+      }
+    }
+  }
+
+  // Check 3: Excluded letters (gray letters)
+  // Word must not contain excluded letters (unless in requiredLetters for duplicate handling)
+  for (const letter of excludedLetters) {
+    if (!requiredLetters.has(letter) && word.includes(letter)) {
+      return false;
+    }
+  }
+
+  return true;
+}
