@@ -260,8 +260,8 @@ export class GuessGrid {
       this.currentCol = this.wordLength; // Move to end of previous row
     }
 
-    // If still nothing to delete (row 0, col 0), return
-    if (this.currentCol <= 0 && this.currentRow === 0) return;
+    // If still at start of row (couldn't go back), nothing to delete
+    if (this.currentCol === 0) return;
 
     // Move back
     this.currentCol--;
