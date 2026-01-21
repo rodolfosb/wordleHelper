@@ -42,10 +42,13 @@ A complete Wordle experience that works anywhere—play daily or historical puzz
 - ✓ Production deployment on custom domain (wordle.brdk.cc) — v1.3
 - ✓ Automatic CI/CD via Vercel GitHub integration — v1.3
 - ✓ PWA stable identity across domain changes — v1.3
+- ✓ Hard mode guess validation enforced on submission — v1.4
+- ✓ Submitted row locking prevents editing colored rows — v1.4
+- ✓ Timezone-aware date handling for puzzle sync — v1.4
 
 ### Active
 
-(None — v1.3 Deployment shipped)
+(None — v1.4 Bug Fixes shipped)
 
 ### Out of Scope
 
@@ -55,12 +58,13 @@ A complete Wordle experience that works anywhere—play daily or historical puzz
 
 ## Context
 
-Shipped v1.3 with ~4,000 lines TypeScript code plus ~164k lines word list data.
+Shipped v1.4 with ~4,100 lines TypeScript code plus ~164k lines word list data.
 Tech stack: Vite, TypeScript, vanilla DOM (no framework), vite-plugin-pwa.
 Deployed at https://wordle.brdk.cc via Vercel with automatic CI/CD from GitHub.
 App is a full-featured multilingual Wordle with three modes: NYT daily, Practice (1,671 historical puzzles), and Open Mode (random words, 4-10 letters).
 Supports English and Portuguese languages with accented character input.
 Installable as PWA on mobile and desktop.
+All known gameplay bugs fixed in v1.4.
 
 ## Constraints
 
@@ -93,6 +97,8 @@ Installable as PWA on mobile and desktop.
 | Cloudflare DNS only mode for Vercel | SSL compatibility with Vercel certs | ✓ Good - Full (strict) SSL works |
 | PWA id field for domain migration | Stable app identity across domain changes | ✓ Good - smooth migration from gh-pages |
 | Vercel over GitHub Pages | Faster builds, automatic HTTPS, better DX | ✓ Good - simpler deployment process |
+| Validate hard mode on submission | Better UX allows typing any word then showing error | ✓ Good - intuitive user experience |
+| Use local time for date formatting | Matches user's perception of "today" for puzzle sync | ✓ Good - correct puzzle displayed |
 
 ---
-*Last updated: 2026-01-21 after v1.3 milestone*
+*Last updated: 2026-01-21 after v1.4 milestone*

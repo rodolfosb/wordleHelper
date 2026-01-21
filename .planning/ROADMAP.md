@@ -10,7 +10,7 @@ Build a web application that helps users solve Wordle puzzles by suggesting opti
 - ✅ **[v1.1 Features](milestones/v1.1-ROADMAP.md)** — Phases 6-11 (shipped 2026-01-16)
 - ✅ **[v1.2 Complete Experience](milestones/v1.2-ROADMAP.md)** — Phases 12-18 (shipped 2026-01-19)
 - ✅ **[v1.3 Deployment](milestones/v1.3-ROADMAP.md)** — Phases 19-23 (shipped 2026-01-21)
-- ✅ **v1.4 Bug Fixes** — Phases 24-25 (shipped 2026-01-21)
+- ✅ **[v1.4 Bug Fixes](milestones/v1.4-ROADMAP.md)** — Phases 24-25 (shipped 2026-01-21)
 
 ## Completed Milestones
 
@@ -69,33 +69,15 @@ See [v1.3 archive](milestones/v1.3-ROADMAP.md) for full details.
 
 </details>
 
-### ✅ v1.4 Bug Fixes (Complete)
+<details>
+<summary>✅ v1.4 Bug Fixes (Phases 24-25) — SHIPPED 2026-01-21</summary>
 
-**Milestone Goal:** Fix gameplay bugs to ensure correct behavior
+- [x] Phase 24: Input Validation Fixes (4/4 plans) — completed 2026-01-21
+- [x] Phase 25: NYT Sync Fix (1/1 plan) — completed 2026-01-21
 
-#### Phase 24: Input Validation Fixes
+See [v1.4 archive](milestones/v1.4-ROADMAP.md) for full details.
 
-**Goal**: Enforce hard mode constraints on guess submission + prevent editing submitted rows
-**Depends on**: v1.3 complete
-**Research**: Unlikely (internal patterns - modifying existing guess submission logic)
-**Plans**: 1
-
-Status: **Complete**
-
-Plans:
-- [x] 24-01: Hard mode validation + row locking — completed 2026-01-21
-
-#### Phase 25: NYT Sync Fix
-
-**Goal**: Fix timezone-related puzzle date sync issue
-**Depends on**: Phase 24
-**Research**: None needed (root cause identified as UTC vs local time conversion)
-**Plans**: 1
-
-Status: **Complete**
-
-Plans:
-- [x] 25-01: Timezone fix + data update — completed 2026-01-21
+</details>
 
 ## Future Milestones
 

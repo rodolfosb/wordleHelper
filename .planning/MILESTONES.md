@@ -1,5 +1,33 @@
 # Project Milestones: Wordle Helper
 
+## v1.4 Bug Fixes (Shipped: 2026-01-21)
+
+**Delivered:** Fixed gameplay bugs including hard mode validation enforcement, submitted row locking, and timezone-related puzzle date sync issue.
+
+**Phases completed:** 24-25 (5 plans total)
+
+**Key accomplishments:**
+
+- Hard mode guess validation enforced with error messages on submission
+- Submitted row locking prevents editing rows with revealed colors
+- Fixed hard mode first guess validation (correctly allows any valid word)
+- Fixed backspace state corruption at col 0 on locked rows
+- Fixed timezone sync issue using local date formatting instead of UTC
+- Updated embedded puzzle data through 2026-01-21
+
+**Stats:**
+
+- 4 source files modified (constraints.ts, main.ts, GuessGrid.ts, history.ts)
+- ~100 lines of TypeScript added
+- 2 phases, 5 plans
+- Same day completion (2026-01-21)
+
+**Git range:** `93fc17c` → `2d2e985`
+
+**What's next:** Project feature-complete and bug-free. Future enhancements could include additional languages, achievements, or social features.
+
+---
+
 ## v1.3 Deployment (Shipped: 2026-01-21)
 
 **Delivered:** Production deployment on Vercel with custom domain wordle.brdk.cc, automatic CI/CD, and comprehensive project documentation.

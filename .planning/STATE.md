@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-01-21)
 
 **Core value:** A complete Wordle experience that works anywhere—play daily or historical puzzles, practice in multiple languages with variable word lengths, track your stats, and get progressive hints when stuck.
-**Current focus:** v1.4 Bug Fixes — fixing gameplay bugs (hard mode validation, locked rows, NYT sync)
+**Current focus:** All milestones complete. Project feature-complete and bug-free.
 
 ## Current Position
 
-Phase: 25 of 25 (NYT Sync Fix)
-Plan: 01 of 1 complete
-Status: Phase complete - Milestone complete
-Last activity: 2026-01-21 — Completed 25-01 (timezone fix + data update)
+Phase: 25 of 25 (all complete)
+Plan: All plans complete
+Status: Project complete - v1.4 Bug Fixes shipped
+Last activity: 2026-01-21 — Completed v1.4 milestone
 
 Progress: ██████████ 100%
 
@@ -43,6 +43,7 @@ See milestone archives for historical decisions:
 - milestones/v1.1-ROADMAP.md
 - milestones/v1.2-ROADMAP.md
 - milestones/v1.3-ROADMAP.md
+- milestones/v1.4-ROADMAP.md
 
 ### Deferred Issues
 
@@ -50,7 +51,7 @@ None.
 
 ### Pending Todos
 
-None - NYT sync issue resolved in Phase 25.
+None - all milestones complete.
 
 ### Blockers/Concerns
 
@@ -67,5 +68,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: Completed 25-01 (NYT sync fix)
+Stopped at: Completed v1.4 milestone
 Resume file: None
