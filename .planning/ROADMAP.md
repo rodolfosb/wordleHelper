@@ -10,6 +10,7 @@ Build a web application that helps users solve Wordle puzzles by suggesting opti
 - ✅ **[v1.1 Features](milestones/v1.1-ROADMAP.md)** — Phases 6-11 (shipped 2026-01-16)
 - ✅ **[v1.2 Complete Experience](milestones/v1.2-ROADMAP.md)** — Phases 12-18 (shipped 2026-01-19)
 - ✅ **[v1.3 Deployment](milestones/v1.3-ROADMAP.md)** — Phases 19-23 (shipped 2026-01-21)
+- 🚧 **v1.4 Bug Fixes** — Phases 24-25 (in progress)
 
 ## Completed Milestones
 
@@ -68,6 +69,31 @@ See [v1.3 archive](milestones/v1.3-ROADMAP.md) for full details.
 
 </details>
 
+### 🚧 v1.4 Bug Fixes (In Progress)
+
+**Milestone Goal:** Fix gameplay bugs to ensure correct behavior
+
+#### Phase 24: Input Validation Fixes
+
+**Goal**: Enforce hard mode constraints on guess submission + prevent editing submitted rows
+**Depends on**: v1.3 complete
+**Research**: Unlikely (internal patterns - modifying existing guess submission logic)
+**Plans**: TBD
+
+Plans:
+- [ ] 24-01: TBD (run /gsd:plan-phase 24 to break down)
+
+#### Phase 25: NYT Sync Fix
+
+**Goal**: Investigate and fix puzzle date sync issue reported during Phase 21 verification
+**Depends on**: Phase 24
+**Research**: Likely (investigating external API behavior and timing issues)
+**Research topics**: NYT puzzle API update mechanism, timezone handling, caching behavior
+**Plans**: TBD
+
+Plans:
+- [ ] 25-01: TBD (run /gsd:plan-phase 25 to break down)
+
 ## Future Milestones
 
 Future enhancements could include:
@@ -79,7 +105,7 @@ Future enhancements could include:
 ## Progress
 
 **Execution Order:**
-All phases 1-23 complete.
+Phases 1-23 complete. v1.4 phases 24-25 in progress.
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -106,5 +132,7 @@ All phases 1-23 complete.
 | 21. Domain Configuration | v1.3 | 1/1 | Complete | 2026-01-20 |
 | 22. PWA Updates | v1.3 | 1/1 | Complete | 2026-01-21 |
 | 23. CI/CD & Cleanup | v1.3 | 1/1 | Complete | 2026-01-21 |
+| 24. Input Validation Fixes | v1.4 | 0/? | Not started | - |
+| 25. NYT Sync Fix | v1.4 | 0/? | Not started | - |
 
-**Overall:** 23/23 phases complete (100%)
+**Overall:** 23/25 phases complete (92%)

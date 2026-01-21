@@ -5,16 +5,16 @@
 See: .planning/PROJECT.md (updated 2026-01-21)
 
 **Core value:** A complete Wordle experience that works anywhere—play daily or historical puzzles, practice in multiple languages with variable word lengths, track your stats, and get progressive hints when stuck.
-**Current focus:** Project complete — deployed at https://wordle.brdk.cc
+**Current focus:** v1.4 Bug Fixes — fixing gameplay bugs (hard mode validation, locked rows, NYT sync)
 
 ## Current Position
 
-Phase: 23 of 23 — All phases complete
-Plan: All plans complete
-Status: v1.3 Deployment shipped
-Last activity: 2026-01-21 — v1.3 milestone archived
+Phase: 24 of 25 (Input Validation Fixes)
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-01-21 — Milestone v1.4 Bug Fixes created
 
-Progress: ██████████████ 100%
+Progress: ░░░░░░░░░░ 0%
 
 ## Performance Metrics
 
@@ -54,7 +54,7 @@ None.
 
 ### Blockers/Concerns
 
-None — project complete and deployed.
+None.
 
 ### Roadmap Evolution
 
@@ -62,9 +62,10 @@ None — project complete and deployed.
 - v1.1 Features shipped 2026-01-16 (Phases 6-11)
 - v1.2 Complete Experience shipped 2026-01-19 (Phases 12-18)
 - v1.3 Deployment shipped 2026-01-21 (Phases 19-23)
+- Milestone v1.4 Bug Fixes created: fixing gameplay bugs, 2 phases (Phase 24-25)
 
 ## Session Continuity
 
 Last session: 2026-01-21
-Stopped at: v1.3 milestone complete, project deployed
+Stopped at: Milestone v1.4 Bug Fixes initialization
 Resume file: None
