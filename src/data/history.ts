@@ -6,6 +6,17 @@ import { fetchTodaysAnswer, fetchAnswerByDate } from '../utils/nytApi';
 const WORDLE_EPOCH = new Date('2021-06-19T00:00:00');
 
 /**
+ * Format a date as YYYY-MM-DD using local time (not UTC).
+ * This ensures consistency with user's local date across all functions.
+ */
+function formatLocalDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+/**
  * Calculate the puzzle number for a given date.
  * Puzzle #0 was June 19, 2021. Each subsequent day increments by 1.
  *
@@ -53,15 +64,16 @@ export async function getPuzzleByDate(date: string): Promise<HistoricalPuzzle | 
 /**
  * Get the maximum selectable date
  *
- * Returns today's date. Users can select any date from the first Wordle
- * (June 19, 2021) up to today. The date picker doesn't need to be limited
- * by our embedded data - we'll show an error if a puzzle isn't found.
+ * Returns today's date using local time (not UTC). Users can select any date
+ * from the first Wordle (June 19, 2021) up to today. The date picker doesn't
+ * need to be limited by our embedded data - we'll show an error if a puzzle
+ * isn't found.
  *
- * @returns Date string in "YYYY-MM-DD" format
+ * @returns Date string in "YYYY-MM-DD" format (local time)
  */
 export function getMaxDate(): string {
   const today = new Date();
-  return today.toISOString().split('T')[0];
+  return formatLocalDate(today);
 }
 
 /**
@@ -78,13 +90,14 @@ export function getMinDate(): string {
  *
  * Synchronous lookup since data is embedded in bundle.
  * The puzzle number is always calculated correctly from the date.
+ * Uses local time to ensure consistent date across all functions.
  * If the answer for today's puzzle isn't in our data, returns a fallback.
  *
  * @returns TodaysPuzzleResult with puzzle and fallback indicator, or null if no data
  */
 export function getTodaysPuzzle(): TodaysPuzzleResult | null {
   const today = new Date();
-  const dateStr = today.toISOString().split('T')[0]; // YYYY-MM-DD
+  const dateStr = formatLocalDate(today); // YYYY-MM-DD (local time)
 
   // Calculate today's puzzle number (always correct based on date)
   const puzzleNumber = calculatePuzzleNumber(dateStr);
