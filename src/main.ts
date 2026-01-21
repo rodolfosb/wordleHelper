@@ -453,6 +453,7 @@ guessGrid.onSubmit((row: number) => {
   if (gameMode && targetAnswer) {
     const colors = calculateLetterStatuses(word, targetAnswer);
     guessGrid.setRowColors(row, colors);
+    guessGrid.markRowSubmitted(row);
 
     // Wait for flip animation to complete before checking win/loss
     // Animation delay scales with word length
