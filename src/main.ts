@@ -9,7 +9,7 @@ import { SettingsModal } from './ui/SettingsModal';
 import { HistoryPicker } from './ui/HistoryPicker';
 import { HintsPanel } from './ui/HintsPanel';
 import { rankWords } from './logic/ranking';
-import { createEmptyConstraints, addGuessToConstraints } from './logic/constraints';
+import { createEmptyConstraints, addGuessToConstraints, satisfiesConstraints } from './logic/constraints';
 import { filterWords, filterByPrefix, isValidWord } from './logic/filter';
 import { loadStats, saveStats, recordGame } from './logic/stats';
 import { setTheme } from './utils/theme';
@@ -389,8 +389,6 @@ function updateSuggestions(): void {
   // Hard mode: suggestions already filtered by constraints (which use revealed hints)
   // The filterWords function already applies green/yellow constraints, so hard mode
   // naturally restricts suggestions to valid guesses that use revealed hints.
-  // Future enhancement: Add explicit hard mode validation for user guesses.
-  void hardModeEnabled; // Hard mode setting tracked for future validation
 
   // Apply prefix filter for partial words in current row (UAT-006)
   const partialWord = guessGrid.getCurrentPartialWord();
@@ -427,6 +425,22 @@ guessGrid.onSubmit((row: number) => {
     guessGrid.shakeRow(row);
     showGameMessage('Not in word list', 'error');
     return;
+  }
+
+  // Hard mode validation: check if guess uses all revealed hints
+  if (hardModeEnabled) {
+    const allFeedback = guessGrid.getAllFeedback();
+    // Build constraints from all completed rows
+    let constraints: Constraints = createEmptyConstraints();
+    for (const feedback of allFeedback) {
+      constraints = addGuessToConstraints(constraints, feedback);
+    }
+    // Check if current guess satisfies all accumulated constraints
+    if (!satisfiesConstraints(word, constraints)) {
+      guessGrid.shakeRow(row);
+      showGameMessage('Hard mode: must use revealed hints', 'error');
+      return;
+    }
   }
 
   // Clear any error message
