@@ -429,11 +429,15 @@ guessGrid.onSubmit((row: number) => {
 
   // Hard mode validation: check if guess uses all revealed hints
   if (hardModeEnabled) {
-    const allFeedback = guessGrid.getAllFeedback();
-    // Build constraints from all completed rows
+    // Only build constraints from rows BEFORE the current row being submitted
+    // The current row hasn't been colored yet (setRowColors happens after validation)
+    // On first guess (row 0), there are no previous rows, so constraints are empty
     let constraints: Constraints = createEmptyConstraints();
-    for (const feedback of allFeedback) {
-      constraints = addGuessToConstraints(constraints, feedback);
+    for (let prevRow = 0; prevRow < row; prevRow++) {
+      const feedback = guessGrid.getGuessFeedback(prevRow);
+      if (feedback) {
+        constraints = addGuessToConstraints(constraints, feedback);
+      }
     }
     // Check if current guess satisfies all accumulated constraints
     if (!satisfiesConstraints(word, constraints)) {
