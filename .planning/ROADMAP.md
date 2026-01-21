@@ -80,6 +80,8 @@ See [v1.3 archive](milestones/v1.3-ROADMAP.md) for full details.
 **Research**: Unlikely (internal patterns - modifying existing guess submission logic)
 **Plans**: 1
 
+Status: **Complete**
+
 Plans:
 - [x] 24-01: Hard mode validation + row locking — completed 2026-01-21
 
