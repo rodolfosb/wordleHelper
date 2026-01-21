@@ -9,17 +9,17 @@ See: .planning/PROJECT.md (updated 2026-01-19)
 
 ## Current Position
 
-Phase: 19 of 23 (Vercel Setup)
-Plan: Not started
-Status: Ready to plan
-Last activity: 2026-01-19 — Milestone v1.3 Deployment created
+Phase: 22 of 23 (PWA Updates) - COMPLETE
+Plan: 01 complete
+Status: Ready for next phase
+Last activity: 2026-01-21 — Phase 22 PWA updates complete
 
-Progress: ██████████░░ 78%
+Progress: █████████████░ 95%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 23 (v1.0: 9, v1.1: 8, v1.2: 6)
+- Total plans completed: 24 (v1.0: 9, v1.1: 8, v1.2: 6, v1.3: 1)
 - Average duration: ~10 min
 - Total execution time: ~229 min
 
@@ -48,6 +48,7 @@ None.
 ### Pending Todos
 
 - **Hard mode guess validation** — Suggestions filter correctly, but guess submission doesn't enforce constraints. Need: `satisfiesConstraints()` function + validation in `guessGrid.onSubmit()` callback (src/main.ts:376). Show error "Hard mode: must use revealed hints" when violated.
+- **NYT puzzle sync issue** — User reported puzzle showing old date after deployment. Investigate NYT API auto-update mechanism - may be timing/timezone issue or API endpoint problem. (Reported: 2026-01-20 during Phase 21 verification)
 
 ### Blockers/Concerns
 
@@ -62,6 +63,6 @@ None — all milestone concerns addressed.
 
 ## Session Continuity
 
-Last session: 2026-01-19
-Stopped at: Milestone v1.3 initialization
+Last session: 2026-01-21
+Stopped at: Phase 22 complete, ready for Phase 23
 Resume file: None
